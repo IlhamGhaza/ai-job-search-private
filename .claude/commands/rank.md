@@ -89,6 +89,30 @@ Scoring uses the dimension definitions from `04-job-evaluation.md` verbatim. The
 
 ---
 
+## Step 2.5: Hard Rules (deterministic, before aggregation)
+
+`04-job-evaluation.md`'s "Global Junior Flutter Search - Hard Rules" are enforced in code by `tools/job_rules.py`, not by the scoring agents' judgment. Include this instruction in every scoring agent's prompt, after the `posting_guard` instruction:
+
+- For each job it fetched, the agent builds one JSON object from the stored entry's fields (`title`, `company`, `location`, `country`, `url`, `portal`, `source_type`, `verification_status`, the `salary_*` fields, `remote_eligibility`, `work_mode`, `visa_sponsorship`, `employment_type`, `required_experience`, `deadline`, `apply_url`, `evidence`) with `description` replaced by the **guard-cleaned posting text**, and pipes it through the rules engine:
+
+  ```bash
+  python3 tools/job_rules.py evaluate --in - <<'JOB_JSON'
+  [ { ...one job object... } ]
+  JOB_JSON
+  ```
+
+- It returns, beside the Step 2 array, a second array `rules`: one `{"key": "<seen_jobs key>", "rules": <the job's "rules" object from the tool output, verbatim>}` per job. The agent never edits, softens or re-derives that object - a posting cannot argue its way past a deterministic rule.
+
+Back in the main context, write the verdicts onto the entries (additive fields `rules_section`, `rules_reasons`, `rules_flags`, `safety_screening`, `safety_findings`, `apply_method`, `salary_idr_monthly_min`, `fx_rate`, `fx_date`, `salary_check`):
+
+```bash
+python3 tools/job_rules.py store --results "<temporary rules.json>"
+```
+
+Exchange rates come from `tools/fx_rates.py` (one public rate table, fetched at most once a day, cached in `job_scraper/fx_rates.json`); a failed refresh falls back to the cache and the salary reason says so. A job the scorer could not fetch is evaluated from its stored search-output fields only - which leaves most of them in **Needs verification**, never in Confirmed.
+
+---
+
 ## Step 3: Aggregate and Rank
 
 Back in the main context, for each scored job:
@@ -122,7 +146,9 @@ Back in the main context, for each scored job:
    treated exactly like an absent one and reported once in the Step 5 summary with its
    portal.
 
-Sort by overall score (descending), urgency as tiebreaker.
+8. **Hard-rule sections override scores.** Place every job by its Step 2.5 `rules.section`: `rejected` jobs never enter the shortlist whatever their score (list them under **Rejected** with the rule's reason); `manual_safety_review` jobs go to **Manual safety review**; `needs_verification` jobs go to **Needs verification** with what must be verified (salary, eligibility, employer); only `confirmed` jobs form the shortlist. A job that is not `verified_low_concern` never outranks a verified one, however well it scores or pays.
+
+Sort the shortlist by the rules engine's `rank_key` (Flutter/mobile relevance → junior fit → full-time/paid contract → work eligibility → remote eligibility → visa/relocation → pay vs cost of living → priority country → freshness → evidence quality), then by overall score (descending), urgency as the last tiebreaker. Sort the other sections by `rank_key` too.
 
 ---
 
@@ -159,11 +185,31 @@ Ranked <N> new postings (<X> shortlisted, <Y> below threshold, <Z> expired/vetoe
 Swept <S> previously ranked entries (<E> newly expired, <C> closing soon).
 <D> jobs deferred to the next run - re-run `/rank` to continue.
 
-### Shortlist
+### Confirmed matches
 
-| # | Score | Verdict | Title | Company | Location | Deadline | | URL |
+All hard rules pass, salary > IDR 5,000,000/month after conversion, safety `verified_low_concern`.
+
+| # | Score | Verdict | Title | Company | Location | Pay (IDR/month, rate date) | Apply via | Deadline | | URL |
 |---|-------|---------|-------|---------|----------|----------|---|-----|
-| 1 | 78 | Strong Fit | ... | ... | ... | ... | 🔥 | [Link](...) |
+| 1 | 78 | Strong Fit | ... | ... | ... | 12,800,000 (USD 800 @ 2026-10-30) | ats_form | ... | 🔥 | [Link](...) |
+
+### Needs verification
+| Score | Title | Company | Verify | URL |
+|-------|-------|---------|--------|-----|
+| 70 | ... | ... | salary undisclosed; remote eligibility for Indonesia not stated | [Link](...) |
+
+### Manual safety review
+| Title | Company | Safety findings (source, date) | URL |
+|-------|---------|--------------------------------|-----|
+
+### Rejected (hard rules)
+- <Title> at <Company> - salary floor: ~IDR 4,100,000/month after conversion - [Link](...)
+- <Title> at <Company> - India onsite/hybrid job (hard rule 2) - [Link](...)
+
+### Needs login
+Grouped by portal from `apply_method: portal_login`, so the user knows which accounts to sign into before `/submit`:
+- linkedin.com: <Title> at <Company>, ...
+- jobstreet.com: ...
 
 ### Why these ranked highest
 **1. <Title> at <Company> (78)** - [2-3 strength bullets and the honest gap, from the agent's findings]

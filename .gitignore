@@ -117,5 +117,24 @@ company_research/*.json
 .agents/**/*.log
 .agents/usage/
 
+# Global search state: the daily exchange-rate cache (tools/fx_rates.py) and the
+# /submit ledger (tools/submit_guard.py) - personal search history.
+**/job_scraper/fx_rates.json
+**/job_scraper/submissions.json
+
+# /submit browser automation: the persistent Playwright profile holds your
+# portal logins (cookies) and must never leave this machine; screenshots show
+# filled application forms.
+.browser-profile/
+.submit-screenshots/
+.playwright-cli/
+
 # Brainstorm mockups (superpowers visual companion) - never ship
 .superpowers/
+
+# Freelance gigs (/gigs, /propose): the proposal tracker names clients, gigs and
+# your rates; gig result pools are API/search caches. Screenshots land under
+# .submit-screenshots/freelance/ and the browser profile in .browser-profile/,
+# both ignored above.
+freelance_tracker.csv
+**/job_scraper/gigs_*.json

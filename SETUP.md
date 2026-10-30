@@ -301,6 +301,36 @@ Set-Location cover_letters; xelatex cover_<company>_<role>.tex; Set-Location ..
 
 These commands apply to the stock templates (moderncv CV, `cover.cls` cover letter). If you'd rather use your own LaTeX template, run `/add-template` — it captures the template's compile engine, fonts, style rules, and page limit, test-compiles it, and wires it into `/apply`. See the "LaTeX templates" section in the README.
 
+## 7b. Global junior-Flutter search (this fork)
+
+This fork adds 13 portal skills, a deterministic hard-rules engine and an opt-in `/submit` command.
+
+**Install the portal CLIs** (dev types only; the CLIs have zero runtime dependencies):
+
+```bash
+python3 tools/install_portal_clis.py      # runs bun install in every .agents/skills/*/cli
+```
+
+**Portals that work with no setup:** `ats-search` (Greenhouse, Lever, Ashby, Workable, Recruitee boards listed in `.agents/skills/ats-search/companies.json` - add your own companies there), `remotive-search`, `remoteok-search`, `himalayas-search`, `jobicy-search`, `weworkremotely-search`, `arbeitnow-search`, `platsbanken-search`, `nav-search`, `mycareersfuture-search`.
+
+**Optional environment variables** (never commit them; the CLIs read them only from the environment):
+
+| Variable | Needed by | Notes |
+|---|---|---|
+| `BRAVE_SEARCH_API_TOKEN` | `linkedin-posts-search`, `jobstreet-search`, `jobsites-search` | Key from https://brave.com/search/api/. Every search is one metered Brave query; check the current plan's price and quota. Without it these three portals report `MISSING_CREDENTIALS` and `/scrape` lists them as skipped. |
+| `JOBTECH_API_TOKEN` | `platsbanken-search` | Optional; the JobTech API is open. |
+| `NAV_API_TOKEN` | `nav-search` | Optional; NAV's published public token is used otherwise. |
+| `FX_API_URL` | `tools/fx_rates.py` | Optional override of the exchange-rate source (default: ExchangeRate-API's free open endpoint, base IDR). |
+
+```bash
+export BRAVE_SEARCH_API_TOKEN=...                 # Bash / zsh / Git Bash
+$env:BRAVE_SEARCH_API_TOKEN = "..."               # PowerShell (current session)
+```
+
+**Hard rules.** `/scrape` and `/rank` run `tools/job_rules.py` (Cambodia, India onsite/hybrid, internships, seniority, the IDR 5,000,000/month salary floor with daily-cached currency conversion, eligibility, safety screening). The rules are specified in `04-job-evaluation.md` and pinned by `tests/test_job_rules.py`. Official warnings about specific employers go in `tools/data/safety_watchlist.json` (with source and date); rough living costs for ranking are in `tools/data/cost_of_living.json`.
+
+**`/submit` (opt-in).** Needs the Playwright CLI (`npm i -g @playwright/cli`, then `playwright-cli install-browser` if no browser is installed). It opens a **headed** browser with a persistent profile in `.browser-profile/` (gitignored); you log in to each portal yourself once. It fills one finished application at a time, stops before the final click, and submits only after your explicit "yes" - on LinkedIn, JobStreet, SEEK and similar login portals it defaults to *fill only, you click Submit*, because automating them may break their Terms of Use. Screenshots go to `.submit-screenshots/` (gitignored).
+
 ## 8. Pulling upstream updates into your fork
 
 Upstream keeps improving the methodology files your fork has personalized, so plan for updates from day one:

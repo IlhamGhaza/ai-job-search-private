@@ -62,6 +62,8 @@ If this fails (bun not installed), skip to **1c (WebSearch fallback)** for all p
 
 Discover all installed portal CLI skills by reading every `SKILL.md` found under `.agents/skills/*/SKILL.md`. Each file documents that portal's exact CLI flags and usage examples. **Use each portal's own documented interface — do not guess flags.** This approach automatically includes any new portals added via `/add-portal` without requiring changes to this file.
 
+**Skip freelance skills.** A skill whose frontmatter sets `category: freelance` (Upwork, Freelancer.com, Contra, ...) returns gigs, not jobs: `/gigs` runs it, `/scrape` never does, and its results never enter this pool.
+
 **Honor the `enabled` toggle.** A portal is enabled unless its `SKILL.md` frontmatter sets `enabled: false` (a missing key means enabled — the default). Skip each disabled portal and record it for the Step 5 summary. A fork can thus keep a portal installed but sit out a run without deleting its directory.
 
 For each **enabled** portal skill:
@@ -74,7 +76,9 @@ For each **enabled** portal skill:
 
 Run all portal CLI calls in parallel where possible using the Agent tool. Collect all `results` arrays into a single pool for Step 2, keeping each result tagged with its source portal skill (for Step 2 `detail` lookups).
 
-If a CLI tool exits with a non-zero code, log the error message and continue — do not abort the whole search.
+If a CLI tool exits with a non-zero code, log the error message and continue — do not abort the whole search. Record each such portal for the Step 5 `failed portals` count. Two codes are not failures: `MISSING_CREDENTIALS` (e.g. `BRAVE_SEARCH_API_TOKEN` unset for `linkedin-posts-search`, `jobstreet-search`, `jobsites-search`) is reported as `skipped (no credentials)`, and stderr lines with `"code": "WARNING"` (one company board or one site failed inside a multi-source portal) are listed but the portal's results still count.
+
+**Discovery-only portals.** `linkedin-posts-search`, `jobstreet-search` and `jobsites-search` return search-engine leads (`verification_status: unverified_lead`; LinkedIn posts also `source_type: social_post`). Keep them in the pool, but never present a lead as a verified posting: their `detail` returns `MANUAL_ONLY` for boards that may not be fetched - those jobs need the real listing (employer site / ATS) or a pasted description before `/apply`.
 
 #### 1c. WebSearch fallback
 
@@ -89,7 +93,15 @@ Tag each fallback result as WebSearch-sourced, keeping the portal tag when the f
 
 ### Step 2: Fetch & Parse
 
-Before detail fetches, combine the promising search hits into a JSON array in a temporary file outside the repo. Include each hit's source portal and `source` (`cli` or `websearch`), then run:
+Before detail fetches, merge this run's hits across portals - the same job often arrives from an ATS board, a remote board and a LinkedIn post:
+
+```bash
+python3 tools/job_dedup.py --in "<temporary search results.json>" --out "<temporary merged.json>"
+```
+
+It merges by stable id → canonical URL → application URL → normalised company+title+location (only when all three are known), keeps every source in `also_seen_at`, prefers the employer's own listing as the record to apply through, links LinkedIn posts to the listing they mention (`linked_listing`) instead of merging them, and lists uncertain matches under `possible_duplicates` without merging. Its `duplicates` count feeds the Step 5 counts line. Use the merged file below.
+
+Then combine the promising search hits into a JSON array in a temporary file outside the repo. Include each hit's source portal and `source` (`cli` or `websearch`), then run:
 
 ```bash
 python3 tools/scrape_state.py candidates --results "<temporary search results.json>"
@@ -132,6 +144,18 @@ The `candidates` command applies these rules before a detail request:
   the pre-helper key rule while new entries use the canonical key from Step 4.
 - Otherwise, skip if the company+title combo already exists in `job_scraper/seen_jobs.json`
 - Skip if the company+role already appears in `job_search_tracker.csv`
+
+### Step 2.25: Hard Rules (deterministic)
+
+Run the fetched jobs (search output plus any `detail` fields) through the hard rules before the quick fit check:
+
+```bash
+python3 tools/job_rules.py evaluate --in "<temporary fetched jobs.json>"
+```
+
+It applies `04-job-evaluation.md`'s "Global Junior Flutter Search - Hard Rules" in code - Cambodia, India onsite/hybrid, internships / training programs / unpaid / senior roles, the IDR 5,000,000 monthly salary floor with currency conversion (`tools/fx_rates.py`, cached daily), remote eligibility, visa evidence, safety screening and `apply_method` - and returns each job under one section (`confirmed`, `needs_verification`, `manual_safety_review`, `rejected`) with its reasons, plus a `needs_login` map grouped by portal. **Its verdict is final for those rules**: never override a `rejected` with fit judgment, and never upgrade a `safety_screening`.
+
+Copy these fields onto each job before Step 4 stores it (additive to the schema): `rules_section`, `rules_reasons` (the `reasons` list), `safety_screening`, `apply_method`, `salary_idr_monthly_min`, `fx_rate`, `fx_date`. A `rejected` job is stored with `"status": "skipped"` and `"fit": "low"` so it is never re-fetched, and is not presented as a match.
 
 ### Step 2.5: Mass-Posting Detection (within this run)
 
@@ -241,7 +265,7 @@ Scraper-based portal CLIs rot silently: when a portal changes its markup, the pa
 
 ### Step 5: Present Results
 
-Present new jobs in a table sorted by fit (high first). When Step 1b skipped
+Start with one counts line for the run - `found <N> · duplicate <D> (job_dedup + already seen) · rejected <R> (hard rules) · unverified <U> (leads + needs verification) · failed portals <F>` - then present new jobs in a table sorted by fit (high first), excluding hard-rule rejections (list those under a short **Rejected by hard rules** heading with each reason). Then a **Needs login** list from `job_rules.py`'s `needs_login`, grouped by portal, so the user knows which accounts to sign into before `/submit`. When Step 1b skipped
 portals (`enabled: false`), report them with the `skipped (disabled):` line below
 so opting one out stays visible rather than silent; omit the line when nothing
 was skipped. When any portal's results came from the Step 1c fallback this run
@@ -303,7 +327,7 @@ If the user decides to apply to any job, the tracker row is written by **job-app
 
 1. **Never fabricate job postings.** Only present jobs from actual CLI search/detail output or WebSearch/WebFetch results.
 2. **Respect deduplication.** Always check job_scraper/seen_jobs.json AND job_search_tracker.csv before presenting.
-3. **Focus on configured geographic area.** Skip jobs that require relocation or are clearly outside commute range.
+3. **Geography follows the profile.** The search is global (see `search-queries.md`); a job is excluded on location only by the hard rules in `04-job-evaluation.md` (Cambodia, India onsite/hybrid, a remote role restricted to other countries, missing work authorisation). Priority countries affect ranking, not inclusion.
 4. **Only open positions.** Skip postings with expired deadlines or those marked as closed.
 5. **Be efficient with detail fetches.** Don't run `detail` or WebFetch on every search hit — pre-filter by title/snippet, then fetch only promising matches.
 6. **Parallel searches.** Run portal CLI searches in parallel; use WebSearch only for gaps the CLIs don't cover.

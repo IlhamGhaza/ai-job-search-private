@@ -1,10 +1,39 @@
 ---
-framework_version: 1.2.7
+framework_version: 1.2.8
 ---
 
 # Job Evaluation Framework
 
 <!-- SETUP: Skill match areas and career goals are personalized by running /setup -->
+
+## Global Junior Flutter Search — Hard Rules (run before every other gate)
+
+**Target.** Junior / entry-level **Flutter Developer or Engineer** first; also Junior Dart, Junior Mobile, Junior Cross-Platform, and Associate / Graduate Mobile Engineer **only when it is a real full-time job**. Judge by the real duties and the required experience, never by the title alone: a "Software Engineer" whose duties are Flutter apps and who asks for 0-2 years is on target; a "Junior Flutter Developer" who needs 5 years is not.
+
+**Accept:** full-time employment, or a paid contract/freelance engagement. **Reject:** internships, student placements, working-student roles, intern-to-hire, unpaid roles, bootcamps / training programs (especially any that charge a fee), and senior / lead roles.
+
+**Search is global.** The priority countries - US, CA, GB, IE, DE, NL, CH, AT, BE, LU, DK, SE, NO, FI, IS, SG, AU, NZ, JP, KR plus Southeast Asia (SG, MY, PH, TH, VN, ID, BN, TL) - raise a job's **rank**; they never filter a job out. The candidate is Indonesian, based in Indonesia and willing to relocate. **Never assume** an international remote job accepts Indonesia-based applicants, or that an employer sponsors a visa or relocation, without explicit evidence in the employer's own text. A portal's "visa sponsorship" tag is evidence to verify, not proof.
+
+These rules override any fit score. They are implemented deterministically in `tools/job_rules.py` (tested in `tests/test_job_rules.py`) so they do not depend on model judgment; the prose here is the specification.
+
+1. **Cambodia-based jobs: always reject**, from any source.
+2. **India onsite or hybrid jobs: always reject.** India **remote** jobs are allowed only if they pass rule 3. An India job with no stated remote arrangement is treated as onsite.
+3. **Salary floor - every job, every country, every work mode:** the **minimum** monthly pay converted to IDR must be **strictly greater than IDR 5,000,000**.
+   - Exactly IDR 5,000,000 or lower → reject. A range is judged by its minimum.
+   - Undisclosed → **Needs verification (salary)**, never a confirmed match.
+   - Annual pay ÷ 12; weekly, daily and hourly pay are converted only when both currency and period are explicit (week × 52/12, day × 260/12, hour × 40 × 52/12). Unclear currency (a bare `$` or `¥`) or period → needs verification.
+   - Foreign currency is converted with the day's rate from `tools/fx_rates.py` (public ExchangeRate-API feed, cached once per day in `job_scraper/fx_rates.json`); the record keeps `salary_idr_monthly_min`, `fx_rate` and `fx_date` beside the original amount, currency, period and gross/net. A failed refresh uses the last cached rate and flags it; with no cache there is no rate and the job needs verification - **a rate is never guessed**.
+   - Foreign-currency pay within **±5% of the floor** after conversion → needs verification (rates move). IDR pay has no such band.
+   - Never infer pay from the employer's reputation. The floor is a minimum only: jobs abroad are still ranked on pay against local cost of living (`tools/data/cost_of_living.json`, rough planning figures).
+4. **Safety screening is a separate stage, independent of fit**, with exactly one status per job: `verified_low_concern` | `verification_pending` | `high_risk_manual_review` | `rejected_safety_risk` | `unknown`.
+   - **Reject** on reliable evidence of trafficking, forced labour or a scam compound; fraud, scam or illegal-gambling duties; passport retention; recruitment or upfront fees; a worksite materially different from the ad; or an official warning about the employer, recruiter or site (`tools/data/safety_watchlist.json`, each entry with source and date).
+   - **Manual review** on: very high pay for vague requirements; an unverifiable employer or address; recruiting only through personal chat accounts (WhatsApp, Telegram, LINE, WeChat); vague duties; urgency pressure; no written contract; vague visa promises; requests for upfront payment or personal documents; crypto promotion or mass messaging. Urgency or an unnamed employer alone only asks for verification; combined with another signal it escalates.
+   - **Enhanced screening** for Myanmar, Laos (Golden Triangle SEZ / Bokeo) and Thai border areas (Mae Sot, Mae Sai, Chiang Saen); proportionate screening elsewhere. Judge the specific employer and worksite, never the whole country.
+   - Record the **source and date** of every safety finding. Insufficient evidence → `unknown`, **never "safe"**. A job becomes `verified_low_concern` only from an official ATS / government source with no flags, or by a recorded manual check (`python tools/job_rules.py mark-safety --key <key> --status verified_low_concern --source <evidence URL>`).
+   - Anything not `verified_low_concern` never outranks a verified job, however much more it pays.
+5. **Ranking order:** Flutter/mobile relevance → junior fit → full-time / paid contract → work eligibility for an Indonesian applicant → remote eligibility → visa / relocation evidence → pay vs cost of living → employer credibility → freshness → evidence quality.
+
+**Report sections** (`/rank`): **Confirmed matches** (all rules pass, safety `verified_low_concern`) · **Needs verification** (salary, eligibility or employer) · **Manual safety review** · **Rejected** (each with the rule that rejected it). Plus a **Needs login** list grouped by portal (`apply_method: portal_login`). The fit dimensions below then score the jobs that survive; a hard-rule rejection is never re-scored into the shortlist.
 
 ## Eligibility Gate — run before scoring
 
@@ -60,9 +89,9 @@ How well do the required/preferred skills align with the candidate's capabilitie
 | 40-59 | Partial match, significant upskilling needed |
 | 0-39 | Fundamental mismatch |
 
-**Strong match areas:** [YOUR_PRIMARY_SKILLS]
-**Moderate match areas:** [YOUR_SECONDARY_SKILLS]
-**Weak match areas:** [SKILLS_YOU_LACK]
+**Strong match areas:** Flutter, Dart, BLoC, GetX, Provider, Clean Architecture, REST API integration (Dio), JWT auth, Firebase (Auth, FCM), MQTT, SQLite, Git/GitHub, Codemagic CI/CD
+**Moderate match areas:** TensorFlow Lite (consumer-level, not model training), Google Gemini API integration, Laravel/PHP, Node.js, SQL, Google Maps, Midtrans payments
+**Weak match areas:** Native iOS/Android (Swift/Kotlin), backend architecture/DevOps at scale, cross-platform frameworks outside Flutter (React Native), senior-level system design, ML model development/training
 
 ### 2. Experience Match (0-100)
 Does work history align with what they're looking for? Match on the function and nature of the work performed, not the literal job title - a "Data Consultant" and a "Data Scientist" role can be functionally identical.
@@ -74,9 +103,9 @@ Does work history align with what they're looking for? Match on the function and
 | 40-59 | Adjacent experience, would need to make the case |
 | 0-39 | Unrelated experience |
 
-**Strong:** [YOUR_DIRECT_EXPERIENCE_DOMAINS]
-**Moderate:** [YOUR_ADJACENT_EXPERIENCE]
-**Entry-level:** [ROLES_WITH_LIMITED_EXPERIENCE]
+**Strong:** Flutter/mobile app development (contract + 2 internships), client-facing feature delivery across HRIS, fleet management, POS, inventory, IoT, food ordering
+**Moderate:** Small-team technical coordination (led a 4-person mobile team without a PM), Figma-to-code conversion, cross-functional work with backend developers and designers
+**Entry-level:** Backend/API development, DevOps, team lead / engineering management, senior architecture roles
 
 ### 3. Behavioral/Culture Fit (0-100)
 Does the role and company culture match the behavioral profile?
@@ -91,9 +120,10 @@ Does the role and company culture match the behavioral profile?
 **Red flags to research:** Department disorganization, work dominated by maintenance over development, poor chemistry with leadership, culture mismatches. Check reviews, media coverage, LinkedIn connections, and network contacts for insider perspective.
 
 ### 4. Location & Logistics (Pass/Fail + Notes)
-- Within commute range: PASS
-- Remote with occasional office: PASS
-- Requires relocation: FAIL (deal-breaker)
+- Remote (fully or hybrid): PASS
+- Requires relocation to a target country (US, Canada, UK, Ireland, Germany, Netherlands, Switzerland, Austria, Belgium, Luxembourg, Denmark, Sweden, Norway, Finland, Iceland, Singapore, Australia, New Zealand, Japan, South Korea): PASS - note visa/relocation support if mentioned
+- Requires relocation to a country outside that list, or one with active conflict, severe instability, or very limited tech market: FAIL (deal-breaker)
+- On-site-only in Indonesia with no remote option: FLAG (discuss with user - not a stated deal-breaker, but counter to stated preference)
 - Frequent international travel: FLAG (discuss with user)
 
 ### 5. Career Alignment & Motivation (0-100)
@@ -107,19 +137,19 @@ Does this role advance career goals and contain tasks that energize?
 | 0-39 | Dead end or backwards step |
 
 **Career goals:**
-- [YOUR_CAREER_GOAL_1]
-- [YOUR_CAREER_GOAL_2]
-- [YOUR_CAREER_GOAL_3]
+- Grow from junior to mid-level Flutter/mobile developer with deeper architecture and system-design ownership
+- Build toward international remote or relocation-based roles in developed tech markets
+- Expand beyond pure mobile into broader software engineering depth over time
 
 **Motivation filter:** Evaluate not just whether you *can* do the tasks, but whether the tasks will *energize* you. Consider:
-- Tasks that energize: [YOUR_ENERGIZING_TASKS]
-- Tasks that drain: [YOUR_DRAINING_TASKS]
-- Non-task factors: leadership style, department culture, company values, degree of autonomy
+- Tasks that energize: Architecture decisions, Clean Architecture/state-management design, solving hard technical problems, end-to-end feature ownership
+- Tasks that drain: Pure maintenance work with no technical growth, roles with no architectural input
+- Non-task factors: flexible work style (comfortable independent or collaborative), high-ownership environments, remote-friendly culture
 
 **Life situation alignment:** Consider personal constraints:
-- **Security**: [YOUR_FINANCIAL_SITUATION_CONTEXT]
-- **Flexibility**: [YOUR_SCHEDULE_CONSTRAINTS]
-- **Professional development**: [YOUR_GROWTH_PRIORITIES]
+- **Security**: Available immediately; full-time, contract, or freelance roles only - not internships, not unpaid/underpaid
+- **Flexibility**: Remote-first; open to relocation only to developed, stable, high-income countries with strong tech ecosystems and realistic visa pathways (see CLAUDE.md Relocation / Location Constraints)
+- **Professional development**: Prioritizes roles offering architectural/technical depth over breadth-only generalist work
 
 ### 6. Salary Benchmark (Optional)
 
@@ -145,6 +175,8 @@ Present findings as:
 Interpret results relative to the baseline defined in the data file's metadata. For index-based data, higher typically means above-market compensation.
 
 If the salary tool is not configured, skip this section.
+
+**Candidate baseline comparison (always applicable, regardless of tool):** compare any stated posting pay against the candidate's own baseline in CLAUDE.md's Salary Expectations section (~USD 55k-65k/year for remote/relocation junior Flutter/mobile roles). Pay far below this baseline is a red flag against the "no unpaid/underpaid roles" deal-breaker even when skills/experience match is strong - note it explicitly in the evaluation rather than letting a high skills score mask it.
 
 ## Output Format
 

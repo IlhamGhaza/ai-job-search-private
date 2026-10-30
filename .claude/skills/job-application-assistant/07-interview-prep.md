@@ -12,32 +12,58 @@ Structure answers as: **Situation** (context), **Task** (your responsibility), *
 
 Keep answers to 1-2 minutes. Be specific. End with what you learned or would do differently.
 
-## Ready-Made STAR Examples
+## STAR Candidates (Complete Manually)
+<!-- /setup Path A left these as stubs from CV content only (no LinkedIn/reference letters available). Fill in Situation/Task/Action/Result details before using in interviews. -->
 
-<!-- These are populated by /setup from your actual experience. Below are templates showing the format. -->
+### Leading the job portal app team without a project manager
+**Source:** CV - Mobile Developer Intern, Kita Bantu Indonesia (Mar 2025 - Jun 2025)
+**What happened:** Coordinated a 4-person mobile team, distributed tasks, synced with other teams, delivered a working MVP in 8 weeks with no PM assigned.
+**Why it matters:** Leadership without authority, ownership, ambiguity, cross-team coordination questions.
+**S/T/A/R stub:**
+- Situation:
+- Task:
+- Action:
+- Result:
 
-### 1. [PROJECT_NAME] ([SKILL_DEMONSTRATED])
-**S:** [CONTEXT - what was happening, what was the problem]
-**T:** [YOUR RESPONSIBILITY - what you specifically needed to do]
-**A:** [WHAT YOU DID - specific actions, tools, methods]
-**R:** [OUTCOME - measurable results, adoption, impact]
-**Use for:** "[QUESTION_TYPE_1]", "[QUESTION_TYPE_2]"
+### Delivering five client apps across different domains on contract
+**Source:** CV - Mobile Developer (Contract), Quetra Asia Klandesin (Jul 2025 - Feb 2026)
+**What happened:** Shipped five Flutter apps (HRIS, fleet management, POS, inventory, IoT) covering GPS tracking, MQTT device control, and JWT auth with token refresh.
+**Why it matters:** Technical breadth, handling multiple concurrent projects, client requirement/UAT/change-request questions.
+**S/T/A/R stub:**
+- Situation:
+- Task:
+- Action:
+- Result:
 
-### 2. [PROJECT_NAME] ([SKILL_DEMONSTRATED])
-**S:** [CONTEXT]
-**T:** [YOUR RESPONSIBILITY]
-**A:** [WHAT YOU DID]
-**R:** [OUTCOME]
-**Use for:** "[QUESTION_TYPE_1]", "[QUESTION_TYPE_2]"
+### Converting 20+ Figma screens with limited team resourcing
+**Source:** CV - Mobile Developer Intern, Kita Bantu Indonesia
+**What happened:** Converted 20+ Figma screens into responsive mobile interfaces, resolving integration issues with 2 designers and 3 backend developers.
+**Why it matters:** Cross-functional collaboration, design-to-code accuracy, integration debugging questions.
+**S/T/A/R stub:**
+- Situation:
+- Task:
+- Action:
+- Result:
 
-### 3. [PROJECT_NAME] ([SKILL_DEMONSTRATED])
-**S:** [CONTEXT]
-**T:** [YOUR RESPONSIBILITY]
-**A:** [WHAT YOU DID]
-**R:** [OUTCOME]
-**Use for:** "[QUESTION_TYPE_1]", "[QUESTION_TYPE_2]"
+### Building the Food Recognition App with Gemini API
+**Source:** CV - Selected Projects (Dicoding ML for Flutter course project)
+**What happened:** Built an app identifying food from camera/gallery photos via Google Gemini API, fetching recipes from TheMealDB, managing API keys via environment variables (envied).
+**Why it matters:** Independent initiative, AI/ML API integration, security-conscious credential handling questions.
+**S/T/A/R stub:**
+- Situation:
+- Task:
+- Action:
+- Result:
 
-<!-- Add more STAR examples as needed. Aim for 4-6 covering different competencies. -->
+### Teaching C programming labs to 30+ students
+**Source:** CV - Laboratory Assistant and Tutor, Universitas Gunadarma (Oct 2023 - Jan 2025)
+**What happened:** Taught C programming labs, supported 30+ students with debugging, produced slides/code examples reused by other tutors.
+**Why it matters:** Communication, mentoring, teaching complex concepts questions.
+**S/T/A/R stub:**
+- Situation:
+- Task:
+- Action:
+- Result:
 
 ## Common Tough Questions
 

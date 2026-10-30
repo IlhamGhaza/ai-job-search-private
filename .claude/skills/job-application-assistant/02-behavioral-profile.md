@@ -8,47 +8,37 @@ framework_version: 1.0.0
 <!-- You can use results from PI, DISC, Myers-Briggs, StrengthsFinder, or a self-assessment -->
 
 ## Overview
-[YOUR_NAME]'s behavioral assessment identifies them as a **[PROFILE_TYPE]** pattern. [1-2 SENTENCE_SUMMARY].
-
-## Core Behavioral Drives
-
-| Drive | Level | Meaning |
-|-------|-------|---------|
-| [DRIVE_1] | [LEVEL] | [DESCRIPTION] |
-| [DRIVE_2] | [LEVEL] | [DESCRIPTION] |
-| [DRIVE_3] | [LEVEL] | [DESCRIPTION] |
-| [DRIVE_4] | [LEVEL] | [DESCRIPTION] |
+<!-- No formal assessment (PI/DISC/Myers-Briggs) or LinkedIn/reference letter source available. Built from /setup follow-up answers - self-reported, not scored. Revisit if a formal assessment or LinkedIn export becomes available. -->
+Muhammad Ilham Ghazali self-describes as **flexible and ownership-driven**: comfortable working independently or collaboratively depending on what the team needs, and energized by technical depth over routine execution.
 
 ## Strongest Behaviors
-- **[BEHAVIOR_1]:** [DESCRIPTION]
-- **[BEHAVIOR_2]:** [DESCRIPTION]
-- **[BEHAVIOR_3]:** [DESCRIPTION]
+- **High ownership under ambiguity:** Coordinated a 4-person mobile team with no assigned project manager and still delivered a working MVP in 8 weeks (Kita Bantu Indonesia).
+- **Technical breadth with client-facing responsibility:** Delivered five concurrent Flutter apps across different domains while directly handling client requirements, estimates, UAT, and change requests (Quetra Asia Klandesin).
+- **Self-directed learning:** Completed 9 Dicoding certifications and multiple independent projects (POS, face-detection attendance, AI food recognition) outside of paid work.
 
 ## How You Work Best
-- [ENVIRONMENT_PREFERENCE_1]
-- [ENVIRONMENT_PREFERENCE_2]
-- [ENVIRONMENT_PREFERENCE_3]
+- Flexible: no strong preference between independent and collaborative work, adapts to context
+- Motivated by technical depth and architecture decisions (Clean Architecture, state management) rather than routine maintenance
+- Comfortable in fast-paced, high-ownership environments with real responsibility
 
 ## Growth Areas (frame positively in applications)
-- **[AREA_1]:** [HOW_TO_FRAME_IT_POSITIVELY]
-- **[AREA_2]:** [HOW_TO_FRAME_IT_POSITIVELY]
+- **Limited formal architecture/system-design exposure beyond mobile:** frame as actively seeking roles with deeper architectural ownership to build on existing Clean Architecture experience.
+- **Early-career breadth outside mobile (backend/DevOps):** frame as a deliberate next step, supported by hands-on API-contract collaboration with backend developers.
 
 ## Mapping to Job Posting Language
 
 When a job posting mentions these keywords, it's a **strong behavioral fit**:
-- [KEYWORD_OR_PHRASE_THAT_MATCHES_YOUR_STYLE]
-- [ANOTHER_KEYWORD]
+- "ownership", "autonomy", "fast-paced", "architecture", "clean code", "cross-functional collaboration"
 
 When a job posting mentions these, flag as **potential friction** (not deal-breaker):
-- [KEYWORD_OR_PHRASE_THAT_MIGHT_CLASH]
-- [ANOTHER_KEYWORD]
+- "rigid hierarchy", "heavily process-driven", "maintenance-only", "no growth path"
 
 ## Management Style Preferences
-- [WHAT_MANAGEMENT_STYLE_WORKS_FOR_YOU]
-- [WHAT_DOESN'T_WORK]
+- Works well with clear goals and autonomy in execution; no strong preference on management style reported
+- Avoid: highly rigid, low-autonomy structures with no room for technical input
 
 ## Using This in Applications
-- **Cover letters:** [HOW_TO_WEAVE_IN_BEHAVIORAL_STRENGTHS]
-- **CV:** [WHAT_TO_EMPHASIZE]
-- **Interviews:** [WHAT_STAR_EXAMPLES_TO_USE]
-- **Don't overstate:** [WHAT_NOT_TO_CLAIM]
+- **Cover letters:** Lead with the no-PM team-lead story or the five-concurrent-apps story to demonstrate ownership and breadth.
+- **CV:** Emphasize Clean Architecture, BLoC/GetX depth, and client-facing delivery experience.
+- **Interviews:** Use the Kita Bantu Indonesia (team lead, no PM) and Quetra Asia Klandesin (concurrent delivery) STAR stubs in `07-interview-prep.md`.
+- **Don't overstate:** No formal leadership title held; frame team coordination as informal/de-facto leadership, not management experience.

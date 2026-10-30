@@ -1,0 +1,115 @@
+{
+  "_note": "Registry for /gigs: how each freelance platform is reached, checked 2026-10-30. Re-check terms before changing an access route.",
+  "platforms": [
+    {
+      "name": "Upwork",
+      "skill": "upwork-search",
+      "access": "official_api_or_search_provider",
+      "detail": "Official GraphQL API with an approved key (UPWORK_ACCESS_TOKEN); without one, Brave search leads + manual URL. Upwork pages are never scraped (Terms forbid it). Proposals: fill only, you click Send."
+    },
+    {
+      "name": "Freelancer.com / Freelancer.co.id",
+      "skill": "freelancer-search",
+      "access": "official_api",
+      "detail": "Official REST API with your own OAuth token (FREELANCER_OAUTH_TOKEN). Bids: fill only, you click Place Bid."
+    },
+    {
+      "name": "Contra",
+      "skill": "contra-search",
+      "access": "search_provider",
+      "detail": "No public opportunities API."
+    },
+    {
+      "name": "PeoplePerHour",
+      "skill": "peopleperhour-search",
+      "access": "search_provider",
+      "detail": "No public API for freelancers."
+    },
+    {
+      "name": "Guru",
+      "skill": "guru-search",
+      "access": "search_provider",
+      "detail": "No public job-search API."
+    },
+    {
+      "name": "Workana",
+      "skill": "workana-search",
+      "access": "search_provider",
+      "detail": "No public API; mostly Spanish/Portuguese projects."
+    },
+    {
+      "name": "Twine",
+      "skill": "twine-search",
+      "access": "search_provider",
+      "detail": "No public API; mostly creative work."
+    },
+    {
+      "name": "Projects.co.id",
+      "skill": "projects-co-id-search",
+      "access": "search_provider",
+      "detail": "No public API; IDR budgets."
+    },
+    {
+      "name": "Fastwork (ID/TH)",
+      "skill": "fastwork-search",
+      "access": "search_provider",
+      "detail": "No public API; mostly seller-listed services."
+    },
+    {
+      "name": "Kalibrr (gig listings)",
+      "skill": null,
+      "access": "covered_elsewhere",
+      "detail": "No separate gig board or job-seeker API. Kalibrr freelance/project listings are ordinary Kalibrr postings, already covered for /scrape by jobsites-search (--site kalibrr, query \"flutter freelance\"); a second skill on the same host would break /apply's host provenance check."
+    },
+    {
+      "name": "Malt",
+      "skill": null,
+      "access": "skipped",
+      "detail": "Malt registers freelancers only from its listed countries (EU and a few others); outside them it requires a verified registered company. Not open to an Indonesia-based sole freelancer; no public API either."
+    },
+    {
+      "name": "Sribulancer",
+      "skill": null,
+      "access": "skipped",
+      "detail": "Merged into Sribu.com in June 2023 (design-contest marketplace); no standalone gig board left to search."
+    },
+    {
+      "name": "Fiverr",
+      "skill": null,
+      "access": "skipped",
+      "detail": "Sellers cannot search buyer requests through any API. Create a Flutter gig profile manually on fiverr.com and let buyers come to you."
+    }
+  ],
+  "vetted_networks": [
+    {
+      "name": "Arc.dev",
+      "url": "https://arc.dev/developers",
+      "fit": "Global, Asia-friendly; has a junior/mid track. Apply once, then get matched.",
+      "seniority": "junior-mid ok"
+    },
+    {
+      "name": "Turing",
+      "url": "https://www.turing.com/jobs",
+      "fit": "Global remote; long vetting tests; mostly mid-level and up.",
+      "seniority": "mid+"
+    },
+    {
+      "name": "Toptal",
+      "url": "https://www.toptal.com/talent/apply",
+      "fit": "Global, very selective (top 3%); realistic after several years of experience.",
+      "seniority": "senior"
+    },
+    {
+      "name": "Lemon.io",
+      "url": "https://lemon.io/for-developers/",
+      "fit": "Historically Europe/LatAm developers with 4+ years; check whether Indonesia is accepted before applying.",
+      "seniority": "senior"
+    },
+    {
+      "name": "Gun.io",
+      "url": "https://gun.io/find-work/",
+      "fit": "Mostly US-timezone senior contractors; check country eligibility.",
+      "seniority": "senior"
+    }
+  ]
+}

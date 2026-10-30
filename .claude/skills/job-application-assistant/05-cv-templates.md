@@ -59,7 +59,7 @@ Expected output: `Output written on main_<company>_<role>.pdf (2 pages, ...)`. A
     linkcolor=blue,
     filecolor=magenta,
     urlcolor=blue,
-    pdftitle={[YOUR_NAME] - CV},
+    pdftitle={Muhammad Ilham Ghazali - CV},
     % Keep pdfpagemode=UseNone: this block runs after moderncv's own
     % \AtEndPreamble (moderncv.cls sets pdfpagemode there), so a FullScreen
     % value here would win and open every CV in fullscreen presentation mode.
@@ -69,13 +69,13 @@ Expected output: `Output written on main_<company>_<role>.pdf (2 pages, ...)`. A
 \usepackage{import}
 
 % Personal data
-\name{[FIRST_NAME]}{[LAST_NAME]}
+\name{Muhammad}{Ilham Ghazali}
 % If you have no address to list, DELETE this whole line. \address{}{}{} fails
 % with "There's no line here to end" on every moderncv version.
-\address{[YOUR_ADDRESS]}{}{}
-\phone[mobile]{[YOUR_PHONE]}
-\email{[YOUR_EMAIL]}
-\extrainfo{\href{[YOUR_LINKEDIN_URL]}{LinkedIn}, \href{[YOUR_GITHUB_URL]}{GitHub}}
+\address{Bogor, West Java, Indonesia}{}{}
+\phone[mobile]{+62 813-1524-4423}
+\email{m.ilhamghazali@gmail.com}
+\extrainfo{\href{https://linkedin.com/in/muhammadilhamghazali}{LinkedIn}, \href{https://github.com/IlhamGhaza}{GitHub}}
 
 \begin{document}
 \makecvtitle
@@ -137,11 +137,11 @@ When the role sits outside your home domain, **lead with the domain-transfer arg
 **Create 2-3 profile statement templates for your main role types:**
 
 <!-- SETUP: These are populated based on your background -->
-**For [YOUR_PRIMARY_ROLE_TYPE] roles:**
-> [YOUR_PROFILE_STATEMENT_TEMPLATE_1]
+**For Flutter / Mobile Developer roles:**
+> Flutter developer with one year of professional experience delivering production apps across HRIS, fleet management, POS, inventory, food ordering, and IoT domains. Strong in BLoC, GetX, and Clean Architecture, with hands-on REST API integration (Dio), JWT authentication, and Firebase. Shipped mobile integrations including GPS tracking, FCM push notifications, and MQTT device control. Dicoding Flutter Developer Expert certified, final-year Information Systems student (GPA 3.72).
 
-**For [YOUR_SECONDARY_ROLE_TYPE] roles:**
-> [YOUR_PROFILE_STATEMENT_TEMPLATE_2]
+**For Junior Software Engineer / Full-stack Adjacent roles:**
+> Software engineer with one year of professional Flutter development experience and a Bachelor's in Information Systems (expected Aug 2026, GPA 3.72). Comfortable across the mobile stack: REST API integration, authentication flows (JWT), local and cloud data (SQLite, Firebase), and CI/CD (Codemagic). Experience coordinating with backend developers on API contracts and working directly with clients through requirements, estimation, and UAT.
 
 Statements labeled *[Used for: <company>_<role>]* were extracted from archived application drafts by `/setup` Path A. They are **phrasing references, never fact sources**: when drafting from one, every factual claim still comes from `01-candidate-profile.md` - a past tailored draft does not vouch for its own accuracy.
 

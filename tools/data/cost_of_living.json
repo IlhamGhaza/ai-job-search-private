@@ -1,0 +1,9 @@
+{
+  "_readme": "Rough monthly living cost for one person including rent, in USD, used ONLY to rank pay against local cost of living in /rank (never as a filter, never shown as fact). Planning-grade estimates compiled 2026-10-30 from general knowledge of public cost-of-living indices; they are not authoritative and drift every year. Replace any value with your own research (e.g. a Numbeo or Expatistan city page) and keep the country codes. Remote jobs are ranked against the Indonesia value because you would live there.",
+  "monthly_usd": {
+    "US": 3200, "CA": 2400, "GB": 2600, "IE": 2700, "DE": 2200, "NL": 2500, "CH": 3900, "AT": 2100,
+    "BE": 2100, "LU": 2900, "DK": 2600, "SE": 2100, "NO": 2600, "FI": 2000, "IS": 2900, "SG": 2800,
+    "AU": 2600, "NZ": 2300, "JP": 1700, "KR": 1600, "MY": 900, "PH": 750, "TH": 900, "VN": 750,
+    "ID": 600, "BN": 1200, "TL": 800, "IN": 500
+  }
+}

@@ -76,6 +76,21 @@ ALLOWED_PERMISSIONS = {
     "Bash(bun run .agents/skills/jobnet-search/cli/src/cli.ts:*)",
     "Bash(bun run .agents/skills/linkedin-search/cli/src/cli.ts:*)",
     "Bash(bun run .agents/skills/freehire-search/cli/src/cli.ts:*)",
+    # Global junior-Flutter search portals (this fork). Read-only GET clients of
+    # public APIs/feeds, or of the Brave Search API with a token from the env.
+    "Bash(bun run .agents/skills/ats-search/cli/src/cli.ts:*)",
+    "Bash(bun run .agents/skills/remotive-search/cli/src/cli.ts:*)",
+    "Bash(bun run .agents/skills/remoteok-search/cli/src/cli.ts:*)",
+    "Bash(bun run .agents/skills/himalayas-search/cli/src/cli.ts:*)",
+    "Bash(bun run .agents/skills/jobicy-search/cli/src/cli.ts:*)",
+    "Bash(bun run .agents/skills/weworkremotely-search/cli/src/cli.ts:*)",
+    "Bash(bun run .agents/skills/arbeitnow-search/cli/src/cli.ts:*)",
+    "Bash(bun run .agents/skills/platsbanken-search/cli/src/cli.ts:*)",
+    "Bash(bun run .agents/skills/nav-search/cli/src/cli.ts:*)",
+    "Bash(bun run .agents/skills/mycareersfuture-search/cli/src/cli.ts:*)",
+    "Bash(bun run .agents/skills/linkedin-posts-search/cli/src/cli.ts:*)",
+    "Bash(bun run .agents/skills/jobstreet-search/cli/src/cli.ts:*)",
+    "Bash(bun run .agents/skills/jobsites-search/cli/src/cli.ts:*)",
     "Bash(python salary_lookup.py:*)",
     "Bash(python3 salary_lookup.py:*)",
     "Bash(python tools/rank_state.py:*)",
@@ -101,6 +116,48 @@ ALLOWED_PERMISSIONS = {
     # Reads a file or stdin, writes only to an explicit --out, never fetches.
     "Bash(python tools/posting_guard.py:*)",
     "Bash(python3 tools/posting_guard.py:*)",
+    # Deterministic hard rules for /scrape and /rank. Only the read-only
+    # subcommands are pre-approved: job_rules.py mark-safety (writes a safety
+    # verdict) and every submit_guard.py subcommand except `check` (browser
+    # clicks, tracker writes) keep prompting on purpose. fx_rates.py fetches
+    # one public rate table at most once a day and writes only its cache.
+    "Bash(python tools/job_rules.py evaluate:*)",
+    "Bash(python3 tools/job_rules.py evaluate:*)",
+    # store writes rule verdicts onto seen_jobs.json entries, like rank_state.py apply.
+    "Bash(python tools/job_rules.py store:*)",
+    "Bash(python3 tools/job_rules.py store:*)",
+    "Bash(python tools/job_dedup.py:*)",
+    "Bash(python3 tools/job_dedup.py:*)",
+    "Bash(python tools/fx_rates.py show:*)",
+    "Bash(python3 tools/fx_rates.py show:*)",
+    "Bash(python tools/fx_rates.py convert:*)",
+    "Bash(python3 tools/fx_rates.py convert:*)",
+    "Bash(python tools/submit_guard.py check:*)",
+    "Bash(python3 tools/submit_guard.py check:*)",
+    # Freelance gig discovery (/gigs). Read-only clients: official APIs (Upwork
+    # GraphQL, Freelancer REST) with the user's own token from the env, or the
+    # Brave Search API. None of them fetches a platform page or sends anything.
+    "Bash(bun run .agents/skills/upwork-search/cli/src/cli.ts:*)",
+    "Bash(bun run .agents/skills/freelancer-search/cli/src/cli.ts:*)",
+    "Bash(bun run .agents/skills/contra-search/cli/src/cli.ts:*)",
+    "Bash(bun run .agents/skills/peopleperhour-search/cli/src/cli.ts:*)",
+    "Bash(bun run .agents/skills/guru-search/cli/src/cli.ts:*)",
+    "Bash(bun run .agents/skills/workana-search/cli/src/cli.ts:*)",
+    "Bash(bun run .agents/skills/twine-search/cli/src/cli.ts:*)",
+    "Bash(bun run .agents/skills/projects-co-id-search/cli/src/cli.ts:*)",
+    "Bash(bun run .agents/skills/fastwork-search/cli/src/cli.ts:*)",
+    # /gigs and /propose: only the read-only subcommands. freelance_guard.py
+    # fill/send/record/login/open/email-draft (browser, tracker, files) keep prompting.
+    "Bash(python tools/gig_rules.py evaluate:*)",
+    "Bash(python3 tools/gig_rules.py evaluate:*)",
+    "Bash(python tools/freelance_guard.py check:*)",
+    "Bash(python3 tools/freelance_guard.py check:*)",
+    "Bash(python tools/freelance_guard.py humanizer-status:*)",
+    "Bash(python3 tools/freelance_guard.py humanizer-status:*)",
+    "Bash(python tools/freelance_guard.py claims-check:*)",
+    "Bash(python3 tools/freelance_guard.py claims-check:*)",
+    "Bash(python tools/freelance_guard.py humanizer-check:*)",
+    "Bash(python3 tools/freelance_guard.py humanizer-check:*)",
 }
 
 # Rules that must stay in .claude/settings.json permissions.ask. An ask rule
@@ -211,6 +268,9 @@ REQUIRED_IGNORE_RULES = [
     "company_research/*.json",
     # Machine-local Claude Code user configuration and ad-hoc permissions approvals.
     ".claude/settings.local.json",
+    # /propose: the freelance proposal tracker (gigs, clients, rates) and /gigs result pools.
+    "freelance_tracker.csv",
+    "**/job_scraper/gigs_*.json",
 ]
 
 # Negation (re-include) rules the template legitimately ships. .gitignore is

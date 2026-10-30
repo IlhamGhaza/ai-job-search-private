@@ -1,0 +1,28 @@
+{
+  "_readme": "Companies whose career boards ats-search queries. Add one object per company: name, ats (greenhouse | lever | ashby | workable | recruitee) and board (the slug in the company's board URL, e.g. boards.greenhouse.io/<board>, jobs.lever.co/<board>, jobs.ashbyhq.com/<board>, apply.workable.com/<board>, <board>.recruitee.com). Keep 'checked' current when you re-verify a board.",
+  "companies": [
+    {
+      "name": "Canonical",
+      "ats": "greenhouse",
+      "board": "canonical",
+      "flutter_note": "Builds Ubuntu desktop apps (installer, App Center) with Flutter",
+      "checked": "2026-10-30: board live, 314 open jobs"
+    },
+    {
+      "name": "Mercari",
+      "ats": "workable",
+      "board": "mercari",
+      "flutter_note": "Uses Flutter in its mobile apps",
+      "checked": "2026-10-30: board live, 138 open jobs"
+    }
+  ],
+  "dropped": [
+    { "name": "Very Good Ventures", "reason": "Greenhouse board 'verygoodventures' exists but listed 0 openings on 2026-10-30; re-add when it has openings" },
+    { "name": "Invertase", "reason": "No Greenhouse/Lever/Ashby/Workable/Recruitee board found on 2026-10-30" },
+    { "name": "Codemagic (Nevercode)", "reason": "Workable account 'nevercode' resolves but listed 0 jobs on 2026-10-30; no other supported board found" },
+    { "name": "Superlist", "reason": "Workable account 'superlist' listed 0 jobs on 2026-10-30; no other supported board found" },
+    { "name": "BMW", "reason": "Recruits through its own career site, not a supported public ATS API" },
+    { "name": "Toyota", "reason": "Recruits through Workday/own career sites, not a supported public ATS API" },
+    { "name": "Google", "reason": "Recruits through its own careers site, not a supported public ATS API" }
+  ]
+}

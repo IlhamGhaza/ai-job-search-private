@@ -12,14 +12,44 @@ The `site:` query templates in this file are the **WebSearch fallback** — for 
 
 ## Search Sites
 
-Primary (your market's job boards - scaffold one with `/add-portal`):
-- **[YOUR_JOB_BOARD]** - your market's largest general job board
-- **linkedin.com/jobs** - LinkedIn job listings (filter: [YOUR_COUNTRY] / [YOUR_CITY]); also covered by `linkedin-search` CLI
-- **[YOUR_INDUSTRY_JOB_BOARD]** - a niche/industry board for your field (optional)
-- **[YOUR_ADDITIONAL_JOB_BOARD]** - another major board for your market (optional)
+Primary (default CLIs, remote/international focus - no local Indonesian portal scaffolded; run `/add-portal` to add one):
+- **linkedin.com/jobs** - LinkedIn job listings, global; also covered by `linkedin-search` CLI
+- **freehire.com** - also covered by `freehire-search` CLI
+- **remoteok.com**, **weworkremotely.com**, **himalayas.app** - remote-first job boards (WebSearch fallback, no CLI)
+- **angel.co / wellfound.com** - startup roles, often remote-friendly with visa sponsorship notes
 
 Secondary (company career pages via Google):
 - Direct Google searches with `site:` filters for known target companies
+
+## Global Junior Flutter Search (CLI portals)
+
+Target, accept/reject rules and the hard rules live in `04-job-evaluation.md` ("Global Junior Flutter Search - Hard Rules"). This section only says **what to ask each portal**. Searches are global; the priority countries below steer *where to look first* and how `/rank` orders results - they never exclude a job.
+
+**Priority countries:** US, CA, GB, IE, DE, NL, CH, AT, BE, LU, DK, SE, NO, FI, IS, SG, AU, NZ, JP, KR + Southeast Asia (SG, MY, PH, TH, VN, ID, BN, TL).
+
+**Title vocabulary** (combine with `OR` where the portal supports it):
+`junior flutter`, `flutter developer`, `flutter engineer`, `junior dart`, `junior mobile developer`, `junior mobile engineer`, `cross-platform developer`, `associate mobile engineer`, `graduate mobile engineer`, `entry level flutter`.
+Local terms: `lowongan flutter developer`, `loker flutter` (ID); `flutterutvecklare`, `apputvecklare`, `mobilutvecklare` (SE); `flutter-utvikler`, `apputvikler`, `mobilutvikler` (NO); `Flutter Entwickler` (DE); `Flutter 엔지니어` (KR); `Flutter エンジニア` (JP).
+
+| Portal CLI | Default run (scope to 14 days with each portal's recency flag) |
+|---|---|
+| `ats-search` | `search --title-query "flutter OR dart OR mobile OR android OR ios" --jobage 14` |
+| `remotive-search` | `search -q flutter` (max ~4 calls/day - one per run) |
+| `remoteok-search` | `search --tag flutter --jobage 14` |
+| `himalayas-search` | `search -q flutter --country ID` and `search -q flutter --worldwide` |
+| `jobicy-search` | `search --tag flutter --geo apac` and `--geo anywhere` |
+| `weworkremotely-search` | `search -q "flutter OR dart OR mobile" --jobage 14` |
+| `arbeitnow-search` | `search -q "flutter OR dart OR mobile" --visa --jobage 14` |
+| `platsbanken-search` | `search -q flutter --jobage 14`, `search -q apputvecklare --jobage 14` |
+| `nav-search` | `search -q "flutter OR apputvikler OR mobilutvikler" --jobage 7` |
+| `mycareersfuture-search` | `search -q flutter --jobage 14` |
+| `freehire-search` | `search -q "flutter OR dart" --seniority junior --jobage 14`, then per priority country `--country SG,MY,PH,TH,VN,ID` / `--country DE,NL,GB,IE` / `--country US,CA,AU,NZ,JP,KR` and `--remote remote` |
+| `linkedin-search` | `search -q "junior flutter developer" -l "<place>" --jobage 14` for `-l` in: Indonesia, Singapore, Malaysia, Philippines, Thailand, Vietnam, Japan, South Korea, Australia, New Zealand, Germany, Netherlands, United Kingdom, Ireland, Canada, United States, Remote |
+| `linkedin-posts-search` | `search -q "\"junior flutter\"" --jobage 7`; `search -q "flutter developer" -l Indonesia --jobage 7` (leads only; needs `BRAVE_SEARCH_API_TOKEN`) |
+| `jobstreet-search` | `search -q "flutter developer" --jobage 14` (all four markets; leads only; needs the Brave token) |
+| `jobsites-search` | `search -q "flutter developer" --country <code> --jobage 14` rotating ID, VN, JP, KR, AU, DE, NL, and `--country GLOBAL` for JustRemote, Remotely.jobs, PowerToFly, Job-Hunt.org (5 boards max per call; needs the Brave token) |
+
+The Danish demo portals (`jobindex-search`, `jobnet-search`, `jobbank-search`, `jobdanmark-search`) rarely list junior Flutter roles; leave them enabled or set `enabled: false` in their `SKILL.md` - your choice.
 
 ## Query Categories
 
@@ -27,54 +57,54 @@ Queries are grouped by priority. Write **each category in every language from yo
 
 **Organize by function, not job title.** The same underlying work carries different titles across companies and markets (a "Data Scientist" role at one employer may be posted as "Insights Analyst" or "Data Consultant" at another). Name each priority category after the function it covers, and list several plausible job titles as query variants within that category rather than betting an entire priority tier on one exact title string.
 
-### Priority 1: [YOUR_PRIMARY_ROLE_TYPE]
+### Priority 1: Flutter / Mobile Developer
 
 These match your strongest and most desired career direction.
 
 ```
-site:[YOUR_JOB_BOARD] "[YOUR_PRIMARY_JOB_TITLE_1]" [YOUR_CITY]
-site:[YOUR_JOB_BOARD] "[YOUR_PRIMARY_JOB_TITLE_2]" [YOUR_CITY]
-site:[YOUR_JOB_BOARD] "[YOUR_KEY_SKILL]" [YOUR_CITY]
-site:linkedin.com/jobs "[YOUR_PRIMARY_JOB_TITLE_1]" [YOUR_COUNTRY]
+site:linkedin.com/jobs "Flutter Developer" remote
+site:linkedin.com/jobs "Mobile Developer" remote
+site:linkedin.com/jobs "Mobile App Developer" remote
+"Flutter Developer" remote OR "visa sponsorship" OR "relocation"
 ```
 
-### Priority 2: [YOUR_DOMAIN_EXPERTISE]
+### Priority 2: Mobile Domain Expertise
 
-These match your domain expertise.
+These match your domain expertise (HRIS, fleet, POS, inventory, IoT, food ordering apps).
 
 ```
-site:[YOUR_JOB_BOARD] [YOUR_DOMAIN_KEYWORD_1] [YOUR_CITY] OR [YOUR_REGION]
-site:[YOUR_JOB_BOARD] [YOUR_DOMAIN_KEYWORD_2] [YOUR_COUNTRY]
-site:linkedin.com/jobs [YOUR_DOMAIN_KEYWORD_1] [YOUR_CITY] [YOUR_COUNTRY]
+"Flutter Developer" BLoC OR GetX OR "Clean Architecture" remote
+"Mobile Developer" Firebase OR MQTT OR "REST API" remote
+site:linkedin.com/jobs "Flutter" "Clean Architecture" remote
 ```
 
-### Priority 3: [YOUR_ADJACENT_ROLE_TYPE]
+### Priority 3: Broader Software Engineer (pivot-adjacent)
 
 Adjacent roles you could pivot into.
 
 ```
-site:[YOUR_JOB_BOARD] "[YOUR_ADJACENT_TITLE_1]" [YOUR_KEY_SKILL] [YOUR_CITY]
-site:[YOUR_JOB_BOARD] "[YOUR_ADJACENT_TITLE_2]" [YOUR_KEY_SKILL] [YOUR_CITY]
+site:linkedin.com/jobs "Software Engineer" Flutter remote
+site:linkedin.com/jobs "Junior Software Engineer" mobile remote
+"Full Stack Developer" Flutter OR Dart remote
 ```
 
-### Priority 4: Broader Technical / Consulting
+### Priority 4: Broader Technical / Startup
 
-Wider net for general technical roles.
+Wider net for general technical roles at remote-friendly or visa-sponsoring companies.
 
 ```
-site:[YOUR_JOB_BOARD] [YOUR_KEY_SKILL] developer [YOUR_CITY]
-site:linkedin.com/jobs "[YOUR_KEY_SKILL] developer" [YOUR_CITY]
-site:[YOUR_JOB_BOARD] "technical consultant" [YOUR_DOMAIN] [YOUR_CITY]
+site:linkedin.com/jobs "Mobile Developer" "visa sponsorship"
+site:wellfound.com Flutter developer remote
+"Mobile Developer" startup remote "open to relocation"
 ```
 
 ## Location Filter
 
-When evaluating results, verify the job location is within reasonable commute distance from your home. Define acceptable areas:
-- [YOUR_CITY] and surrounding areas
-- [ACCEPTABLE_AREA_1]
-- [ACCEPTABLE_AREA_2]
-- [BORDERLINE_AREA] (borderline - ~X min by transit)
-- [TOO_FAR_AREA] (too far)
+Preference is remote-first; relocation is acceptable only within the target countries below. When evaluating results, apply this filter:
+- **Ideal:** Fully remote, worldwide or Indonesia-inclusive
+- **Acceptable:** Remote or relocation-sponsored roles in United States, Canada, United Kingdom, Ireland, Germany, Netherlands, Switzerland, Austria, Belgium, Luxembourg, Denmark, Sweden, Norway, Finland, Iceland, Singapore, Australia, New Zealand, Japan, South Korea
+- **Borderline:** On-site-only roles in Indonesia (Bogor/Jakarta area) - flag, not a hard pass, since preference is remote
+- **Too far / exclude:** Relocation required to a country outside the list above, or to a country with active conflict, severe political instability, or very limited tech market
 
 ## Language Filter
 

@@ -1,0 +1,4 @@
+{
+  "_readme": "Official warnings about specific employers, recruiters or sites (e.g. from a ministry of manpower, an embassy, BP2MI, Kemlu, UNODC, a police notice). One entry per warning: 'match' is a company name or domain matched case-insensitively against a job's company/url/apply_url; 'source' is where the warning was published (URL or name); 'date' is the warning's date (YYYY-MM-DD); 'note' is a short description. Entries without source and date are ignored. tools/job_rules.py rejects a matching job as rejected_safety_risk. Add entries only from reliable official sources, never from rumours.",
+  "entries": []
+}

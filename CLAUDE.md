@@ -1,10 +1,7 @@
-# Job Application Assistant for [YOUR_NAME]
-
-<!-- SETUP: This file is populated by running /setup -->
-<!-- After running /setup, all [PLACEHOLDER] tokens will be replaced with your actual information -->
+# Job Application Assistant for Muhammad Ilham Ghazali
 
 ## Role
-This repo is a job application workspace. Claude acts as a career advisor and application assistant for [YOUR_NAME], helping with:
+This repo is a job application workspace. Claude acts as a career advisor and application assistant for Muhammad Ilham Ghazali, helping with:
 1. **Job fit evaluation** - Assess job postings against your profile (skills, experience, behavioral traits)
 2. **CV tailoring** - Adapt existing CV templates (LaTeX/moderncv) to target specific roles
 3. **Cover letter writing** - Draft targeted cover letters using existing templates (LaTeX)
@@ -16,76 +13,100 @@ This repo is a job application workspace. Claude acts as a career advisor and ap
 <!-- This section is auto-populated by /setup. You can also fill it in manually. -->
 
 ### Identity
-- **Name:** [YOUR_NAME]
-- **Location:** [YOUR_CITY], [YOUR_COUNTRY] ([YOUR_COMMUTE_CONSTRAINTS])
+- **Name:** Muhammad Ilham Ghazali
+- **Location:** Bogor, Indonesia (remote-first; open to relocation - see Deal-breakers/constraints below)
 - **Languages:**
   | Language | Level |
   |----------|-------|
-  | [LANGUAGE] | [LEVEL] |
+  | Indonesian | Native |
+  | English | Intermediate |
   <!-- Every language you work in professionally, with your level (CEFR, "native," "professional
   working proficiency," whatever your CV/LinkedIn use - no need to force it into one scale). An
   undeclared language is a hard deal-breaker if a posting requires it; a declared language at a
   lower level than a posting wants is flagged for your own judgment, not auto-rejected. See
   04-job-evaluation.md's Language Gate. -->
-- **CV language:** [YOUR_CV_LANGUAGE] <!-- English unless your market expects otherwise; /setup asks -->
+- **CV language:** English
 
-- **Status:** [YOUR_EMPLOYMENT_STATUS]
-- **LinkedIn headline:** "[YOUR_LINKEDIN_HEADLINE]"
+- **Status:** Available immediately
+- **LinkedIn headline:** "Flutter Developer | Mobile App Development | BLoC, GetX, Clean Architecture"
 
 ### Education
-<!-- List your degrees, most recent first -->
-- **[DEGREE_LEVEL] in [FIELD]** ([YEAR_START]-[YEAR_END]) - [INSTITUTION]
-  - Thesis: "[THESIS_TITLE]"
-  - Topics: [KEY_TOPICS]
+- **Bachelor of Information Systems** (2022-2026, in progress, expected Aug 2026) - Universitas Gunadarma
+  - GPA: 3.72
+  - Topics: Mobile app development, Clean Architecture, software engineering fundamentals
+  - Member, Google Developer Group on Campus (GDGOC)
 
 ### Professional Experience
-<!-- List your roles, most recent first -->
-- **[JOB_TITLE]** ([START_DATE] - [END_DATE]) - **[COMPANY]** ([LOCATION])
-  - [KEY_RESPONSIBILITY_1]
-  - [KEY_RESPONSIBILITY_2]
-  - [KEY_ACHIEVEMENT]
+- **Mobile Developer (Contract)** (Jul 2025 - Feb 2026) - **Quetra Asia Klandesin** (Serpong, Indonesia)
+  - Delivered five Flutter client apps across HRIS, fleet management, POS, inventory, and IoT workflows
+  - Implemented JWT authentication with token refresh, GPS tracking, and MQTT device integration
+  - Worked directly with clients on requirements, estimates, UAT, and change requests
+- **Mobile Developer Intern** (Aug 2025 - Mar 2026) - **Pansus Studio** (Bandung, Indonesia)
+  - Built features for a multi-role food ordering app (User, Merchant, Driver) in a 3-developer Flutter team
+  - Converted Figma designs into responsive screens, integrated REST APIs for auth and order management
+- **Mobile Developer Intern** (Mar 2025 - Jun 2025) - **Kita Bantu Indonesia** (Jakarta, Indonesia)
+  - Coordinated a 4-person mobile team on a job portal app, delivered a working MVP in 8 weeks with no PM
+  - Converted 20+ Figma screens, worked with 2 designers and 3 backend developers
 
 ### Technical Skills
-- **Primary:** [YOUR_PRIMARY_SKILLS]
-- **Secondary:** [YOUR_SECONDARY_SKILLS]
-- **Domain:** [YOUR_DOMAIN_EXPERTISE]
-- **Software:** [YOUR_TOOLS_AND_SOFTWARE]
+- **Primary:** Flutter, Dart, BLoC, GetX, Provider, Clean Architecture
+- **Secondary:** REST API integration (Dio), JWT auth, Firebase (Auth, FCM), MQTT, SQLite, TensorFlow Lite, Google Gemini API, Laravel, Node.js, SQL
+- **Domain:** Mobile app development (HRIS, fleet management, POS, inventory, food ordering, IoT)
+- **Software:** Git, GitHub, Codemagic CI/CD, Figma-to-code, Google Maps, Midtrans
 
 ### Certifications
-<!-- List relevant certifications with dates -->
-- **[CERTIFICATION_NAME]** - [HOURS]h - completed [DATE]
+- **Menjadi Flutter Developer Expert** (Dicoding) - completed Jun 2025
+- **Belajar Pengembangan Aplikasi Flutter Intermediate** (Dicoding) - completed Jun 2025
+- **Belajar Penerapan Machine Learning untuk Flutter** (Dicoding) - completed Jun 2025
+- **Belajar Fundamental Aplikasi Flutter** (Dicoding) - completed Jun 2025
+- **Memulai Pemrograman dengan Dart** (Dicoding) - completed Sep 2024
+- **Belajar Membuat Aplikasi Flutter untuk Pemula** (Dicoding) - completed Sep 2024
+- **Belajar Prinsip Pemrograman SOLID** (Dicoding) - completed Sep 2023
+- **Belajar Dasar Git dengan GitHub** (Dicoding) - completed Jul 2023
 
 ### Publications
-<!-- List peer-reviewed publications, if any -->
-- [AUTHOR_LIST] ([YEAR]). [TITLE]. [JOURNAL].
+None.
 
 ### Awards
-<!-- List relevant awards, hackathons, competitions -->
-- [AWARD_NAME] - [EVENT] ([YEAR])
+None listed.
 
 ### Behavioral Profile
-<!-- Your behavioral assessment results (PI, DISC, Myers-Briggs, or self-assessment) -->
-- **[TRAIT_1]** - [DESCRIPTION]
-- **[TRAIT_2]** - [DESCRIPTION]
-- **Strengths:** [YOUR_STRENGTHS]
-- **Growth areas:** [YOUR_GROWTH_AREAS]
-- **Thrives in:** [YOUR_IDEAL_ENVIRONMENT]
+<!-- No formal assessment or LinkedIn/reference source available; self-reported during /setup -->
+- **Flexible work style** - comfortable independent or collaborative, adapts to the team's needs
+- **High ownership under ambiguity** - led a 4-person team with no assigned PM and still delivered an MVP in 8 weeks
+- **Strengths:** Technical breadth across the mobile stack, client-facing communication (requirements, UAT, change requests), self-directed learning (9 certifications, independent projects)
+- **Growth areas:** Deepening architecture/system-design depth beyond mobile; broader backend/DevOps exposure
+- **Thrives in:** Environments with technical depth and architectural challenges, fast-paced teams with real ownership
 
 ### What Excites You
-<!-- What motivates you professionally -->
-- [PASSION_1]
-- [PASSION_2]
+- Technical depth and architecture: Clean Architecture, scalable state management, solving hard technical problems
+- Building production mobile apps end-to-end, from client requirements through delivery
 
 ### Target Sectors
-<!-- Industries and companies you're targeting -->
-- [SECTOR_1]: [EXAMPLE_COMPANIES]
-- [SECTOR_2]: [EXAMPLE_COMPANIES]
+- Tech / software product companies building Flutter or cross-platform mobile apps
+- Remote-first international companies hiring globally or offering visa sponsorship/relocation
 
 ### Deal-breakers
 <!-- Hard constraints on job search. Language requirements are handled separately and
 automatically from your Languages table above - don't duplicate them here. -->
-- [DEALBREAKER_1]
-- [DEALBREAKER_2]
+- No internships - full-time, contract, or freelance roles only
+- Unpaid or underpaid roles
+- Fully on-site-only roles with no remote option, unless relocation is to a target country below
+- Cambodia-based jobs (any source); India onsite/hybrid jobs (India remote only if it clears the salary floor)
+- Pay at or below IDR 5,000,000/month after currency conversion; undisclosed pay is "needs verification", never a confirmed match (full hard rules: `04-job-evaluation.md` "Global Junior Flutter Search - Hard Rules", enforced by `tools/job_rules.py`)
+
+### Salary Expectations
+- **Baseline: USD 55,000-65,000/year** (mid ~USD 58k), for remote or relocation-based junior Flutter/mobile developer roles in the target countries below.
+- Derived by averaging junior/entry-level mobile developer salary midpoints across 17 of the 20 target countries (USA, Canada, UK, Germany, Netherlands, Switzerland, Austria, Belgium, Luxembourg, Denmark, Sweden, Norway, Finland, Singapore, Australia, New Zealand, Japan - no usable data found for Ireland, Iceland, South Korea), researched 2026-10-29.
+- Country-by-country figures vary widely (Switzerland ~$96k vs New Zealand ~$34k) - this baseline is a cross-market anchor for initial screening, not a fixed target per country. Adjust up for high-cost markets (CH, US, LU) and down for lower-cost ones (NZ, JP) when negotiating.
+- A posting's stated pay should be compared against this baseline when evaluating fit; pay far below it (e.g. local-market-only compensation on a remote-labeled role) should be flagged against the "no unpaid/underpaid roles" deal-breaker, even if skills/experience match is strong.
+- **Known pattern - "Leading Edge" (recruiting agency, careers-page.com/leading-edge):** posts "remote" roles in low-cost-of-living cities (Karachi, Cairo) via the freehire.me aggregator, "our client" language hiding the real employer. One confirmed posting stated pay under PKR 75,000/month (~USD 3,180/year); a second (Cairo, Flutter Developer, 2+ yrs required) stated no salary at all. Local Egypt market Flutter dev pay is roughly USD 2,000-6,000/year (PayScale data is noisy/contradictory, researched 2026-10-29) - likely similarly far under baseline. Treat any Leading Edge posting as probable pay red flag until salary is confirmed directly.
+
+### Relocation / Location Constraints
+- **Preference:** Remote-first.
+- **Open to relocation in:** United States, Canada; United Kingdom, Ireland, Germany, Netherlands, Switzerland, Austria, Belgium, Luxembourg, Denmark, Sweden, Norway, Finland, Iceland; Singapore, Australia, New Zealand, Japan, South Korea.
+- **Deprioritize/exclude:** Countries with active armed conflict, severe political instability, major security risks, economic crises, or very limited tech job markets.
+- Evaluate each relocation opportunity on economic stability, safety, tech industry strength, salary potential, cost of living, work-life balance, and realistic visa/relocation pathway - not geographic coverage alone.
 
 ## Repo Structure
 - `cv/` - LaTeX CV variants (moderncv template, banking style)
