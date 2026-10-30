@@ -119,6 +119,13 @@ class SeparationTests(unittest.TestCase):
                 self.assertNotIn("job_search_tracker.csv", src)
                 self.assertNotIn("seen_jobs.json", src)
 
+    def test_submit_email_runs_the_humanizer_and_its_claim_check(self):
+        text = (ROOT / ".claude" / "commands" / "submit.md").read_text(encoding="utf-8")
+        step = text[text.index("## Step 2a") : text.index("## Step 2b")]
+        for needle in ("humanizer-status", "humanizer:humanizer", "humanizer-check"):
+            self.assertIn(needle, step)
+        self.assertLess(step.index("humanizer-check"), step.index("email-draft"))
+
     def test_commands_exist_and_keep_the_safeguards(self):
         gigs = (ROOT / ".claude" / "commands" / "gigs.md").read_text(encoding="utf-8")
         propose = (ROOT / ".claude" / "commands" / "propose.md").read_text(encoding="utf-8")

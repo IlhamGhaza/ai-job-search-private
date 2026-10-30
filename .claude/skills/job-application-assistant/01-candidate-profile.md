@@ -16,7 +16,7 @@ framework_version: 1.1.2
 - **GitHub:** https://github.com/IlhamGhaza
 - **Portfolio/Demos:** https://ilhamghaza.github.io
 - **Status:** Available immediately
-- **Constraints:** Remote-first; open to relocation in US, Canada, UK, Ireland, Germany, Netherlands, Switzerland, Austria, Belgium, Luxembourg, Denmark, Sweden, Norway, Finland, Iceland, Singapore, Australia, New Zealand, Japan, South Korea. Full-time/contract/freelance only - no internships.
+- **Constraints:** Remote-first, but onsite work is acceptable (candidate-confirmed 2026-10-30); open to relocation in US, Canada, UK, Ireland, Germany, Netherlands, Switzerland, Austria, Belgium, Luxembourg, Denmark, Sweden, Norway, Finland, Iceland, Singapore, Australia, New Zealand, Japan, South Korea. Full-time/contract/freelance only - no internships.
 
 ### Languages
 <!-- Every language you can work in professionally, with your honest level. Used by the
@@ -42,7 +42,7 @@ a hard no, not a gap to smooth over. -->
 
 | Degree | Period | Institution | Key Topics |
 |--------|--------|-------------|------------|
-| Bachelor of Information Systems (in progress, expected Aug 2026) | Sep 2022 - Aug 2026 | Universitas Gunadarma | GPA 3.72; Member, Google Developer Group on Campus (GDGOC) |
+| Bachelor of Information Systems (graduated 2026; confirmed by candidate 2026-10-30) | Sep 2022 - Aug 2026 | Universitas Gunadarma | GPA 3.72; Member, Google Developer Group on Campus (GDGOC) |
 
 ## Professional Experience
 
@@ -82,6 +82,9 @@ Depok, Indonesia
 
 ### Programming & ML
 - **Dart/Flutter** (primary): BLoC, GetX, Provider, Clean Architecture
+- **Riverpod and GoRouter:** hands-on experience, stated by the candidate 2026-10-30 (project or employer context not specified, so tie no bullet to a named role)
+- **Kotlin:** learned, no professional experience (candidate-stated 2026-10-30); do not present as work experience
+- **Backend fundamentals (Redis and related):** self-study, no professional experience (candidate-stated 2026-10-30); specific frameworks/projects not stated, so name none and never present as work experience
 - **Other languages:** SQL, basic Laravel (PHP), Node.js
 - **ML/AI:** TensorFlow Lite, Google Gemini API (on-device/API-based inference, not model training)
 

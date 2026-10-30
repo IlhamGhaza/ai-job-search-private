@@ -31,7 +31,7 @@ This repo is a job application workspace. Claude acts as a career advisor and ap
 - **LinkedIn headline:** "Flutter Developer | Mobile App Development | BLoC, GetX, Clean Architecture"
 
 ### Education
-- **Bachelor of Information Systems** (2022-2026, in progress, expected Aug 2026) - Universitas Gunadarma
+- **Bachelor of Information Systems** (2022-2026, graduated) - Universitas Gunadarma
   - GPA: 3.72
   - Topics: Mobile app development, Clean Architecture, software engineering fundamentals
   - Member, Google Developer Group on Campus (GDGOC)
@@ -47,12 +47,22 @@ This repo is a job application workspace. Claude acts as a career advisor and ap
 - **Mobile Developer Intern** (Mar 2025 - Jun 2025) - **Kita Bantu Indonesia** (Jakarta, Indonesia)
   - Coordinated a 4-person mobile team on a job portal app, delivered a working MVP in 8 weeks with no PM
   - Converted 20+ Figma screens, worked with 2 designers and 3 backend developers
+- **Laboratory Assistant and Tutor** (Oct 2023 - Jan 2025) - **Information Systems Laboratory, Universitas Gunadarma** (Depok, Indonesia)
+  - Taught C programming labs, supported 30+ students with debugging, produced slides and code examples reused by other tutors
 
 ### Technical Skills
-- **Primary:** Flutter, Dart, BLoC, GetX, Provider, Clean Architecture
+- **Primary:** Flutter, Dart, BLoC, GetX, Provider, Riverpod, GoRouter, Clean Architecture
+- **Learned, no professional experience:** Kotlin; backend fundamentals (e.g. Redis and related tooling) - self-study only, never present as work experience
 - **Secondary:** REST API integration (Dio), JWT auth, Firebase (Auth, FCM), MQTT, SQLite, TensorFlow Lite, Google Gemini API, Laravel, Node.js, SQL
 - **Domain:** Mobile app development (HRIS, fleet management, POS, inventory, food ordering, IoT)
 - **Software:** Git, GitHub, Codemagic CI/CD, Figma-to-code, Google Maps, Midtrans
+
+### Independent Projects
+- **Point of Sale (POS) App** - Flutter, BLoC, SQLite, Laravel REST API, Midtrans
+- **Online Attendance App with Face Detection** - Flutter, BLoC, SQLite, Laravel, TensorFlow Lite, Google Maps, FCM
+- **Flutter Movie App** (Dicoding Expert project) - BLoC, Dio, unit/widget tests, SSL pinning, Codemagic CI/CD
+- **Food Recognition App** (Dicoding ML project) - Provider, Google Gemini API, TheMealDB API
+- Portfolio: https://ilhamghaza.github.io
 
 ### Certifications
 - **Menjadi Flutter Developer Expert** (Dicoding) - completed Jun 2025
@@ -91,7 +101,7 @@ None listed.
 automatically from your Languages table above - don't duplicate them here. -->
 - No internships - full-time, contract, or freelance roles only
 - Unpaid or underpaid roles
-- Fully on-site-only roles with no remote option, unless relocation is to a target country below
+- Fully on-site-only roles are acceptable (candidate-confirmed 2026-10-30), but remote is still preferred; outside Indonesia only where relocation/visa is realistic in a target country below
 - Cambodia-based jobs (any source); India onsite/hybrid jobs (India remote only if it clears the salary floor)
 - Pay at or below IDR 5,000,000/month after currency conversion; undisclosed pay is "needs verification", never a confirmed match (full hard rules: `04-job-evaluation.md` "Global Junior Flutter Search - Hard Rules", enforced by `tools/job_rules.py`)
 

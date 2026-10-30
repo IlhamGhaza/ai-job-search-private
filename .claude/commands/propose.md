@@ -61,7 +61,7 @@ python3 tools/freelance_guard.py humanizer-status
 ```
 
 - `installed: false`: skip this step and tell the user **once** per session: "The humanizer plugin isn't installed (`/plugin install humanizer@humanizer` if you want it); I'm using the draft as written." Never install it yourself.
-- `installed: true`: run the draft through the `humanizer` skill, asking it to keep every fact unchanged and add nothing. Save the result as `.../proposal_humanized.txt`, then:
+- `installed: true`: run the draft through the `humanizer:humanizer` skill, asking it to keep every fact unchanged and add nothing. Save the result as `.../proposal_humanized.txt`, then:
   ```bash
   python3 tools/freelance_guard.py humanizer-check --draft <proposal_draft.txt> --humanized <proposal_humanized.txt> --gig-file <gig.json> --allow "<rate>" --allow "<availability>"
   ```

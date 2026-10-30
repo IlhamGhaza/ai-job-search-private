@@ -53,6 +53,11 @@ The output also gives `apply_method` (`ats_form`, `portal_login`, `email`, `exte
 ## Step 2a: Email Applications (`apply_method: email`)
 
 1. Draft the body from the finished cover letter (3-6 short sentences, same facts, no new claims).
+   Save it as `body.txt`, then run `python3 tools/freelance_guard.py humanizer-status`. If `installed` is true, rewrite the body with the `humanizer:humanizer` skill (keep every fact, add nothing), save it as `body_humanized.txt`, and check it against the draft, using a JSON file with the posting's `title` and guard-cleaned `description`:
+   ```bash
+   python3 tools/freelance_guard.py humanizer-check --draft body.txt --humanized body_humanized.txt --gig-file <posting.json>
+   ```
+   Exit 3 means the humanizer added a number, a skill or a reputation claim: fix the text or go back to `body.txt`. Use the passing text as the body below. If `installed` is false, keep `body.txt` and tell the user once.
 2. If the Gmail connector is available, create a **draft** (never send) with subject `Application: <job title> - Muhammad Ilham Ghazali`, the body, and both PDFs attached. Otherwise build an `.eml` draft:
    ```bash
    python3 tools/submit_guard.py email-draft --title "<job title>" --to "<address from the posting>" \
