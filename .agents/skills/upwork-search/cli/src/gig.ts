@@ -19,6 +19,7 @@ export type GigApplyMethod = "platform_proposal" | "platform_bid" | "email" | "e
  * not state is null - never guessed.
  */
 export interface Gig {
+  type: "gig"
   platform: string
   gig_id: string
   url: string
@@ -53,6 +54,7 @@ export type GigInput = Partial<Gig> & { platform: string; gig_id: string; url: s
 
 export function makeGig(p: GigInput): Gig {
   return {
+    type: "gig",
     platform: p.platform,
     gig_id: p.gig_id,
     url: p.url,

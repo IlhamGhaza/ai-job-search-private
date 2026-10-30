@@ -17,6 +17,7 @@ Follow these steps **in order**.
 - `--all` → re-rank every job that has not been applied to, including previously ranked ones (useful after the profile changes)
 - `--limit <N>` → maximum number of jobs to score this run (default 10)
 - `--top <N>` → shortlist size (default 5)
+- `--jobs-only` / `--gigs-only` → which record types to show. Default both: one list with a `Type` column. Gigs come from `/scrape`'s `job_scraper/gigs_latest.json`, keep the freelance rules, and are never scored by these agents. With `--gigs-only`, skip to Step 4.5.
 
 `--limit` bounds the expensive fetch-and-score work; `--top` only bounds how many scored jobs appear in the shortlist. They are independent: jobs beyond `--limit` are deferred, not silently discarded.
 
@@ -175,6 +176,17 @@ Do not modify `job_search_tracker.csv` - that file records applications, and `/r
 
 ---
 
+## Step 4.5: Merge Gigs (skip with `--jobs-only`)
+
+```bash
+python3 tools/gig_rules.py evaluate --in job_scraper/gigs_latest.json > job_scraper/gigs_ranked.json
+python3 tools/autopilot.py combine --gigs job_scraper/gigs_ranked.json --out job_scraper/rank_combined.json
+```
+
+`combine` puts jobs and gigs in one list under the four sections below, each row with `type`, sorted by `idr_monthly_equiv`: a job's `salary_idr_monthly_min`; an hourly gig's IDR rate x 173; a fixed gig's IDR budget / months (at least 1). A fixed gig with no duration has none: it sits in **Needs verification**, marked `needs_budget_review`. With `--jobs-only`, run `combine` with `--jobs-only` and no `--gigs`. Show gigs in the Step 5 tables with `Type` = `gig`; a gig's reasons come from `combine` verbatim. Dedup stays within each type, and gigs write nothing to `job_scraper/seen_jobs.json` or `job_search_tracker.csv`.
+
+---
+
 ## Step 5: Present the Shortlist
 
 ```
@@ -189,22 +201,25 @@ Swept <S> previously ranked entries (<E> newly expired, <C> closing soon).
 
 All hard rules pass, salary > IDR 5,000,000/month after conversion, safety `verified_low_concern`.
 
-| # | Score | Verdict | Title | Company | Location | Pay (IDR/month, rate date) | Apply via | Deadline | | URL |
-|---|-------|---------|-------|---------|----------|----------|---|-----|
-| 1 | 78 | Strong Fit | ... | ... | ... | 12,800,000 (USD 800 @ 2026-10-30) | ats_form | ... | 🔥 | [Link](...) |
+| # | Type | Score | Verdict | Title | Company | Location | Pay (IDR/month, rate date) | Apply via | Deadline | | URL |
+|---|---|-------|---------|-------|---------|----------|----------|---|-----|
+| 1 | job | 78 | Strong Fit | ... | ... | ... | 12,800,000 (USD 800 @ 2026-10-30) | ats_form | ... | 🔥 | [Link](...) |
 
 ### Needs verification
-| Score | Title | Company | Verify | URL |
-|-------|-------|---------|--------|-----|
-| 70 | ... | ... | salary undisclosed; remote eligibility for Indonesia not stated | [Link](...) |
+| Type | Score | Title | Company | Verify | URL |
+|---|-------|-------|---------|--------|-----|
+| job | 70 | ... | ... | salary undisclosed; remote eligibility for Indonesia not stated | [Link](...) |
 
 ### Manual safety review
-| Title | Company | Safety findings (source, date) | URL |
-|-------|---------|--------------------------------|-----|
+| Type | Title | Company | Safety findings (source, date) | URL |
+|---|-------|---------|--------------------------------|-----|
 
 ### Rejected (hard rules)
 - <Title> at <Company> - salary floor: ~IDR 4,100,000/month after conversion - [Link](...)
 - <Title> at <Company> - India onsite/hybrid job (hard rule 2) - [Link](...)
+
+### Vetted networks to apply to once
+From `combine`'s `vetted_networks` (Toptal, Arc.dev, ...): application-based, not gigs. Name, URL, fit note.
 
 ### Needs login
 Grouped by portal from `apply_method: portal_login`, so the user knows which accounts to sign into before `/submit`:

@@ -107,10 +107,10 @@ class PermissionsAndIgnoreTests(unittest.TestCase):
 
 
 class SeparationTests(unittest.TestCase):
-    def test_scrape_skips_freelance_skills(self):
+    def test_scrape_keeps_gigs_out_of_the_job_pool(self):
         text = (ROOT / ".claude" / "skills" / "job-scraper" / "SKILL.md").read_text(encoding="utf-8")
         self.assertIn("category: freelance", text)
-        self.assertRegex(text, r"`/scrape` never does")
+        self.assertIn("never enter `job_scraper/seen_jobs.json`", text)
 
     def test_freelance_tools_never_touch_the_job_tracker_or_seen_jobs(self):
         for tool in ("gig_rules.py", "freelance_guard.py"):
@@ -121,10 +121,9 @@ class SeparationTests(unittest.TestCase):
 
     def test_submit_email_runs_the_humanizer_and_its_claim_check(self):
         text = (ROOT / ".claude" / "commands" / "submit.md").read_text(encoding="utf-8")
-        step = text[text.index("## Step 2a") : text.index("## Step 2b")]
-        for needle in ("humanizer-status", "humanizer:humanizer", "humanizer-check"):
+        step = text[text.index("## Step 3") : text.index("## Step 4")]
+        for needle in ("humanizer-status", "humanizer:humanizer", "--draft-file"):
             self.assertIn(needle, step)
-        self.assertLess(step.index("humanizer-check"), step.index("email-draft"))
 
     def test_commands_exist_and_keep_the_safeguards(self):
         gigs = (ROOT / ".claude" / "commands" / "gigs.md").read_text(encoding="utf-8")

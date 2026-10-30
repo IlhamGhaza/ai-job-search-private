@@ -118,8 +118,8 @@ ALLOWED_PERMISSIONS = {
     "Bash(python3 tools/posting_guard.py:*)",
     # Deterministic hard rules for /scrape and /rank. Only the read-only
     # subcommands are pre-approved: job_rules.py mark-safety (writes a safety
-    # verdict) and every submit_guard.py subcommand except `check` (browser
-    # clicks, tracker writes) keep prompting on purpose. fx_rates.py fetches
+    # verdict) and every submit_guard.py subcommand except `check` (tracker
+    # writes, email drafts) keep prompting on purpose. fx_rates.py fetches
     # one public rate table at most once a day and writes only its cache.
     "Bash(python tools/job_rules.py evaluate:*)",
     "Bash(python3 tools/job_rules.py evaluate:*)",
@@ -146,6 +146,33 @@ ALLOWED_PERMISSIONS = {
     "Bash(bun run .agents/skills/twine-search/cli/src/cli.ts:*)",
     "Bash(bun run .agents/skills/projects-co-id-search/cli/src/cli.ts:*)",
     "Bash(bun run .agents/skills/fastwork-search/cli/src/cli.ts:*)",
+    # /autopilot and /submit: selection, order, reports, local queue and tracker
+    # bookkeeping. email_send.py approve, next, send-next, mark-sent and mark-failed
+    # stay out: approving and sending keep prompting on purpose.
+    "Bash(python tools/autopilot.py scope:*)",
+    "Bash(python3 tools/autopilot.py scope:*)",
+    "Bash(python tools/autopilot.py combine:*)",
+    "Bash(python3 tools/autopilot.py combine:*)",
+    "Bash(python tools/autopilot.py select:*)",
+    "Bash(python3 tools/autopilot.py select:*)",
+    "Bash(python tools/autopilot.py next-item:*)",
+    "Bash(python3 tools/autopilot.py next-item:*)",
+    "Bash(python tools/autopilot.py mark:*)",
+    "Bash(python3 tools/autopilot.py mark:*)",
+    "Bash(python tools/autopilot.py finish:*)",
+    "Bash(python3 tools/autopilot.py finish:*)",
+    "Bash(python tools/autopilot.py checklist:*)",
+    "Bash(python3 tools/autopilot.py checklist:*)",
+    "Bash(python tools/autopilot.py report:*)",
+    "Bash(python3 tools/autopilot.py report:*)",
+    "Bash(python tools/email_send.py verify:*)",
+    "Bash(python3 tools/email_send.py verify:*)",
+    "Bash(python tools/email_send.py enqueue:*)",
+    "Bash(python3 tools/email_send.py enqueue:*)",
+    "Bash(python tools/email_send.py table:*)",
+    "Bash(python3 tools/email_send.py table:*)",
+    "Bash(python tools/email_send.py status:*)",
+    "Bash(python3 tools/email_send.py status:*)",
     # /gigs and /propose: only the read-only subcommands. freelance_guard.py
     # fill/send/record/login/open/email-draft (browser, tracker, files) keep prompting.
     "Bash(python tools/gig_rules.py evaluate:*)",
@@ -271,6 +298,9 @@ REQUIRED_IGNORE_RULES = [
     # /propose: the freelance proposal tracker (gigs, clients, rates) and /gigs result pools.
     "freelance_tracker.csv",
     "**/job_scraper/gigs_*.json",
+    "**/job_scraper/email_queue.json",
+    "**/job_scraper/autopilot_run.json",
+    "**/job_scraper/rank_combined.json",
 ]
 
 # Negation (re-include) rules the template legitimately ships. .gitignore is

@@ -51,11 +51,12 @@ Follow these steps **in order**.
 
 Canonical spellings for the tracker CSV `status` column (underscores, never spaces):
 
-`drafted` | `applied` | `interview` | `offer` | `hired` | `rejected` | `no_response` | `offer_declined` | `withdrawn`
+`drafted` | `ready_to_submit` | `applied` | `interview` | `offer` | `hired` | `rejected` | `no_response` | `offer_declined` | `withdrawn`
 
 - **Final** (application closed): `hired`, `rejected`, `no_response`, `offer_declined`, `withdrawn`
 - **Open**: everything else, `drafted` included — a row is active until its status is one of the **Final** values.
 - **`drafted`** is open but distinct — nothing was sent, so no follow-up is ever due.
+- **`ready_to_submit`** is the same as `drafted` for all of that: `/autopilot` prepared the documents and the user has not submitted them yet. `/outcome <job> applied` moves it on.
 - Readers must also accept the legacy space spellings `no response` and `offer declined` on read, so that existing trackers keep working without a migration. Never write them — they are the same values as `no_response` and `offer_declined`, not separate statuses, equally **Final**, and every rule that names one applies to the other.
 
 > Distinct from the archive `Status:` enum in `documents/README.md`
@@ -196,7 +197,7 @@ Update rules: tick stage checkboxes as they are reached (add the date in parenth
 
 Update the matched row's `status` column using the canonical spellings from **Tracker status vocabulary** above (e.g. `drafted` → `applied` → `interview` → `offer` → `hired` / `rejected` / `no_response` / `offer_declined` / `withdrawn`) and append a short dated note to the `notes` column, **containing no commas, double quotes or line breaks**. No writer here emits a quoted tracker field, so a comma in the note shifts `cv_file`, `cover_letter_file` and `source` a column left for `csv.DictReader` (`tools/rank_state.py`) as much as for a naive split, and a line break ends the row - `rejected, no feedback given` is exactly the sentence that corrupts it; write `rejected - no feedback given`. `/gmail-sync` Step 7a applies the same rule to the email subjects it appends. Never restructure the CSV, reorder rows, or touch other rows. The rewrite touches only the `status` and `notes` columns: preserve every other field of the row, parsed or not, so a value the row carries - the `deadline` written by `/apply` Step 6b, or any column added in the future - is never blanked by a status update.
 
-**Moving a row off `drafted`:** rows written by `/apply` Step 6b carry the date the documents were drafted, not the date they were sent. Whenever this step advances such a row to any other status - `applied`, or straight to `interview` or `rejected` when the user reports an outcome for something they submitted without recording it - overwrite its `date` column with the actual submission date. The `date` column is read as "applied on" by `/notion-sync` and drives `/html-report`'s year/season grouping and this command's own days-quiet count, so leaving the draft date in place would misreport the application.
+**Moving a row off `drafted` or `ready_to_submit`:** rows written by `/apply` Step 6b carry the date the documents were drafted, not the date they were sent. Whenever this step advances such a row to any other status - `applied`, or straight to `interview` or `rejected` when the user reports an outcome for something they submitted without recording it - overwrite its `date` column with the actual submission date. The `date` column is read as "applied on" by `/notion-sync` and drives `/html-report`'s year/season grouping and this command's own days-quiet count, so leaving the draft date in place would misreport the application.
 
 ---
 

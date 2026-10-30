@@ -138,3 +138,9 @@ company_research/*.json
 # both ignored above.
 freelance_tracker.csv
 **/job_scraper/gigs_*.json
+
+# /autopilot and /submit: the email queue holds bodies and addresses; the run and
+# merged list name every employer and client.
+**/job_scraper/email_queue.json
+**/job_scraper/autopilot_run.json
+**/job_scraper/rank_combined.json

@@ -732,7 +732,7 @@ def evaluate(jobs: list[dict], fx: FxTable | None, today: date) -> dict:
         if not isinstance(job, dict):
             continue
         r = evaluate_job(job, fx, today, watchlist, col)
-        row = {k: job.get(k) for k in ("key", "id", "title", "company", "location", "url", "portal") if k in job}
+        row = {"type": "job", **{k: job.get(k) for k in ("key", "id", "title", "company", "location", "url", "portal") if k in job}}
         row["rules"] = r
         sections[r["section"]].append(row)
         if r["apply_method"] == "portal_login" and r["section"] != "rejected":
@@ -775,7 +775,7 @@ def mark_safety(args) -> int:
     return 0
 
 
-STORED_FIELDS = ("rules_section", "rules_reasons", "rules_flags", "safety_screening", "safety_findings", "apply_method",
+STORED_FIELDS = ("rules_section", "rules_reasons", "rules_flags", "safety_screening", "safety_findings", "apply_method", "apply_email",
                  "salary_idr_monthly_min", "fx_rate", "fx_date", "salary_check")
 
 
@@ -789,6 +789,7 @@ def stored_fields(rules: dict) -> dict:
         "safety_screening": rules.get("safety_screening"),
         "safety_findings": (rules.get("safety_findings") or [])[:6],
         "apply_method": rules.get("apply_method"),
+        "apply_email": rules.get("apply_email"),
         "salary_idr_monthly_min": sal.get("salary_idr_monthly_min"),
         "fx_rate": sal.get("fx_rate"),
         "fx_date": sal.get("fx_date"),

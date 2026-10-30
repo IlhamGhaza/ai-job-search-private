@@ -41,33 +41,33 @@ import hashlib
 import io
 import json
 import re
+import subprocess
 import sys
 from datetime import date
 from email.message import EmailMessage
 from pathlib import Path
+from typing import Callable
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from fx_rates import DEFAULT_CACHE, load_rates  # noqa: E402
 from gig_rules import evaluate_gig, gig_keys, proposed_keys  # noqa: E402
 from submit_guard import (  # noqa: E402
     FORBIDDEN_FIELD,
-    LOGIN_WALL,
-    SCREENSHOTS,
     Refused,
-    Runner,
     host_of,
     load_json,
-    login,
-    open_browser,
-    playwright_runner,
     profile_text,
     slug,
 )
 
 ROOT = Path(__file__).resolve().parent.parent
 TRACKER = ROOT / "freelance_tracker.csv"
-TRACKER_FIELDS = ["gig", "platform", "gig_id", "url", "date", "rate", "status", "connects_spent", "screenshot"]
-SHOTS = SCREENSHOTS / "freelance"
+TRACKER_FIELDS = ["gig", "platform", "gig_id", "url", "date", "rate", "status", "connects_spent", "screenshot", "channel", "message_id"]
+SHOTS = ROOT / ".submit-screenshots" / "freelance"
+BROWSER_PROFILE = ROOT / ".browser-profile"
+# A page the user must handle themselves (login, 2FA, CAPTCHA).
+LOGIN_WALL = re.compile(r"(captcha|verify\s+you\s+are\s+human|two-factor|2fa|one-time\s+code|sign\s+in|log\s*in\s+to\s+continue)", re.I)
+Runner = Callable[[list[str]], str]
 PLUGINS_FILE = Path.home() / ".claude" / "plugins" / "installed_plugins.json"
 DAILY_LIMIT_PER_PLATFORM = 5
 # Their terms forbid automated proposals/bids: the user always clicks Send.
@@ -155,15 +155,24 @@ def read_tracker(path: Path) -> list[dict]:
         return list(csv.DictReader(fh))
 
 
-def append_tracker(path: Path, row: dict) -> None:
-    new = not path.is_file()
+def _write_rows(path: Path, header: list[str], rows: list[dict]) -> None:
     buf = io.StringIO()
-    writer = csv.DictWriter(buf, fieldnames=TRACKER_FIELDS, lineterminator="\n")
-    if new:
-        writer.writeheader()
-    writer.writerow({k: str(row.get(k, "")).replace("\n", " ") for k in TRACKER_FIELDS})
-    with path.open("a", encoding="utf-8", newline="") as fh:
-        fh.write(buf.getvalue())
+    writer = csv.DictWriter(buf, fieldnames=header, lineterminator="\n", extrasaction="ignore")
+    writer.writeheader()
+    writer.writerows(rows)
+    tmp = path.with_suffix(".csv.tmp")
+    tmp.write_text(buf.getvalue(), encoding="utf-8")
+    tmp.replace(path)
+
+
+def append_tracker(path: Path, row: dict) -> None:
+    """Add one row. A tracker with an older header gains the new columns; its rows stay as they are."""
+    rows = read_tracker(path)
+    header = TRACKER_FIELDS
+    if rows:
+        header = list(rows[0]) + [f for f in TRACKER_FIELDS if f not in rows[0]]
+    rows.append({k: str(row.get(k, "")).replace("\n", " ") for k in TRACKER_FIELDS})
+    _write_rows(path, header, rows)
 
 
 def platform_key(gig: dict) -> str:
@@ -172,7 +181,7 @@ def platform_key(gig: dict) -> str:
 
 def proposals_today(path: Path, platform: str, today: date) -> int:
     return sum(1 for r in read_tracker(path) if r.get("platform", "").strip().lower() == platform and r.get("date") == today.isoformat()
-               and r.get("status") in ("proposed", "sent"))
+               and r.get("status") in ("proposed", "sent", "applied"))
 
 
 def already_proposed(path: Path, gig: dict) -> bool:
@@ -220,6 +229,36 @@ def check(gig: dict, *, safety_reviewed: bool = False, tracker: Path = TRACKER, 
 
 
 # ---------------------------------------------------------------- browser
+
+def playwright_runner(session: str) -> Runner:
+    def run(args: list[str]) -> str:
+        cmd = ["playwright-cli", f"-s={session}", *args]
+        proc = subprocess.run(cmd, capture_output=True, text=True, timeout=120, check=False)
+        if proc.returncode != 0:
+            raise Refused(f"playwright-cli {args[0]} failed: {(proc.stderr or proc.stdout).strip()[:300]}")
+        return proc.stdout
+
+    return run
+
+
+def open_browser(runner: Runner, url: str) -> None:
+    """Headed, persistent profile in .browser-profile/. The user logs in by hand."""
+    if not re.match(r"^https?://", url):
+        raise Refused("only http(s) URLs are opened")
+    runner(["open", url, "--headed", "--persistent", f"--profile={BROWSER_PROFILE}"])
+
+
+def login(runner: Runner, platform: str) -> dict:
+    """Open a platform in the persistent profile; the user types their own credentials and 2FA."""
+    host = platform.lower().strip()
+    host = host[4:] if host.startswith("www.") else host
+    if not re.fullmatch(r"[a-z0-9.-]+\.[a-z]{2,}", host):
+        raise Refused(f"'{platform}' is not a host name (e.g. upwork.com)")
+    url = f"https://{host}/"
+    open_browser(runner, url)
+    return {"status": "login_window_open", "platform": host, "url": url, "profile": str(BROWSER_PROFILE),
+            "next": "Sign in yourself in the browser window (password, 2FA, CAPTCHA). Tell Claude when done; nothing is typed or saved for you."}
+
 
 def validate_plan(plan: dict) -> list[str]:
     problems = []
@@ -332,7 +371,8 @@ def send(plan: dict, runner: Runner, *, confirm: str, given_hash: str, mode: str
 
 
 def record(gig: dict, rate, connects_spent, screenshot: str | None, *, tracker: Path = TRACKER, today: date | None = None,
-           status: str = "proposed") -> dict:
+           status: str = "proposed", channel: str = "", message_id: str = "") -> dict:
+    """One row per gig. A `ready_to_submit` row from /autopilot is updated in place once the proposal went out."""
     today = today or date.today()
     if already_proposed(tracker, gig):
         raise Refused("already recorded as proposed")
@@ -344,9 +384,22 @@ def record(gig: dict, rate, connects_spent, screenshot: str | None, *, tracker: 
             rel = Path(screenshot).name
     row = {"gig": gig.get("title", ""), "platform": gig.get("platform", ""), "gig_id": gig.get("gig_id", ""), "url": gig.get("url", ""),
            "date": today.isoformat(), "rate": rate if rate is not None else "", "status": status,
-           "connects_spent": connects_spent if connects_spent is not None else "", "screenshot": rel or ""}
-    append_tracker(tracker, row)
+           "connects_spent": connects_spent if connects_spent is not None else "", "screenshot": rel or "",
+           "channel": channel, "message_id": message_id}
+    rows = read_tracker(tracker)
+    prepared = next((r for r in rows if r.get("status") == "ready_to_submit" and set(gig_keys(_row_gig(r))) & set(gig_keys(gig))), None)
+    if prepared is not None:
+        if status == "ready_to_submit":
+            raise Refused("already prepared")
+        prepared.update({k: str(v) for k, v in row.items()})
+        _write_rows(tracker, list(rows[0]) + [f for f in TRACKER_FIELDS if f not in rows[0]], rows)
+    else:
+        append_tracker(tracker, row)
     return {**row, "status": "recorded", "tracker_status": status}
+
+
+def _row_gig(row: dict) -> dict:
+    return {"platform": row.get("platform"), "gig_id": row.get("gig_id"), "url": row.get("url")}
 
 
 # ---------------------------------------------------------------- email

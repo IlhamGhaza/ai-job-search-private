@@ -313,13 +313,19 @@ def safety_check(gig: dict, rate: dict) -> dict:
 
 # ---------------------------------------------------------------- tracker and dedup
 
-def proposed_keys(tracker: Path | None) -> set[str]:
-    """platform:gig_id and canonical URLs already in freelance_tracker.csv."""
+def proposed_keys(tracker: Path | None, *, include_prepared: bool = False) -> set[str]:
+    """platform:gig_id and canonical URLs of gigs already proposed to.
+
+    A `ready_to_submit` row (prepared by /autopilot, not sent) does not count, so
+    /propose can still record it; /autopilot's own selection excludes every row.
+    """
     keys: set[str] = set()
     if not tracker or not tracker.is_file():
         return keys
     with tracker.open(encoding="utf-8", newline="") as fh:
         for row in csv.DictReader(fh):
+            if not include_prepared and row.get("status") == "ready_to_submit":
+                continue
             if row.get("platform") and row.get("gig_id"):
                 keys.add(f"{row['platform'].strip().lower()}:{row['gig_id'].strip()}")
             if row.get("url"):
@@ -357,6 +363,22 @@ def dedupe(gigs: list[dict]) -> tuple[list[dict], int]:
 # ---------------------------------------------------------------- evaluate
 
 JUNIOR_ORDER = {"junior": 0, "unspecified": 1, "stretch": 2, "reject": 3}
+
+
+def idr_monthly_equiv(gig: dict, rate: dict, hours: float = HOURS_PER_MONTH) -> int | None:
+    """The sort key shared with jobs. Hourly: IDR rate x hours. Fixed: IDR budget / months, at least
+    1 month. Fixed without a usable duration, or no budget: None (never auto-selected)."""
+    if gig.get("budget_type") == "hourly" and rate.get("idr_hourly") is not None:
+        return round(rate["idr_hourly"] * hours)
+    if gig.get("budget_type") == "fixed" and rate.get("idr_total") is not None:
+        months = months_from_duration(gig.get("est_duration"))
+        return round(rate["idr_total"] / max(months, 1)) if months is not None else None
+    return None
+
+
+def fit_score(rel: int, junior_fit: str, client: float) -> int:
+    """0-100 tie-breaker for gigs, which /rank's scoring agents do not score."""
+    return round(rel / 3 * 60 + {"junior": 20, "unspecified": 10, "stretch": 5}.get(junior_fit, 0) + client * 2)
 
 
 def evaluate_gig(gig: dict, fx: FxTable | None, today: date, *, monthly_floor: float = SALARY_FLOOR_IDR_MONTHLY,
@@ -405,6 +427,8 @@ def evaluate_gig(gig: dict, fx: FxTable | None, today: date, *, monthly_floor: f
         "junior_fit": junior["fit"],
         "junior_reason": junior["reason"],
         "client_score": client_score(gig),
+        "fit_score": fit_score(rel, junior["fit"], client_score(gig)),
+        "idr_monthly_equiv": idr_monthly_equiv(gig, rate, hours),
         "rate": rate,
         "safety_screening": safety["status"],
         "safety_review": safety["review"],
@@ -428,7 +452,7 @@ def evaluate(gigs: list[dict], fx: FxTable | None, today: date, *, monthly_floor
     sections: dict[str, list] = {s: [] for s in SECTIONS}
     for gig in unique:
         rules = evaluate_gig(gig, fx, today, monthly_floor=monthly_floor, hours=hours, proposed=proposed)
-        sections[rules["section"]].append({**gig, "safety_screening": rules["safety_screening"], "rules": rules})
+        sections[rules["section"]].append({**gig, "type": "gig", "safety_screening": rules["safety_screening"], "rules": rules})
     for name in SECTIONS:
         sections[name].sort(key=lambda g: g["rules"]["rank_key"])
     registry = load_platforms()

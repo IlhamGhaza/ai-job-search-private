@@ -32,6 +32,7 @@ The user triggers this skill by saying things like:
 Optional arguments:
 - A focus area, e.g. "/scrape data science" or "/scrape geophysics"
 - "broad" to run all search categories, e.g. "/scrape broad"
+- `--jobs-only` / `--gigs-only`: which record types to find. Default both: jobs from the portal skills, gigs from the freelance skills. `/gigs` is an alias for `/scrape --gigs-only`.
 - "health" to run the portal health check only (Step 4.75), without searching, deduplicating, or presenting jobs - e.g. "/scrape health", or "/scrape health jobnet" to probe one portal even if disabled
 
 ---
@@ -43,6 +44,14 @@ Optional arguments:
 Read `search-queries.md` (this directory) for the search strategy. `tools/scrape_state.py` reads `job_scraper/seen_jobs.json` and `job_search_tracker.csv` for deduplication; do not load either growing file into the conversation.
 
 > **Windows:** run these tools as `python`, not `python3`. A python.org install ships no `python3`, so that name reaches the Microsoft Store alias, which either exits 49 with no output (#669) or starts a separate Store Python without the packages `pip` installed (such as pypdf). `.claude/settings.json` allows both spellings.
+
+### Step 0.5: Scope
+
+```bash
+python3 tools/autopilot.py scope                 # add --jobs-only or --gigs-only per the arguments
+```
+
+It lists `job_skills`, `gig_skills` and `skipped_disabled`. Every record has a `type`: `job` or `gig`. Jobs follow Steps 1-5 below and gigs follow Step 4.6; jobs keep the job rules and gigs keep the freelance rules, dedup stays within each type, and the trackers stay separate (`job_search_tracker.csv`, `freelance_tracker.csv`). With `--gigs-only`, skip to Step 4.6.
 
 ### Step 1: Search
 
@@ -62,7 +71,7 @@ If this fails (bun not installed), skip to **1c (WebSearch fallback)** for all p
 
 Discover all installed portal CLI skills by reading every `SKILL.md` found under `.agents/skills/*/SKILL.md`. Each file documents that portal's exact CLI flags and usage examples. **Use each portal's own documented interface — do not guess flags.** This approach automatically includes any new portals added via `/add-portal` without requiring changes to this file.
 
-**Skip freelance skills.** A skill whose frontmatter sets `category: freelance` (Upwork, Freelancer.com, Contra, ...) returns gigs, not jobs: `/gigs` runs it, `/scrape` never does, and its results never enter this pool.
+**Freelance skills are not part of this pool.** A skill whose frontmatter sets `category: freelance` (Upwork, Freelancer.com, Contra, ...) returns gigs, not jobs. Step 4.6 runs it, and its results never enter `job_scraper/seen_jobs.json`.
 
 **Honor the `enabled` toggle.** A portal is enabled unless its `SKILL.md` frontmatter sets `enabled: false` (a missing key means enabled — the default). Skip each disabled portal and record it for the Step 5 summary. A fork can thus keep a portal installed but sit out a run without deleting its directory.
 
@@ -247,6 +256,10 @@ titled "AI Program Manager" becomes `"<Company Name> AI Program Manager"`.
 Both links are for the user to open and browse themselves - never fetch or scrape the
 LinkedIn people-search result pages programmatically. Never fabricate contacts or claim a
 specific person was found; these are search links, not results.
+
+### Step 4.6: Gigs (skip with `--jobs-only`)
+
+Run Steps 1-2 of `.claude/commands/gigs.md` on the `gig_skills` from Step 0.5: every enabled freelance skill, then `tools/gig_rules.py`. Add its counts to the Step 5 counts line and show its sections after the job table under a **Gigs** heading. `/rank` merges the two lists.
 
 ### Step 4.75: Portal Health Check
 

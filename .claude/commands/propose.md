@@ -14,6 +14,13 @@ Follow these steps **in order**. If a tool refuses, stop and tell the user why -
 
 ---
 
+## Prepare-only mode (from `/autopilot`)
+
+`/autopilot` calls this workflow with no user present. Run Steps 0, 1, 3 and 4 only, then stop, with these changes:
+- **No questions.** Skip Step 2. Do not state a rate: the proposal says the rate is open to discussion, and the checklist shows the client's budget and the IDR floor. Availability and links come from the profile (`Available immediately`, the portfolio URL). A search lead or a `MANUAL_ONLY` gig has no text to work from: stop it as `needs_review`.
+- `check` refused, or a claims check that will not pass: stop this gig as `failed` or `needs_review` with the reason.
+- **No browser, no spend.** Never run Steps 5a or 6: no Playwright, no login, no form, no Connects, no bids. `/autopilot` records it as `ready_to_submit`.
+
 ## Step 0: Get the Gig Text
 
 - From `/gigs`: take the gig record from `job_scraper/gigs_latest.json`. For an API platform, refresh it with the skill's `detail` (e.g. `bun run .agents/skills/freelancer-search/cli/src/cli.ts detail <id> --format json`).

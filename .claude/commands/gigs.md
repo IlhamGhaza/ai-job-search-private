@@ -2,7 +2,7 @@
 
 You are finding freelance gigs (Upwork, Freelancer.com, Contra, PeoplePerHour, Guru, Workana, Twine, Projects.co.id, Fastwork) for Muhammad Ilham Ghazali: Flutter / Dart / mobile work a junior can deliver remotely from Indonesia - building or fixing a Flutter app, Firebase integration, UI from Figma, bug fixes, app store publishing, small MVPs. Hourly or fixed price.
 
-`/gigs` is **separate from `/scrape`**: gigs never enter `job_scraper/seen_jobs.json`, `job_search_tracker.csv` or the `/rank` pool, and `/scrape` skips every `category: freelance` skill. `/gigs` only finds and sorts; drafting and sending a proposal is `/propose`, one gig at a time.
+**`/gigs` is an alias for `/scrape --gigs-only`.** The gig steps live in this file; a plain `/scrape` runs Steps 1-2 too, next to the job portals. Gigs never enter `job_scraper/seen_jobs.json` or `job_search_tracker.csv`: their tracker is `freelance_tracker.csv`. `/rank` shows jobs and gigs in one list with a `type` column. `/gigs` only finds and sorts; drafting and sending a proposal is `/propose`, one gig at a time.
 
 `$ARGUMENTS`: optional keywords (default `flutter`) and/or `broad` (adds the query variants below).
 
@@ -14,7 +14,7 @@ You are finding freelance gigs (Upwork, Freelancer.com, Contra, PeoplePerHour, G
 
 ## Step 1: Run the Enabled Freelance Skills
 
-Find every `.agents/skills/*/SKILL.md` whose frontmatter has `category: freelance`. Skip the ones with `enabled: false` and list them as `skipped (disabled)`. For each enabled one, run its documented search with JSON output, e.g.:
+List the skills with `python3 tools/autopilot.py scope --gigs-only`; report `skipped_disabled` as `skipped (disabled)`. For each skill in `gig_skills`, run its documented search with JSON output, e.g.:
 
 ```bash
 bun run .agents/skills/upwork-search/cli/src/cli.ts search -q "flutter" --jobage 14 --limit 20 --format json
@@ -32,7 +32,7 @@ Save the outputs together as `job_scraper/gigs_latest.json` (gitignored) in the 
 ## Step 2: Apply the Rules (deterministic)
 
 ```bash
-python3 tools/gig_rules.py evaluate --in job_scraper/gigs_latest.json
+python3 tools/gig_rules.py evaluate --in job_scraper/gigs_latest.json > job_scraper/gigs_ranked.json
 ```
 
 It dedupes (same platform + id, or same URL; an API record beats a search lead), converts budgets with the daily FX cache (`tools/fx_rates.py`), applies the rate floor (hourly >= IDR 5,000,000 / 173 h = IDR 28,902/h; fixed price -> effective monthly rate over the stated duration >= IDR 5,000,000, or budget review when there is no duration), the hard rejects, the manual-review flags and the ranking, and marks gigs already in `freelance_tracker.csv`. Use `--monthly-floor` / `--hours-per-month` only when the user asks for a different floor. **The rule verdicts are final**: never move a gig out of `rejected` or `manual_safety_review` on your own judgment.
@@ -55,7 +55,7 @@ End with: "Pick one gig and run `/propose <gig URL or number>`."
 
 ## Rules
 
-1. Never mix gigs into job results or the job tracker.
+1. Never write gigs into `job_scraper/seen_jobs.json` or the job tracker.
 2. Never fetch a platform page that its skill does not fetch itself (Upwork pages never). Search leads stay leads until the user opens them.
 3. Never invent a budget, client detail or country restriction: null stays "not stated".
 4. Rule verdicts are final; the report explains them, it does not overrule them.

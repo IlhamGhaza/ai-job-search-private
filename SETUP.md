@@ -329,7 +329,9 @@ $env:BRAVE_SEARCH_API_TOKEN = "..."               # PowerShell (current session)
 
 **Hard rules.** `/scrape` and `/rank` run `tools/job_rules.py` (Cambodia, India onsite/hybrid, internships, seniority, the IDR 5,000,000/month salary floor with daily-cached currency conversion, eligibility, safety screening). The rules are specified in `04-job-evaluation.md` and pinned by `tests/test_job_rules.py`. Official warnings about specific employers go in `tools/data/safety_watchlist.json` (with source and date); rough living costs for ranking are in `tools/data/cost_of_living.json`.
 
-**`/submit` (opt-in).** Needs the Playwright CLI (`npm i -g @playwright/cli`, then `playwright-cli install-browser` if no browser is installed). It opens a **headed** browser with a persistent profile in `.browser-profile/` (gitignored); you log in to each portal yourself once. It fills one finished application at a time, stops before the final click, and submits only after your explicit "yes" - on LinkedIn, JobStreet, SEEK and similar login portals it defaults to *fill only, you click Submit*, because automating them may break their Terms of Use. Screenshots go to `.submit-screenshots/` (gitignored).
+**`/submit` (opt-in, email only).** Sends one finished application by email after your "yes"; for anything else it prints a checklist (link, file paths, copy-paste answers) and you submit it yourself. It opens no browser. See `.claude/commands/submit.md`.
+
+**`/autopilot` (opt-in).** Scrape, rank, sort jobs and gigs by pay, prepare documents, then one question before any email goes out. Everything that is not email ends as `ready_to_submit` with a checklist. Email attachments through the Gmail connector cost about 200 KB of base64 per email in the model's context; to avoid that, set `GMAIL_SMTP_USER` and `GMAIL_APP_PASSWORD` (a Google app password) and the tool sends over SMTP itself. Keep both in your environment or a gitignored `.env`. `/propose` still uses the Playwright CLI for its fill-only proposal step.
 
 ## 8. Pulling upstream updates into your fork
 

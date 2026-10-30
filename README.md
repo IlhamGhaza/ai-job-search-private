@@ -163,14 +163,18 @@ This runs the full workflow: evaluate fit, draft CV + cover letter, review with 
 
 ## Commands
 
-`/setup`, `/scrape`, and `/apply` form the core workflow. Ten more commands extend it once your profile is in place.
+`/setup`, `/scrape`, and `/apply` form the core workflow. Fourteen more commands extend it once your profile is in place.
 
 | Command | What it does |
 |---|---|
 | **`/setup`** | Builds your profile from your documents, a pasted CV, or an interview |
-| **`/scrape`** | Searches job portals for postings that match your profile |
+| **`/scrape`** | Searches job portals and freelance platforms for postings that match your profile (`--jobs-only` / `--gigs-only`) |
 | **`/apply`** | Evaluates fit, then drafts, reviews, and compiles a tailored CV and cover letter |
-| `/rank` | Batch-scores a scrape into a ranked shortlist |
+| `/rank` | Batch-scores a scrape into one ranked list of jobs and gigs |
+| `/gigs` | Finds freelance Flutter gigs (alias for `/scrape --gigs-only`) |
+| `/propose` | Drafts one freelance proposal from your profile and a gig |
+| `/autopilot` | Scrapes, ranks, prepares the top items by pay, and emails applications after one "yes" |
+| `/submit` | Sends one finished application by email, or prints a manual checklist |
 | `/interview` | Builds a stage-specific prep pack and runs a mock interview |
 | `/outcome` | Records results, archives what you sent, and drafts follow-ups |
 | `/gmail-sync` | Proposes application status updates from your Gmail |
@@ -189,6 +193,9 @@ This runs the full workflow: evaluate fit, draft CV + cover letter, review with 
 - **`/outcome`** records what happened to an application - interview stages, offers, rejections, silence. It archives the submitted CV, cover letter, and posting text into `documents/applications/<company>_<role>/`, keeps `outcome.md` in the format `/setup` Path A parses, and updates the tracker. It also owns the stretch before there is an outcome to record: `/outcome followup` surfaces open applications that have gone quiet (default 10 days), drafts a short channel-appropriate follow-up in your writing style using only claims from the materials you already submitted (drafts only, never sends; at most twice per application), and offers a thank-you note in the same turn an interview stage is recorded. Once a few applications resolve, it points you back to `/setup` to calibrate the fit framework from what actually got interviews.
 - **`/notion-sync`** publishes a one-way, read-only view of the pipeline into a Notion database via the official Notion MCP server (OAuth, no API keys) - one row per ranked job plus every tracked application, with a write-once briefing page per row. The repo files stay the system of record: nothing syncs back, and documents sync as filenames only. Complements `/html-report`: that is the deep offline dashboard you regenerate at your desk; this is the glanceable live view from anywhere Notion runs (desktop, web, phone).
 - **`/gmail-sync`** reads your Gmail (via the Gmail connector) for status signals on your open applications - interview invites, assessment links, offers, rejections - and proposes them as a batch for you to approve before anything is written to the tracker or `outcome.md`, citing the source email on every proposed change. Offers stop short of proposing `hired`/`offer_declined` since that's your call; conflicting or unmatched signals get flagged for a manual `/outcome` pass instead of guessed.
+- **`/gigs`** and **`/propose`** cover freelance work. `/gigs` is an alias for `/scrape --gigs-only`: it runs the `category: freelance` skills (Upwork and Freelancer.com through their official APIs with your own token, Contra, PeoplePerHour, Guru, Workana, Twine, Projects.co.id and Fastwork through search-engine discovery), applies `tools/gig_rules.py` (an IDR rate floor of IDR 5,000,000 / 173 h, hard rejects for off-platform payment, fake reviews, account rental and similar, manual review flags) and ranks the result. `/propose` drafts one short proposal from your profile and the gig text, checks it for claims your profile does not support, runs it through the `humanizer` plugin when you have it installed, and fills the proposal form in your browser for you to send. On Upwork and Freelancer.com it never clicks Send. Gigs are tracked in `freelance_tracker.csv`, separate from `job_search_tracker.csv`.
+- **`/autopilot`** runs the pipeline without you entering each link: `/scrape`, `/rank`, then only `confirmed` items with `verified_low_concern` safety that are not yet tracked, sorted by monthly pay in IDR (`idr_monthly_equiv`, highest first, jobs and gigs together). It prepares each one with `/apply` or `/propose`, and one failure never stops the batch. Email applications are checked (address appears in the posting, matches the employer, no free-mail, no claim the humanizer added) and sent only after one "Send all? (yes / no / exclude 2,5)", at most 15 a day. Everything else ends as `ready_to_submit` with a checklist; `/autopilot` opens no browser and spends no Upwork Connects or Freelancer bids. `--dry-run` stops before sending.
+- **`/submit`** handles one job and sends email applications only. For any other apply method it prints the link, file paths and copy-paste answers from your profile, and you submit it yourself, then record it with `/outcome <job> applied`.
 - **`/rank`** bridges `/scrape` and `/apply`: it batch-scores all newly scraped postings against the fit framework (parallel agents fetch each posting and score the five evaluation dimensions) and returns a ranked shortlist with honest per-job strengths and gaps. Deal-breakers veto, deadlines get urgency flags, dead postings get marked expired. Pick a number and it hands off to the full `/apply` workflow.
 - **`/expand`** enriches your profile by scanning public sources you've already linked in it (GitHub repos, portfolio site, Kaggle, Google Scholar) and looking up syllabi for named courses and certifications. Discovered competencies are added to your profile with a source tag. Useful right after `/setup` to surface skills that documents alone don't make explicit.
 - **`/upskill`** analyzes the gap between your profile, your tracked job postings, and your ranked-but-untracked postings (`/rank`'s recorded gaps in `job_scraper/seen_jobs.json`) — or a single posting via `/upskill <URL>`. Produces a prioritized heatmap of skill gaps and a learning plan with web-searched study resources and time estimates. Useful for career planning between applications.
@@ -368,7 +375,11 @@ ai-job-search/
 │   │   ├── expand.md                  # /expand competency enrichment from documents and online presence
 │   │   ├── add-template.md            # /add-template register custom templates (LaTeX, Typst, ...)
 │   │   ├── add-portal.md              # /add-portal generate a job-portal search skill for your market
-│   │   ├── rank.md                    # /rank triage scraped jobs into a ranked shortlist
+│   │   ├── rank.md                    # /rank triage scraped jobs and gigs into a ranked shortlist
+│   │   ├── gigs.md                    # /gigs freelance gigs (alias for /scrape --gigs-only)
+│   │   ├── propose.md                 # /propose one freelance proposal
+│   │   ├── autopilot.md               # /autopilot batch apply, email only, one approval
+│   │   ├── submit.md                  # /submit email one finished application or print a checklist
 │   │   ├── outcome.md                 # /outcome record application results, archive materials
 │   │   ├── gmail-sync.md              # /gmail-sync auto-detect application status from Gmail
 │   │   ├── interview.md               # /interview stage-specific prep pack + mock interview
@@ -394,7 +405,16 @@ ai-job-search/
 │   ├── jobindex-search/               # Jobindex.dk (Denmark)
 │   ├── jobnet-search/                 # Jobnet.dk (Denmark, government portal)
 │   ├── linkedin-search/               # LinkedIn public job listings (country-agnostic)
-│   └── freehire-search/               # freehire.me tech job aggregator (multi-market, REST API)
+│   ├── freehire-search/               # freehire.me tech job aggregator (multi-market, REST API)
+│   ├── ats-search/, remotive-search/, remoteok-search/, himalayas-search/, jobicy-search/,
+│   │   weworkremotely-search/, arbeitnow-search/, platsbanken-search/, nav-search/,
+│   │   mycareersfuture-search/    # global remote and relocation boards (public APIs and feeds)
+│   ├── linkedin-posts-search/, jobstreet-search/, jobsites-search/   # search-engine discovery (Brave key)
+│   └── upwork-search/, freelancer-search/, contra-search/, peopleperhour-search/, guru-search/,
+│       workana-search/, twine-search/, projects-co-id-search/, fastwork-search/   # freelance gigs
+├── tools/                             # deterministic rules and guards: job_rules.py, gig_rules.py,
+│                                      #   autopilot.py, email_send.py, submit_guard.py, freelance_guard.py,
+│                                      #   fx_rates.py, posting_guard.py, job_dedup.py
 ├── assets/                            # README artwork (Pip the mascot, animated SVG diagrams)
 ├── cv/
 │   └── main_example.tex               # moderncv LaTeX template

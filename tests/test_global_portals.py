@@ -82,8 +82,7 @@ class NewPortalWiringTests(unittest.TestCase):
 
     def test_submit_command_keeps_its_safety_promises(self):
         text = (ROOT / ".claude" / "commands" / "submit.md").read_text(encoding="utf-8")
-        for promise in ("explicit \"yes\"", "One job per call", "Never handle credentials", "fill_only", "Terms of Use",
-                        "never upload ID", "Never submit twice"):
+        for promise in ("explicit \"yes\"", "One job per call", "Email only", "never upload ID", "Never submit twice"):
             with self.subTest(promise=promise):
                 self.assertIn(promise, text)
 
