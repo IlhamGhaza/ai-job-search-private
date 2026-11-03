@@ -16,7 +16,7 @@ framework_version: 1.1.2
 - **GitHub:** https://github.com/IlhamGhaza
 - **Portfolio/Demos:** https://ilhamghaza.github.io
 - **Status:** Available immediately
-- **Constraints:** Remote-first, but onsite work is acceptable (candidate-confirmed 2026-10-30); open to relocation in US, Canada, UK, Ireland, Germany, Netherlands, Switzerland, Austria, Belgium, Luxembourg, Denmark, Sweden, Norway, Finland, Iceland, Singapore, Australia, New Zealand, Japan, South Korea. Full-time/contract/freelance only - no internships.
+- **Constraints:** Remote-first, but onsite work is acceptable (candidate-confirmed 2026-10-30); open to relocation in the `relocation_countries` of `tools/data/salary_benchmarks.json` (the 20 developed markets plus Malaysia, Philippines, Thailand, Vietnam, Brunei and Timor-Leste). Full-time, contract or freelance; internships only when paid and, by default, remote (`--intern`, see 04-job-evaluation.md).
 
 ### Languages
 <!-- Every language you can work in professionally, with your honest level. Used by the
@@ -33,10 +33,10 @@ a hard no, not a gap to smooth over. -->
 <!-- Preferences and deal-breakers for /scrape and /rank. The binding rules are in
 04-job-evaluation.md ("Global Junior Flutter Search - Hard Rules") and tools/job_rules.py. -->
 - **Primary target:** Junior / Entry-level Flutter Developer or Engineer. Also Junior Dart, Junior Mobile, Junior Cross-Platform, Associate / Graduate Mobile Engineer - only when it is a real full-time job. Judged by real duties and required experience, not title.
-- **Accept:** full-time, or a paid contract/freelance engagement. **Reject:** internships, student placements, intern-to-hire, unpaid roles, bootcamps / training programs, senior or lead roles.
-- **Geography:** global search. Priority countries (ranking only, not a filter): US, CA, UK, IE, DE, NL, CH, AT, BE, LU, DK, SE, NO, FI, IS, SG, AU, NZ, JP, KR, plus Southeast Asia (SG, MY, PH, TH, VN, ID, BN, TL). Indonesian citizen, willing to relocate.
+- **Accept:** full-time, a paid contract/freelance engagement, or a paid internship the `--intern` mode allows (default `remote`). **Reject:** unpaid roles in every mode, student-only placements, internships outside the mode, bootcamps / training programs, senior or lead roles.
+- **Geography:** global search. Priority countries (ranking only, not a filter) are the relocation countries plus Indonesia, from the same config list. Indonesian citizen, willing to relocate.
 - **Never assumed:** that an international remote job accepts Indonesia-based applicants, or that an employer sponsors a visa or relocation, without explicit evidence.
-- **Hard rules:** Cambodia-based jobs always rejected; India onsite/hybrid always rejected (India remote only if it clears the salary floor); every job must pay strictly more than IDR 5,000,000 per month after conversion (undisclosed = needs verification); safety screening is a separate stage and nothing unverified outranks a verified job.
+- **Hard rules:** Cambodia-based jobs always rejected; India onsite/hybrid always rejected (India remote only if it clears the salary floor); a remote job must pay strictly more than the configured salary floor (currently IDR 5,729,876/month, UMP DKI Jakarta 2026) after conversion, and an onsite or hybrid job's estimated net pay must exceed the higher of that floor and the local living cost; undisclosed pay is estimated from the salary tier (A/B processed, C rejected); a remote internship needs stated pay above zero, and India remote internships keep the floor; safety screening is a separate stage and nothing unverified outranks a verified job.
 
 ## Education
 

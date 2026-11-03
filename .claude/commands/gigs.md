@@ -14,7 +14,9 @@ You are finding freelance gigs (Upwork, Freelancer.com, Contra, PeoplePerHour, G
 
 ## Step 1: Run the Enabled Freelance Skills
 
-List the skills with `python3 tools/autopilot.py scope --gigs-only`; report `skipped_disabled` as `skipped (disabled)`. For each skill in `gig_skills`, run its documented search with JSON output, e.g.:
+List the skills with `python3 tools/autopilot.py scope --gigs-only`; report `skipped_disabled` as `skipped (disabled)`. **Upwork connector.** When the Upwork connector is loaded and enabled in `.claude/skills/job-scraper/connectors.md`, use it as the Upwork source **instead of** `upwork-search`'s search-engine mode: Step 1d of the job-scraper skill (`connector_sources.py plan --connector upwork`, `list_accounts` for the `org_uid`, then read-only `find_jobs` searches and `get` for shortlisted gigs). It never calls a tool that writes, spends Connects or changes the account. Proposals stay "draft only, you send on Upwork yourself". Skip `upwork-search` in that case; its CLI remains the fallback when the connector is missing.
+
+For each skill in `gig_skills` except as above, run its documented search with JSON output, e.g.:
 
 ```bash
 bun run .agents/skills/upwork-search/cli/src/cli.ts search -q "flutter" --jobage 14 --limit 20 --format json
@@ -35,7 +37,7 @@ Save the outputs together as `job_scraper/gigs_latest.json` (gitignored) in the 
 python3 tools/gig_rules.py evaluate --in job_scraper/gigs_latest.json > job_scraper/gigs_ranked.json
 ```
 
-It dedupes (same platform + id, or same URL; an API record beats a search lead), converts budgets with the daily FX cache (`tools/fx_rates.py`), applies the rate floor (hourly >= IDR 5,000,000 / 173 h = IDR 28,902/h; fixed price -> effective monthly rate over the stated duration >= IDR 5,000,000, or budget review when there is no duration), the hard rejects, the manual-review flags and the ranking, and marks gigs already in `freelance_tracker.csv`. Use `--monthly-floor` / `--hours-per-month` only when the user asks for a different floor. **The rule verdicts are final**: never move a gig out of `rejected` or `manual_safety_review` on your own judgment.
+It dedupes (same platform + id, or same URL; an API record beats a search lead), converts budgets with the daily FX cache (`tools/fx_rates.py`), applies the rate floor (hourly >= the configured salary floor / 173 h, currently IDR 5,729,876 / 173 = IDR 33,121/h; fixed price -> effective monthly rate over the stated duration >= the floor, or budget review when there is no duration; both numbers come from `tools/data/salary_benchmarks.json`), the hard rejects, the manual-review flags and the ranking, and marks gigs already in `freelance_tracker.csv`. Use `--monthly-floor` / `--hours-per-month` only when the user asks for a different floor. **The rule verdicts are final**: never move a gig out of `rejected` or `manual_safety_review` on your own judgment.
 
 ## Step 3: Report
 

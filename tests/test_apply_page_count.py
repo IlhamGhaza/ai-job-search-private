@@ -1,6 +1,6 @@
 """Guard for /apply Step 5b's page-count check.
 
-The 2-page CV and 1-page cover letter limits are the hard rules of
+The 1-2 page CV and 1-page cover letter limits are the hard rules of
 05-cv-templates.md and 06-cover-letter-templates.md, and two places defer
 their enforcement to `tools/verify_pdf.py --pages`: `verify_layout.py`'s
 docstring ("page count is verify_pdf.py's job, and CI runs it") and Step 5b's
@@ -32,7 +32,7 @@ def section(path, heading):
 def page_count_invocations(text):
     """(document path, page count) for every runnable verify_pdf --pages line."""
     return re.findall(
-        r"^python3 tools/verify_pdf\.py (\S+) --pages (\d+)\s*$", text, re.MULTILINE
+        r"^python3 tools/verify_pdf\.py (\S+) --(?:max-)?pages (\d+)\s*$", text, re.MULTILINE
     )
 
 
@@ -45,7 +45,7 @@ class ApplyRunsThePageCountCheck(unittest.TestCase):
         self.assertEqual(
             invocations.get("cv/main_<company>_<role>.pdf"),
             "2",
-            "Step 5b must run verify_pdf.py --pages 2 on the CV - the hard "
+            "Step 5b must run verify_pdf.py --max-pages 2 on the CV - the hard "
             "2-page limit has no other mechanical check",
         )
         self.assertEqual(
@@ -57,7 +57,7 @@ class ApplyRunsThePageCountCheck(unittest.TestCase):
     def test_page_count_runs_before_the_layout_measurement(self):
         # verify_layout.py's own docstring declines to check page count because
         # verify_pdf.py --pages does; the deferral only holds if that runs first.
-        first_pages = self.step_5b.index("--pages")
+        first_pages = self.step_5b.index("--max-pages")
         first_layout = self.step_5b.index("verify_layout.py")
         self.assertLess(first_pages, first_layout)
 

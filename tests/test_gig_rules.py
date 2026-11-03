@@ -39,8 +39,12 @@ def section(g, **kw):
 
 
 class RateFloorTests(unittest.TestCase):
-    def test_default_hourly_floor_is_5m_over_173h(self):
-        self.assertEqual(rate_check(gig(), FX)["floor_idr_hourly"], round(5_000_000 / HOURS_PER_MONTH))
+    def test_default_hourly_floor_follows_the_config_floor(self):
+        import job_rules as jr
+
+        self.assertEqual(HOURS_PER_MONTH, jr.PAY.hours)
+        self.assertEqual(rate_check(gig(), FX)["floor_idr_hourly"], round(jr.PAY.floor / HOURS_PER_MONTH))
+        self.assertEqual(round(jr.PAY.floor / HOURS_PER_MONTH), 33_121)
 
     def test_hourly_above_below_exact(self):
         floor = 173 * 30_000  # makes the hourly floor exactly IDR 30,000
@@ -50,8 +54,8 @@ class RateFloorTests(unittest.TestCase):
                 self.assertEqual(r["status"], status, r["reason"])
 
     def test_hourly_fx_conversion(self):
-        ok = rate_check(gig(budget_min=2), FX)  # 2 USD = IDR 32,000/h
-        self.assertEqual((ok["status"], ok["idr_hourly"], ok["fx_date"]), ("pass", 32_000, "2026-10-30"))
+        ok = rate_check(gig(budget_min=2.5), FX)  # 2.5 USD = IDR 40,000/h, above the ~IDR 33,121 floor
+        self.assertEqual((ok["status"], ok["idr_hourly"], ok["fx_date"]), ("pass", 40_000, "2026-10-30"))
         low = rate_check(gig(budget_min=1.5), FX)  # IDR 24,000/h
         self.assertEqual(low["status"], "reject")
         self.assertIn("below", low["reason"])
@@ -183,7 +187,7 @@ class EvaluateTests(unittest.TestCase):
         self.assertEqual(out["counts"]["rejected"], 1)
         self.assertTrue(out["vetted_networks"])
         self.assertTrue(any(p["name"] == "Fiverr" and p["access"] == "skipped" for p in out["platforms"]))
-        self.assertEqual(out["config"]["hourly_floor_idr"], 28_902)
+        self.assertEqual(out["config"]["hourly_floor_idr"], 33_121)
 
     def test_already_proposed_is_flagged_from_the_tracker(self):
         tracker = Path(tempfile.mkdtemp()) / "freelance_tracker.csv"

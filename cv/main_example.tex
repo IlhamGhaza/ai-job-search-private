@@ -1,62 +1,21 @@
 %% Example CV - Muhammad Ilham Ghazali
 %% Comprehensive overview of all competencies, experience, and achievements.
-%% Use as a master reference when tailoring role-specific CVs.
+%% Use as a master reference when tailoring role-specific CVs. Its facts come from
+%% the original CV in documents/cv/, which is read-only and is never overwritten.
 %%
 %% SETUP: Run /setup to populate this with your actual information.
 %% Compile with: lualatex main_example.tex
-%% (pdflatex often fails on modern MiKTeX with fontawesome5 font-expansion errors.)
 
-\documentclass[11pt,a4paper,sans]{moderncv}
-\moderncvstyle{banking}
-\moderncvcolor{blue}
-
-% Force the name and section headings to render in moderncv blue (color1).
-% Default banking leaves them black: moderncvstylebanking.sty's \colorlet
-% copies (not aliases) the pre-scheme accent colour, so the name colours are
-% frozen before \moderncvcolor runs. Re-let them after. \namefont is the hook
-% every name-style macro routes through, so this also works on moderncv 2.3.1
-% (Debian/Ubuntu apt), which has no \firstnamestyle/\lastnamestyle at all.
-\renewcommand*{\namefont}{\fontsize{34}{36}\bfseries\upshape}
-\colorlet{firstnamecolor}{color1}
-\colorlet{lastnamecolor}{color1}
-\colorlet{namecolor}{color1}
-\renewcommand*{\sectionstyle}[1]{{\sectionfont\color{color1}#1}}
-
-\usepackage[utf8]{inputenc}
-% pdflatex fallback only (the documented engine is lualatex, which skips this
-% branch). Without T1 font encoding pdflatex builds accented letters with
-% \accent, and the PDF text layer stores them decomposed - `e` + U+0300 rather
-% than U+00E8 - so an ATS keyword match on "Genève" fails while the page looks
-% right. moderncv 2.5 loads T1 itself under pdflatex; 2.3.1 (Debian/Ubuntu apt)
-% does not. \ifpdftex comes from iftex, which every moderncv version loads.
-\ifpdftex\usepackage[T1]{fontenc}\fi
-% moderncv loads hyperref itself in an \AtEndPreamble hook, so \hypersetup
-% must go in an \AtEndPreamble of our own: on moderncv < 2.4 a top-level
-% \usepackage{hyperref} clashes with the class's own
-% \RequirePackage[unicode]{hyperref}. From 2.4.0 the class passes its options
-% through \PassOptionsToPackage instead, which is what removes that clash.
-\AtEndPreamble{\hypersetup{
-    colorlinks=true,
-    linkcolor=blue,
-    filecolor=magenta,
-    urlcolor=blue,
-    pdftitle={Muhammad Ilham Ghazali - CV},
-    % Keep pdfpagemode=UseNone: this block runs after moderncv's own
-    % \AtEndPreamble (moderncv.cls sets pdfpagemode there), so a FullScreen
-    % value here would win and open every CV in fullscreen presentation mode.
-    pdfpagemode=UseNone,
-}}
-\usepackage[scale=0.80]{geometry}
-\usepackage{import}
+\documentclass{resume}
+\usepackage[hmargin=18mm,top=15mm,bottom=16mm]{geometry}
+\hypersetup{pdftitle={Muhammad Ilham Ghazali - CV},pdfauthor={Muhammad Ilham Ghazali}}
 
 % personal data
 \name{Muhammad}{Ilham Ghazali}
-% If you have no address to list, DELETE this whole line. \address{}{}{} fails
-% with "There's no line here to end" on every moderncv version.
 \address{Bogor, West Java, Indonesia}{}{}
 \phone[mobile]{+62 813-1524-4423}
 \email{m.ilhamghazali@gmail.com}
-\extrainfo{\href{https://linkedin.com/in/muhammadilhamghazali}{LinkedIn}, \href{https://github.com/IlhamGhaza}{GitHub}, \href{https://ilhamghaza.github.io}{Portfolio}}
+\extrainfo{\href{https://linkedin.com/in/muhammadilhamghazali}{linkedin.com/in/muhammadilhamghazali}\contactsep\href{https://github.com/IlhamGhaza}{github.com/IlhamGhaza}\contactsep\href{https://ilhamghaza.github.io/}{ilhamghaza.github.io}}
 
 \begin{document}
 
@@ -66,29 +25,20 @@
 %     PROFILE STATEMENT
 % ============================================================
 
-\vspace{6pt}
-\small{Flutter developer with one year of professional experience delivering production apps across HRIS, fleet management, POS, inventory, food ordering, and IoT domains. Strong in BLoC, GetX, and Clean Architecture, with hands-on REST API integration (Dio), JWT authentication, and Firebase. Shipped mobile integrations including GPS tracking, FCM push notifications, and MQTT device control. Dicoding Flutter Developer Expert certified, Information Systems graduate (GPA 3.72).}
+\section{Professional Summary}
+Junior Flutter Developer with 1 year of professional experience developing and maintaining cross-platform mobile applications across HRIS, fleet management, POS, inventory management, food ordering, and IoT solutions. Proficient in Flutter, Dart, BLoC, GetX, Clean Architecture, REST API integration, and Firebase. Experienced in mobile integrations including GPS tracking, Firebase Cloud Messaging (FCM), and MQTT. Bachelor's degree in Information Systems (GPA 3.72/4.00) and Dicoding Flutter Developer Expert certification.
 
 % ============================================================
 %     CORE COMPETENCIES
 % ============================================================
 
-\section{Core Competencies}
-\vspace{1pt}
+\section{Core Skills}
 \begin{itemize}
-
-\item \textbf{Flutter \& Dart}: Flutter, Dart, BLoC, GetX, Provider, Riverpod, GoRouter, Clean Architecture
-
-\item \textbf{API \& Auth}: REST API integration (Dio), JWT with token refresh, Firebase (Auth, FCM, data storage), flutter\_secure\_storage
-
-\item \textbf{Mobile Integrations}: MQTT, Google Maps, Midtrans, TensorFlow Lite, Google Gemini API, SQLite
-
-\item \textbf{Domain Expertise}: HRIS, fleet management, POS, inventory management, food ordering, IoT control apps
-
-\item \textbf{Quality \& Delivery}: Git, GitHub, unit/widget testing, Codemagic CI/CD, SSL pinning (course projects)
-
-\item \textbf{Self-Study (no professional experience)}: Kotlin, backend fundamentals (Redis and related tooling), Laravel, Node.js, SQL
-
+\item \textbf{Flutter and Dart:} Flutter, Dart, BLoC, GetX, Provider, Riverpod, GoRouter, Clean Architecture
+\item \textbf{API and Auth:} REST API integration (Dio), JWT with token refresh, flutter\_secure\_storage, Firebase (Auth, FCM, data storage)
+\item \textbf{Quality and Delivery:} Git, GitHub, unit/widget testing, Codemagic CI/CD, SSL pinning (academic projects)
+\item \textbf{Additional:} MQTT, SQLite, Google Maps, Midtrans, Google Gemini API, TensorFlow Lite, Laravel, Node.js, SQL
+\item \textbf{Self-study, no professional experience:} Kotlin, backend fundamentals (Redis and related tooling)
 \end{itemize}
 
 % ============================================================
@@ -96,37 +46,46 @@
 % ============================================================
 
 \section{Professional Experience}
-\vspace{3pt}
+
+\cventry{Jul 2025 - Feb 2026}{Mobile Developer (Contract)}{Quetra Asia Klandesin}{Serpong, Indonesia}{}{
 \begin{itemize}
+    \item Delivered five Flutter client apps across HRIS, fleet management, POS, inventory management, and IoT workflows, covering member/admin roles, GPS tracking, and device control over MQTT
+    \item Built photo-based attendance with location capture and office-radius restriction for the HRIS apps
+    \item Implemented GPS tracking and driver job workflow states (view, accept, reject, pause, complete) for fleet management
+    \item Integrated the IoT watering app with devices over MQTT to display device status and manage time-based schedules
+    \item Implemented JWT authentication with token refresh, expired-session handling, and secure token storage in flutter\_secure\_storage
+    \item Structured apps in core, data, and presentation layers with BLoC and GetX
+    \item Worked with a backend developer on API contracts, joined client requirement discussions, estimates, and UAT on several projects, and handled client change requests after delivery
+\end{itemize}}
 
-% --- Most Recent Role ---
-\item{\cventry{Jul 2025-Feb 2026}{Mobile Developer (Contract)}{Quetra Asia Klandesin}{Serpong, Indonesia}{}{\vspace{1pt}
+\cventry{Aug 2025 - Mar 2026}{Mobile Developer Intern}{Pansus Studio}{Bandung, Indonesia}{}{
 \begin{itemize}
-    \item {Delivered five Flutter client apps across HRIS, fleet management, POS, inventory management, and IoT workflows}
-    \item {Implemented JWT authentication with token refresh, GPS tracking, and MQTT device integration}
-    \item {Structured apps in core, data, and presentation layers with BLoC and GetX}
-    \item {Worked with a backend developer on API contracts, joined client requirement discussions, estimates, and UAT}
-\end{itemize}}}
+    \item Built features for a multi-role food ordering app for User, Merchant, and Driver roles within a 3-developer Flutter team
+    \item Converted Figma designs into responsive screens and integrated REST APIs for authentication and order management
+    \item Used BLoC and Clean Architecture in an Agile monorepo, tested features, and fixed bugs before deployment
+\end{itemize}}
 
-\vspace{3pt}
-
-% --- Previous Role ---
-\item{\cventry{Aug 2025-Mar 2026}{Mobile Developer Intern}{Pansus Studio}{Bandung, Indonesia}{}{\vspace{1pt}
+\cventry{Mar 2025 - Jun 2025}{Mobile Developer Intern}{Kita Bantu Indonesia}{Jakarta, Indonesia}{}{
 \begin{itemize}
-    \item {Built features for a multi-role food ordering app (User, Merchant, Driver) in a 3-developer Flutter team}
-    \item {Converted Figma designs into responsive screens, integrated REST APIs for authentication and order management}
-    \item {Used BLoC and Clean Architecture in an Agile monorepo, tested features and fixed bugs before deployment}
-\end{itemize}}}
+    \item Coordinated a 4-person mobile team on a job portal app, distributed tasks, synced with other teams, and delivered a working MVP in 8 weeks without a project manager on the project
+    \item Converted 20+ Figma screens into responsive mobile interfaces and worked with 2 designers and 3 backend developers to resolve integration issues
+\end{itemize}}
 
-\vspace{3pt}
-
-% --- Earlier Role ---
-\item{\cventry{Mar 2025-Jun 2025}{Mobile Developer Intern}{Kita Bantu Indonesia}{Jakarta, Indonesia}{}{\vspace{1pt}
+\cventry{Oct 2023 - Jan 2025}{Laboratory Assistant and Tutor}{Information Systems Laboratory, Universitas Gunadarma}{Depok, Indonesia}{}{
 \begin{itemize}
-    \item {Coordinated a 4-person mobile team on a job portal app, delivered a working MVP in 8 weeks with no project manager}
-    \item {Converted 20+ Figma screens into responsive mobile interfaces, worked with 2 designers and 3 backend developers}
-\end{itemize}}}
+    \item Taught C programming labs, supported 30+ students with debugging, and produced slides and code examples reused by other tutors
+\end{itemize}}
 
+% ============================================================
+%     PROJECTS
+% ============================================================
+
+\section{Selected Projects}
+\begin{itemize}
+\item \textbf{Point of Sale (POS) App} (Flutter, BLoC, SQLite, Laravel, Midtrans): Cross-platform POS with Laravel REST API, Midtrans payments, invoice generation with SQLite caching, low-stock alerts, draft orders, and financial reports with charts
+\item \textbf{Online Attendance App with Face Detection} (Flutter, BLoC, SQLite, Laravel, TensorFlow Lite, Google Maps, FCM): Face detection, geofencing, FCM reminders, daily and monthly reports, and offline caching that syncs when online
+\item \textbf{\href{https://github.com/IlhamGhaza/flutter_movie}{Flutter Movie App}} (Dicoding Expert course project; Flutter, BLoC, Dio, Codemagic): BLoC state management and Dio for REST API calls, with unit and widget tests, SSL pinning, and a Codemagic CI/CD pipeline
+\item \textbf{\href{https://github.com/IlhamGhaza/flutter_food_recog}{Food Recognition App}} (Dicoding ML for Flutter course project; Flutter, Provider, Google Gemini API, TheMealDB API): Identifies food from camera or gallery photos using the Gemini API, fetches recipes from TheMealDB, and manages API keys through environment variables (envied)
 \end{itemize}
 
 % ============================================================
@@ -134,19 +93,26 @@
 % ============================================================
 
 \section{Education}
-\vspace{1pt}
+
+\cventry{Sep 2022 - Aug 2026}{Bachelor of Information Systems}{Universitas Gunadarma}{Depok, Indonesia}{GPA 3.72}{
 \begin{itemize}
+    \item Member, Google Developer Group on Campus (GDGOC)
+\end{itemize}}
 
-\item{\cventry{Sep 2022-Aug 2026}{Bachelor of Information Systems}{Universitas Gunadarma}{Depok, Indonesia}{}{\vspace{1pt}
-Graduated 2026. GPA 3.72. Member, Google Developer Group on Campus (GDGOC).
-}}
+% ============================================================
+%     CERTIFICATIONS
+% ============================================================
 
-\vspace{3pt}
-
-\item{\cventry{Oct 2023-Jan 2025}{Laboratory Assistant and Tutor}{Information Systems Laboratory, Universitas Gunadarma}{Depok, Indonesia}{}{\vspace{1pt}
-Taught C programming labs, supported 30+ students with debugging, produced slides and code examples reused by other tutors.
-}}
-
+\section{Certifications (Dicoding Indonesia, IDCamp Scholarship)}
+\begin{itemize}
+\item \href{https://www.dicoding.com/certificates/ERZREQDOQXYV}{Menjadi Flutter Developer Expert} (Becoming a Flutter Developer Expert), Jun 2025
+\item \href{https://www.dicoding.com/certificates/L4PQENK6OPO1}{Belajar Pengembangan Aplikasi Flutter Intermediate} (Intermediate Flutter App Development), Jun 2025
+\item \href{https://www.dicoding.com/certificates/N9ZO9WWJ6XG5}{Belajar Penerapan Machine Learning untuk Flutter} (Applying Machine Learning in Flutter), Jun 2025
+\item \href{https://www.dicoding.com/certificates/MRZMN0W2RPYQ}{Belajar Fundamental Aplikasi Flutter} (Flutter App Fundamentals), Jun 2025
+\item Memulai Pemrograman dengan Dart (Getting Started with Dart Programming), Sep 2024
+\item \href{https://www.dicoding.com/certificates/81P2N089YXOY}{Belajar Membuat Aplikasi Flutter untuk Pemula} (Building Flutter Apps for Beginners), Sep 2024
+\item Belajar Prinsip Pemrograman SOLID (SOLID Programming Principles), Sep 2023
+\item Belajar Dasar Git dengan GitHub (Git and GitHub Basics), Jul 2023
 \end{itemize}
 
 % ============================================================
@@ -154,36 +120,6 @@ Taught C programming labs, supported 30+ students with debugging, produced slide
 % ============================================================
 
 \section{Languages}
-\vspace{1pt}
-\begin{itemize}
-\item {Indonesian (native), English (intermediate).}
-\end{itemize}
-
-% ============================================================
-%     PUBLICATIONS (optional)
-% ============================================================
-
-\section{Certifications}
-\vspace{1pt}
-\begin{itemize}
-\item{\textbf{Menjadi Flutter Developer Expert} -- Dicoding Indonesia (Jun 2025).}
-\item{\textbf{Belajar Pengembangan Aplikasi Flutter Intermediate} -- Dicoding Indonesia (Jun 2025).}
-\item{\textbf{Belajar Penerapan Machine Learning untuk Flutter} -- Dicoding Indonesia (Jun 2025).}
-\item{\textbf{Belajar Fundamental Aplikasi Flutter} -- Dicoding Indonesia (Jun 2025).}
-\item{\textbf{Memulai Pemrograman dengan Dart} -- Dicoding Indonesia (Sep 2024).}
-\item{\textbf{Belajar Membuat Aplikasi Flutter untuk Pemula} -- Dicoding Indonesia (Sep 2024).}
-\item{\textbf{Belajar Prinsip Pemrograman SOLID} -- Dicoding Indonesia (Sep 2023).}
-\item{\textbf{Belajar Dasar Git dengan GitHub} -- Dicoding Indonesia (Jul 2023).}
-\end{itemize}
-
-% ============================================================
-%     REFERENCES
-% ============================================================
-
-\section{References}
-\vspace{1pt}
-\begin{itemize}
-\item{Available upon request.}
-\end{itemize}
+Indonesian (native), English (intermediate)
 
 \end{document}

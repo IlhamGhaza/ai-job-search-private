@@ -90,7 +90,7 @@ The framework encodes career guidance best practices, including structured evalu
 <summary>Fine print: other agents, LaTeX engines, PDF text extraction</summary>
 
 - **Using a different agent tool** (Codex, Antigravity, Gemini CLI)? Start at [`AGENTS.md`](AGENTS.md) - the portal search skills work there out of the box, and [community forks](https://github.com/ai-job-search-dev/ai-job-search/discussions/78) adapt the full workflow.
-- **LaTeX engines.** The CV compiles with `lualatex` (pdflatex often fails on modern MiKTeX installs with `fontawesome5` font-expansion errors); the cover letter compiles with `xelatex` because `cover.cls` requires `fontspec`. If using a minimal TeX install such as TinyTeX or BasicTeX, install the extra packages listed in [SETUP.md](SETUP.md#minimal-tex-install-tinytexbasictex).
+- **LaTeX engines.** The CV compiles with `lualatex` because `resume.cls` requires `fontspec`; the cover letter compiles with `xelatex` because `cover.cls` requires `fontspec`. If using a minimal TeX install such as TinyTeX or BasicTeX, install the extra packages listed in [SETUP.md](SETUP.md#minimal-tex-install-tinytexbasictex).
 - **PDF text extraction.** `pypdf` is BSD-licensed and needs no Poppler. Poppler `pdftotext` remains a fallback (macOS: `brew install poppler`, Debian/Ubuntu: `apt install poppler-utils`, Windows: `choco install poppler`). If both are missing, the check degrades to a visual keyword review.
 
 </details>
@@ -161,19 +161,28 @@ This runs the full workflow: evaluate fit, draft CV + cover letter, review with 
 > [!WARNING]
 > Postings are treated as untrusted input (the workflow follows no instructions embedded in them and fetches no links from their body), but agentic defenses are instruction-level, not a sandbox - on an unfamiliar job board, skim what was fetched and written before you hit send. Details in [SECURITY.md](SECURITY.md).
 
+### 6. Batch apply (optional)
+
+```bash
+/autopilot --dry-run --limit 5
+/autopilot --limit 5
+```
+
+Try it as a dry run first: it scrapes, ranks, takes 5 confirmed matches (jobs and freelance gigs together: disclosed pay first, highest first, then tier A/B estimated salaries), prepares their documents, and shows the table of emails it would send. It sends nothing and writes no tracker status. Drop `--dry-run` for a real run: you answer one question ("Send all? yes / no / exclude 2,5"), only email applications go out, and everything else ends as `ready_to_submit` with a checklist for you to submit by hand. Without `--limit` it takes 10 eligible matches in that order, skipping anything already applied to or sent, and anything posted more than 14 days ago. A posting with no date is listed, not selected. All flags are in [Arguments and flags](#arguments-and-flags).
+
 ## Commands
 
-`/setup`, `/scrape`, and `/apply` form the core workflow. Fourteen more commands extend it once your profile is in place.
+`/setup`, `/scrape`, and `/apply` form the core workflow. Sixteen more commands extend it once your profile is in place.
 
 | Command | What it does |
 |---|---|
 | **`/setup`** | Builds your profile from your documents, a pasted CV, or an interview |
-| **`/scrape`** | Searches job portals and freelance platforms for postings that match your profile (`--jobs-only` / `--gigs-only`) |
+| **`/scrape`** | Searches job portals and freelance platforms for postings that match your profile |
 | **`/apply`** | Evaluates fit, then drafts, reviews, and compiles a tailored CV and cover letter |
 | `/rank` | Batch-scores a scrape into one ranked list of jobs and gigs |
 | `/gigs` | Finds freelance Flutter gigs (alias for `/scrape --gigs-only`) |
 | `/propose` | Drafts one freelance proposal from your profile and a gig |
-| `/autopilot` | Scrapes, ranks, prepares the top items by pay, and emails applications after one "yes" |
+| `/autopilot` | Scrapes, ranks, prepares the top items by pay (disclosed first, then estimates), and emails applications after one "yes" |
 | `/submit` | Sends one finished application by email, or prints a manual checklist |
 | `/interview` | Builds a stage-specific prep pack and runs a mock interview |
 | `/outcome` | Records results, archives what you sent, and drafts follow-ups |
@@ -182,9 +191,159 @@ This runs the full workflow: evaluate fit, draft CV + cover letter, review with 
 | `/html-report` | Generates an offline dashboard of your applications |
 | `/expand` | Adds competencies found in your public profiles and course syllabi |
 | `/upskill` | Maps your skill gaps and builds a learning plan |
+| `/benchmarks` | Shows or refreshes the salary benchmark table the pay rules use |
 | `/add-template` | Registers your own CV or cover letter template |
 | `/add-portal` | Generates a search skill for a job board in your market |
 | `/reset` | Wipes profile data or documents - see [Starting over](#starting-over) |
+
+### Arguments and flags
+
+Every argument is optional unless marked required. Flags can be combined in any order.
+
+#### `/setup`
+
+| Argument | What it does |
+|---|---|
+| *(none)* | Detects what you have and offers the three paths: documents folder, pasted CV, or interview |
+| `--section <name>` | Skips the path prompt and updates one interview section only, e.g. `/setup --section search` to change search queries or CV language |
+
+#### `/scrape`
+
+```bash
+/scrape                          # jobs + gigs, default queries
+/scrape data science             # focus area
+/scrape broad --jobs-only        # every search category, jobs only
+/scrape --intern off --dry-run   # no internships, store nothing
+/scrape health jobnet            # probe one portal, no search
+```
+
+| Argument | What it does | Default |
+|---|---|---|
+| `<focus>` | Free text that narrows the queries, e.g. `data science` | profile queries |
+| `broad` | Runs every search category instead of the targeted set | off |
+| `--jobs-only` | Only job portals and job connectors | jobs + gigs |
+| `--gigs-only` | Only freelance platforms (same as `/gigs`) | jobs + gigs |
+| `--intern [off\|remote\|onsite]` | Which internships to search for and keep (see **Internships** in the full reference below). A bare `--intern` means `remote` | `remote` |
+| `--dry-run` | Searches and reports per-source counts and Firecrawl credits, but writes nothing to `job_scraper/seen_jobs.json` | off |
+| `health [portal]` | Runs the portal health check only. With a portal name, probes that portal even when it is disabled | - |
+
+#### `/rank`
+
+```bash
+/rank                            # score up to 10 new jobs, shortlist 5
+/rank --limit 0 --top 10         # score everything, shortlist 10
+/rank --all --sort fit           # re-rank all after a profile change, fit first
+/rank --max-age-days 14 --intern onsite
+```
+
+| Argument | What it does | Default |
+|---|---|---|
+| `<focus>` | Ranks only jobs whose title or fit notes match the text | all |
+| `--all` | Re-ranks every job not yet applied to, including ones already ranked. Use it after the profile changes | off |
+| `--limit <N>` | Maximum jobs to fetch and score this run. `0` = no cap. Jobs beyond the limit wait for the next run | `10` |
+| `--top <N>` | Shortlist size. Independent of `--limit` | `5` |
+| `--max-age-days <N>` | Drops jobs posted more than N days ago before fetching. Plain `/rank` only flags old postings | no filter |
+| `--intern [off\|remote\|onsite]` | Internship mode. Not remembered from `/scrape`, so pass it again | `remote` |
+| `--sort pay\|fit` | `pay`: disclosed pay first, highest first, then estimated salaries. `fit`: fit score first | `pay` |
+| `--jobs-only` / `--gigs-only` | Which record types to show | both |
+
+#### `/apply`
+
+```bash
+/apply https://example.com/jobs/123
+/apply <paste the full job description>
+/apply --intern onsite https://example.com/jobs/456
+```
+
+| Argument | What it does | Default |
+|---|---|---|
+| `<url or text>` (required) | The posting. A URL is fetched by a read-only agent; pasted text goes through the same integrity gate | - |
+| `--intern [off\|remote\|onsite]` | Which internships count as a deal-breaker during the fit check | `remote` |
+
+#### `/autopilot`
+
+```bash
+/autopilot --dry-run --limit 5   # preview: prepare 5, send nothing
+/autopilot                       # real run, up to 10 items
+/autopilot --jobs-only --sort fit --limit 3
+/autopilot --limit 20 --max-items 15
+```
+
+| Flag | What it does | Default |
+|---|---|---|
+| `--limit <N>` | How many eligible items to prepare in this run (jobs and gigs counted together) | `10` |
+| `--max-items <N>` | Hard ceiling on `--limit`. Also caps how many jobs `/rank` scores inside the run | none |
+| `--dry-run` | Runs scrape, rank, select and document prep, then shows the email table. Sends nothing and writes no tracker status | off |
+| `--jobs-only` | Only jobs. Passed on to `/scrape` and `/rank` | jobs + gigs |
+| `--gigs-only` | Only freelance gigs. Proposals are drafted, never sent | jobs + gigs |
+| `--intern [off\|remote\|onsite]` | Internship mode, passed on to `/scrape` and `/rank` | `remote` |
+| `--sort pay\|fit` | `pay`: disclosed pay first (highest first), then tier A/B estimates by benchmark median. `fit`: fit score in bands of 10, visa-dependent jobs last, then newest, then pay | `pay` |
+
+Fixed rules that no flag changes: only `confirmed` items with `verified_low_concern` safety, fit score 60 or higher, posted within 14 days, not already tracked or sent, and either disclosed pay or a tier A/B estimate. At most 15 emails a day. No browser, no Upwork Connects, no Freelancer bids.
+
+#### `/gigs`
+
+```bash
+/gigs                  # same as /scrape --gigs-only, query "flutter"
+/gigs dart firebase    # custom keywords
+/gigs broad            # add the extra query variants
+```
+
+| Argument | What it does | Default |
+|---|---|---|
+| `<keywords>` | Search keywords for the freelance platforms | `flutter` |
+| `broad` | Adds the extra query variants | off |
+
+#### `/propose`, `/submit`
+
+| Command | Required argument |
+|---|---|
+| `/propose <gig>` | One gig: a URL, a `/gigs` result number, or pasted gig text |
+| `/submit <job>` | One job: tracker company + role, a `seen_jobs.json` key, or the posting URL. `/apply` must have finished first |
+
+#### `/outcome`
+
+```bash
+/outcome                   # list open applications and pick one
+/outcome acme              # update one application
+/outcome acme applied      # mark a ready_to_submit item as sent
+/outcome followup          # follow-up drafts for apps quiet 10+ days
+/outcome followup 14       # ...with a 14-day threshold
+/outcome followup acme     # follow-up for one app now
+/outcome stale 90          # batch-close apps quiet 90+ days (default 60)
+```
+
+| Argument | What it does |
+|---|---|
+| *(none)* | Numbered table of open applications with days quiet and follow-ups sent |
+| `<company> [role]` | Targets one application |
+| `followup [N\|company]` | Drafts follow-ups (never sends). Default threshold 10 days, at most two per application |
+| `stale [N]` / `sweep [N]` | Proposes `no_response` for applications quiet N+ days (default 60). Writes only after you confirm |
+
+#### `/interview`, `/gmail-sync`, `/notion-sync`, `/html-report`
+
+| Command | Arguments |
+|---|---|
+| `/interview [company] [role]` | No argument lists live applications to pick from |
+| `/gmail-sync [company] [since YYYY-MM-DD]` | Company scopes the search to one application. `since` overrides the lookback for this run only (default: last sync, else 30 days) |
+| `/notion-sync [--min-score N] [--all] [--rebuild]` | Default syncs ranked jobs with score 60+ plus every tracked application. `--all` ignores the score. `--rebuild` rewrites page bodies, which are normally write-once |
+| `/html-report [path] [--open]` | Default path `reports/application-dashboard.html` |
+
+#### `/upskill`, `/expand`, `/benchmarks`
+
+| Command | Arguments |
+|---|---|
+| `/upskill [url]` | No argument: gap analysis over all tracked and ranked postings. With a URL: gap analysis for that one posting |
+| `/expand` | No arguments. Reads the links already in your profile |
+| `/benchmarks [refresh]` | No argument prints the table. `refresh` researches the floor, salaries, living costs and tax rates again |
+
+#### `/add-template`, `/add-portal`, `/reset`
+
+| Command | Arguments |
+|---|---|
+| `/add-template [file] [--list] [--use <name>]` | A file path registers that template. `--list` shows registered templates. `--use <name>` switches to one; `--use default` restores the stock templates |
+| `/add-portal [url] [--list]` | A URL starts with that portal. `--list` shows installed portal skills |
+| `/reset profile\|documents\|all` | `profile` clears candidate data from the skill files. `documents` deletes your files in `documents/`. `all` does both. Nothing is deleted before you confirm |
 
 <details>
 <summary><b>Full command reference</b></summary>
@@ -193,8 +352,20 @@ This runs the full workflow: evaluate fit, draft CV + cover letter, review with 
 - **`/outcome`** records what happened to an application - interview stages, offers, rejections, silence. It archives the submitted CV, cover letter, and posting text into `documents/applications/<company>_<role>/`, keeps `outcome.md` in the format `/setup` Path A parses, and updates the tracker. It also owns the stretch before there is an outcome to record: `/outcome followup` surfaces open applications that have gone quiet (default 10 days), drafts a short channel-appropriate follow-up in your writing style using only claims from the materials you already submitted (drafts only, never sends; at most twice per application), and offers a thank-you note in the same turn an interview stage is recorded. Once a few applications resolve, it points you back to `/setup` to calibrate the fit framework from what actually got interviews.
 - **`/notion-sync`** publishes a one-way, read-only view of the pipeline into a Notion database via the official Notion MCP server (OAuth, no API keys) - one row per ranked job plus every tracked application, with a write-once briefing page per row. The repo files stay the system of record: nothing syncs back, and documents sync as filenames only. Complements `/html-report`: that is the deep offline dashboard you regenerate at your desk; this is the glanceable live view from anywhere Notion runs (desktop, web, phone).
 - **`/gmail-sync`** reads your Gmail (via the Gmail connector) for status signals on your open applications - interview invites, assessment links, offers, rejections - and proposes them as a batch for you to approve before anything is written to the tracker or `outcome.md`, citing the source email on every proposed change. Offers stop short of proposing `hired`/`offer_declined` since that's your call; conflicting or unmatched signals get flagged for a manual `/outcome` pass instead of guessed.
-- **`/gigs`** and **`/propose`** cover freelance work. `/gigs` is an alias for `/scrape --gigs-only`: it runs the `category: freelance` skills (Upwork and Freelancer.com through their official APIs with your own token, Contra, PeoplePerHour, Guru, Workana, Twine, Projects.co.id and Fastwork through search-engine discovery), applies `tools/gig_rules.py` (an IDR rate floor of IDR 5,000,000 / 173 h, hard rejects for off-platform payment, fake reviews, account rental and similar, manual review flags) and ranks the result. `/propose` drafts one short proposal from your profile and the gig text, checks it for claims your profile does not support, runs it through the `humanizer` plugin when you have it installed, and fills the proposal form in your browser for you to send. On Upwork and Freelancer.com it never clicks Send. Gigs are tracked in `freelance_tracker.csv`, separate from `job_search_tracker.csv`.
-- **`/autopilot`** runs the pipeline without you entering each link: `/scrape`, `/rank`, then only `confirmed` items with `verified_low_concern` safety that are not yet tracked, sorted by monthly pay in IDR (`idr_monthly_equiv`, highest first, jobs and gigs together). It prepares each one with `/apply` or `/propose`, and one failure never stops the batch. Email applications are checked (address appears in the posting, matches the employer, no free-mail, no claim the humanizer added) and sent only after one "Send all? (yes / no / exclude 2,5)", at most 15 a day. Everything else ends as `ready_to_submit` with a checklist; `/autopilot` opens no browser and spends no Upwork Connects or Freelancer bids. `--dry-run` stops before sending.
+- **Connector sources.** `/scrape` also reads your claude.ai connectors when they are loaded: Indeed, ZipRecruiter (US/Canada) and Dice for jobs, and the Upwork connector for gigs (read-only). Each has an `enabled` switch in `.claude/skills/job-scraper/connectors.md`. LinkedIn Hiring Pro and Snagajob are never used, and every Upwork tool that writes is denied in `.claude/settings.json`.
+- **Web search for portals without an API.** `firecrawl.web_search_provider` in `connectors.md` picks the provider. The default, `router`, runs `tools/search_router.py`: Tavily first (`TAVILY_API_KEY`, capped at 1,500 calls a month), then Brave as the last resort (`BRAVE_SEARCH_API_TOKEN`, capped at 1,000 a month). Change the caps with `TAVILY_MONTHLY_CAP` and `BRAVE_MONTHLY_CAP`. Set the provider to `firecrawl` to use the Firecrawl connector instead. Results are unverified leads until `/rank` fetches the posting.
+- **Pay check.** Every number is in `tools/data/salary_benchmarks.json`: the salary floor (`salary_floor_idr_monthly`, currently IDR 5,729,876 = UMP DKI Jakarta 2026), junior salary benchmarks and living costs per country and city (with sources and dates), tax rates, and the relocation countries. A remote job, or one with no stated arrangement, must pay more than the floor. An onsite or hybrid job's estimated net pay must beat the higher of the floor and the local living cost (Indonesia: the city's UMK). Undisclosed pay is estimated from the salary tier: A and B are processed and labelled `estimated`, C is rejected. Pay below the market's junior low end is flagged `underpaid_for_market`, not rejected. `python tools/job_rules.py benchmarks` prints the table; `/benchmarks refresh` updates it; `python tools/pay_lint.py` fails if the prose states a different floor.
+- **Internships (`--intern`).** `/scrape`, `/rank`, `/autopilot` and `/apply` take `--intern off|remote|onsite`; the default, and a bare `--intern`, is `remote`.
+
+  | Mode | Remote internship | Onsite or hybrid internship |
+  |---|---|---|
+  | `off` | Rejected | Rejected |
+  | `remote` | Allowed | Rejected |
+  | `onsite` | Allowed | Allowed |
+
+  In `remote` mode, an internship that does not state its arrangement goes to Needs verification. In every mode, unpaid roles and placements that require current enrolment are rejected, and unstated pay is never `confirmed`. A remote internship has no salary floor: any stated pay above zero passes, except India remote roles, which must clear the salary floor. An onsite or hybrid internship takes the onsite pay rule. The mode is not saved between commands, so pass it again when you run `/rank` after `/scrape`. `/autopilot` passes it on for you. It has no effect on gigs.
+- **`/gigs`** and **`/propose`** cover freelance work. `/gigs` is an alias for `/scrape --gigs-only`: it runs the `category: freelance` skills (Upwork and Freelancer.com through their official APIs with your own token, Contra, PeoplePerHour, Guru, Workana, Twine, Projects.co.id and Fastwork through search-engine discovery), applies `tools/gig_rules.py` (an IDR rate floor of the configured salary floor / 173 h, hard rejects for off-platform payment, fake reviews, account rental and similar, manual review flags) and ranks the result. `/propose` drafts one short proposal from your profile and the gig text, checks it for claims your profile does not support, runs it through the `humanizer` plugin when you have it installed, and fills the proposal form in your browser for you to send. On Upwork and Freelancer.com it never clicks Send. Gigs are tracked in `freelance_tracker.csv`, separate from `job_search_tracker.csv`.
+- **`/autopilot`** runs the pipeline without you entering each link: `/scrape`, `/rank`, then only `confirmed` items with `verified_low_concern` safety that are not yet tracked, with a fit score of at least 60 and either disclosed pay or a tier A/B salary estimate, sorted disclosed pay first (`idr_monthly_equiv`, highest first), then estimated salaries by benchmark median, jobs and gigs together (`--sort fit` puts fit first). It prepares each one with `/apply` or `/propose`, and one failure never stops the batch. Email applications are checked (address appears in the posting, matches the employer, no free-mail, no claim the humanizer added) and sent only after one "Send all? (yes / no / exclude 2,5)", at most 15 a day. Everything else ends as `ready_to_submit` with a checklist; `/autopilot` opens no browser and spends no Upwork Connects or Freelancer bids. `--dry-run` stops before sending.
 - **`/submit`** handles one job and sends email applications only. For any other apply method it prints the link, file paths and copy-paste answers from your profile, and you submit it yourself, then record it with `/outcome <job> applied`.
 - **`/rank`** bridges `/scrape` and `/apply`: it batch-scores all newly scraped postings against the fit framework (parallel agents fetch each posting and score the five evaluation dimensions) and returns a ranked shortlist with honest per-job strengths and gaps. Deal-breakers veto, deadlines get urgency flags, dead postings get marked expired. Pick a number and it hands off to the full `/apply` workflow.
 - **`/expand`** enriches your profile by scanning public sources you've already linked in it (GitHub repos, portfolio site, Kaggle, Google Scholar) and looking up syllabi for named courses and certifications. Discovered competencies are added to your profile with a source tag. Useful right after `/setup` to surface skills that documents alone don't make explicit.
@@ -208,7 +379,7 @@ This runs the full workflow: evaluate fit, draft CV + cover letter, review with 
 ## How `/apply` works
 
 <p align="center">
-  <img src="assets/readme/apply.svg" alt="A job posting passes an integrity gate and fit evaluation, then loops through draft, review, revise, and compile plus inspect until the CV is exactly two pages, the cover letter one page, and the ATS text layer is checked." width="100%">
+  <img src="assets/readme/apply.svg" alt="A job posting passes an integrity gate and fit evaluation, then loops through draft, review, revise, and compile plus inspect until the CV is one or two pages, the cover letter one page, and the ATS text layer is checked." width="100%">
 </p>
 
 The `/apply` command runs a **drafter-reviewer workflow** with mandatory PDF compilation:
@@ -218,7 +389,7 @@ The `/apply` command runs a **drafter-reviewer workflow** with mandatory PDF com
 3. **Draft** a tailored CV and cover letter in LaTeX
 4. **Spawn a reviewer agent** that researches the company and critiques the drafts
 5. **Revise** based on the reviewer's feedback
-6. **Compile and inspect** both PDFs: lualatex for the CV, xelatex for the cover letter. Claude reads the rendered pages and iterates on the LaTeX until the CV is exactly 2 pages with no orphaned entry titles, and the cover letter is exactly 1 page with the signature visible and fonts consistent.
+6. **Compile and inspect** both PDFs: lualatex for the CV, xelatex for the cover letter. Claude reads the rendered pages and iterates on the LaTeX until the CV is 1 or 2 pages with no orphaned entry titles, and the cover letter is exactly 1 page with the signature visible and fonts consistent.
 7. **ATS-check the CV**: extract the PDF's text layer (`pdftotext`, optional dependency) and verify it the way an ATS parser sees it — contact details present as literal text, no garbled glyphs, sane reading order — then score the posting's keyword coverage against the extraction. Keywords the profile genuinely supports get added; genuine gaps stay visible, never stuffed.
 8. **Present** the final output with a verification checklist
 
@@ -263,7 +434,7 @@ This re-runs the search configuration interview: which roles to target, which sk
 
 ### Custom templates
 
-The CV uses [moderncv](https://ctan.org/pkg/moderncv) (banking style). The cover letter uses a custom `cover.cls` with Lato/Raleway fonts. Both are LaTeX — the reference engine this repo ships and maintains.
+The CV uses `cv/resume.cls`, a single-column ATS-friendly class. The cover letter uses `cover.cls` with the same Lato font, colours and header. Both are LaTeX — the reference engine this repo ships and maintains.
 
 To use your own template instead — LaTeX, [Typst](https://typst.app/), or any other toolchain that compiles to PDF from the command line — run:
 
@@ -275,7 +446,7 @@ Point it at your source file (a `.tex` file plus any `.cls`/`.sty` files or bund
 
 - `/add-template --list` shows registered templates
 - `/add-template --use <name>` switches between them
-- `/add-template --use default` reverts to the stock moderncv / cover.cls templates
+- `/add-template --use default` reverts to the stock resume.cls / cover.cls templates
 
 If you prefer doing it by hand, the manual route still works: update the guidance in `05-cv-templates.md` and `06-cover-letter-templates.md`.
 
@@ -417,7 +588,8 @@ ai-job-search/
 │                                      #   fx_rates.py, posting_guard.py, job_dedup.py
 ├── assets/                            # README artwork (Pip the mascot, animated SVG diagrams)
 ├── cv/
-│   └── main_example.tex               # moderncv LaTeX template
+│   ├── resume.cls                     # Single-column CV LaTeX class
+│   └── main_example.tex               # Master CV in that template
 ├── cover_letters/
 │   ├── cover.cls                      # Custom cover letter LaTeX class
 │   ├── cover_example.tex              # Example cover letter (structural reference + CI smoke test)

@@ -50,7 +50,7 @@ Install a LaTeX distribution to compile the generated `.tex` files to PDF:
 - **macOS:** [MacTeX](https://tug.org/mactex/)
 - **Linux:** `sudo apt install texlive-full` or `sudo dnf install texlive-scheme-full`
 
-The CV compiles with `lualatex` (pdflatex often fails on modern MiKTeX installs with `fontawesome5` font-expansion errors). The cover letter compiles with `xelatex` because `cover.cls` requires `fontspec` for its custom Lato/Raleway fonts.
+The CV compiles with `lualatex` because `resume.cls` requires `fontspec`. The cover letter compiles with `xelatex` because `cover.cls` requires `fontspec` for its bundled Lato font. moderncv is only needed to recompile older tailored CVs.
 
 #### Minimal TeX install: TinyTeX/BasicTeX
 
@@ -79,7 +79,7 @@ Then install the template dependencies:
 ```bash
 tlmgr install \
   moderncv fontawesome5 fontawesome6 academicons import luatexbase pgf \
-  titlesec textpos xltxtra xunicode cite realscripts needspace
+  titlesec textpos xltxtra xunicode cite realscripts needspace enumitem
 ```
 
 For BasicTeX/MacTeX, make sure the TeX binary directory is on `PATH` first (for example via `/Library/TeX/texbin`), then run the same `tlmgr install ...` command.
@@ -123,7 +123,7 @@ initexmf --set-config-value=[MPM]AutoInstall=1
 If you'd rather not rely on on-the-fly installs at all (for example, for a fully offline compile later), pre-install the same package set the macOS TinyTeX section above lists, using MiKTeX's package manager:
 
 ```powershell
-mpm --admin --install=moderncv --install=fontawesome5 --install=fontawesome6 --install=academicons --install=import --install=luatexbase --install=pgf --install=titlesec --install=textpos --install=xltxtra --install=xunicode --install=cite --install=realscripts --install=needspace
+mpm --admin --install=enumitem --install=needspace --install=moderncv --install=fontawesome5 --install=fontawesome6 --install=academicons --install=import --install=luatexbase --install=pgf --install=titlesec --install=textpos --install=xltxtra --install=xunicode --install=cite --install=realscripts --install=needspace
 ```
 
 Drop `--admin` if MiKTeX is installed for the current user only. If a package name doesn't resolve, `mpm --find=<name>` searches the repository for the correct name.
@@ -299,7 +299,7 @@ Set-Location cv; lualatex main_<company>_<role>.tex; Set-Location ..
 Set-Location cover_letters; xelatex cover_<company>_<role>.tex; Set-Location ..
 ```
 
-These commands apply to the stock templates (moderncv CV, `cover.cls` cover letter). If you'd rather use your own LaTeX template, run `/add-template` — it captures the template's compile engine, fonts, style rules, and page limit, test-compiles it, and wires it into `/apply`. See the "LaTeX templates" section in the README.
+These commands apply to the stock templates (`resume.cls` CV, `cover.cls` cover letter). If you'd rather use your own LaTeX template, run `/add-template` — it captures the template's compile engine, fonts, style rules, and page limit, test-compiles it, and wires it into `/apply`. See the "LaTeX templates" section in the README.
 
 ## 7b. Global junior-Flutter search (this fork)
 
@@ -327,9 +327,11 @@ export BRAVE_SEARCH_API_TOKEN=...                 # Bash / zsh / Git Bash
 $env:BRAVE_SEARCH_API_TOKEN = "..."               # PowerShell (current session)
 ```
 
-**Hard rules.** `/scrape` and `/rank` run `tools/job_rules.py` (Cambodia, India onsite/hybrid, internships, seniority, the IDR 5,000,000/month salary floor with daily-cached currency conversion, eligibility, safety screening). The rules are specified in `04-job-evaluation.md` and pinned by `tests/test_job_rules.py`. Official warnings about specific employers go in `tools/data/safety_watchlist.json` (with source and date); rough living costs for ranking are in `tools/data/cost_of_living.json`.
+**Hard rules.** `/scrape` and `/rank` run `tools/job_rules.py` (Cambodia, India onsite/hybrid, internships per `--intern off|remote|onsite` with default `remote`, unpaid roles, seniority, the pay rules from `tools/data/salary_benchmarks.json` with daily-cached currency conversion, relocation countries, eligibility, safety screening). The rules are specified in `04-job-evaluation.md` and pinned by `tests/test_job_rules.py`. Official warnings about specific employers go in `tools/data/safety_watchlist.json` (with source and date); the salary floor, junior salary benchmarks, living costs, tax rates and relocation countries are in `tools/data/salary_benchmarks.json` (refresh with `/benchmarks refresh`; `python tools/pay_lint.py` checks the prose against it).
 
 **`/submit` (opt-in, email only).** Sends one finished application by email after your "yes"; for anything else it prints a checklist (link, file paths, copy-paste answers) and you submit it yourself. It opens no browser. See `.claude/commands/submit.md`.
+
+**Connector sources (opt-in).** If your claude.ai account has the Indeed, ZipRecruiter, Dice, Upwork or Firecrawl connectors, `/scrape` uses them (Step 1d of the job-scraper skill; switches and rules in `.claude/skills/job-scraper/connectors.md`). Upwork is read-only and its write tools are denied in `.claude/settings.json`; Firecrawl is billed per request, so every query is cached for 24 hours and a run stops at 50 calls (`firecrawl.max_calls_per_run`). Connectors that are not loaded are skipped.
 
 **`/autopilot` (opt-in).** Scrape, rank, sort jobs and gigs by pay, prepare documents, then one question before any email goes out. Everything that is not email ends as `ready_to_submit` with a checklist. Email attachments through the Gmail connector cost about 200 KB of base64 per email in the model's context; to avoid that, set `GMAIL_SMTP_USER` and `GMAIL_APP_PASSWORD` (a Google app password) and the tool sends over SMTP itself. Keep both in your environment or a gitignored `.env`. `/propose` still uses the Playwright CLI for its fill-only proposal step.
 
@@ -368,9 +370,9 @@ This is expected if you haven't set up salary benchmarking. The `/apply` workflo
 Make sure Bun is installed and you ran `bun install` in each CLI directory. The tools require network access to fetch job listings.
 
 ### LaTeX compilation errors
-- CV: uses `lualatex` (pdflatex often fails on modern MiKTeX with `fontawesome5` font-expansion errors; lualatex handles the same sources cleanly)
+- CV: uses `lualatex` (`resume.cls` requires `fontspec`, which pdflatex cannot run)
 - Cover letter: uses `xelatex` (for custom fonts in `OpenFonts/fonts/`)
-- Make sure your LaTeX distribution includes the `moderncv` package
+- Older tailored CVs that load `moderncv` still need that package
 
 ### Fonts not found in cover letter
 The cover letter template expects fonts in `cover_letters/OpenFonts/fonts/`. Make sure this directory exists and contains the Lato and Raleway font files.

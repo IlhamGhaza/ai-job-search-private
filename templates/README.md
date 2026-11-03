@@ -1,6 +1,6 @@
 # Custom Templates
 
-This folder holds user-registered templates (LaTeX, Typst, or any other toolchain with a declared compile command), managed by the `/add-template` command. The framework works out of the box with its stock templates (moderncv for CVs, `cover.cls` for cover letters) — this folder only gets content when you register your own.
+This folder holds user-registered templates (LaTeX, Typst, or any other toolchain with a declared compile command), managed by the `/add-template` command. The framework works out of the box with its stock templates (`resume.cls` for CVs, `cover.cls` for cover letters) — this folder only gets content when you register your own.
 
 ## Layout
 

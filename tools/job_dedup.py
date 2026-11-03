@@ -77,6 +77,8 @@ def source_rank(job: dict) -> int:
         return 0  # the employer's own listing
     if on_ats(job.get("apply_url")):
         return 1  # a board pointing at the employer's listing
+    if str(job.get("portal") or "").endswith("-connector"):
+        return 2.5  # a connector's redirect link: the portal's own listing of the same job is the better place to apply
     return 2
 
 

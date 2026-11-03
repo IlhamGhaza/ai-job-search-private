@@ -4,58 +4,33 @@
 % Example cover letter with placeholder content. This is the structural
 % reference for /apply (see 06-cover-letter-templates.md) and the CI smoke
 % test for cover.cls: it must always compile with xelatex to exactly 1 page.
-% It demonstrates the correct itemize pattern: the list sits OUTSIDE
-% \lettercontent{} (whose trailing \\ errors on \end{itemize}) and is
-% wrapped in Raleway-Medium so the bullet font matches the body.
+% Target 250-300 words of body text.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\documentclass[]{cover}
-\usepackage{fancyhdr}
-
-\pagestyle{fancy}
-\fancyhf{}
-
-\rfoot{Page \thepage \hspace{0pt}}
-\thispagestyle{empty}
-\renewcommand{\headrulewidth}{0pt}
+\documentclass{cover}
+\hypersetup{pdftitle={[YOUR NAME] - Cover Letter},pdfauthor={[YOUR NAME]}}
 \begin{document}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%     TITLE NAME
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\namesection{}{\Huge{[YOUR NAME]}}{  \href{mailto:your.email@example.com}{your.email@example.com} | [+XX XXXXXXXXXX] |  \urlstyle{same}\href{https://www.linkedin.com/in/yourprofile}{LinkedIn}
-}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%     MAIN COVER LETTER CONTENT
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\namesection{}{[YOUR NAME]}{[City, Country]\contactsep \href{mailto:your.email@example.com}{your.email@example.com}\contactsep [+XX XXXXXXXXXX]\\
+\href{https://www.linkedin.com/in/yourprofile}{linkedin.com/in/yourprofile}}
 
 \currentdate{\today}
+
 \lettercontent{Dear [Hiring Manager / Team],}
 
-\lettercontent{[Opening paragraph: name the role and where you found it, state your strongest connection to it in one sentence, and preview why you are a fit. Keep it to 2--3 sentences.]}
+\lettercontent{[Opening: name the role, state your strongest connection to it in one sentence, and say why this company. Keep it to 2--3 sentences.]}
 
-\lettercontent{[Body paragraph: your most relevant experience, framed toward the tasks in the posting. Follow with 3--5 concrete bullets:]}
-
-{\raggedright\fontspec[Path = OpenFonts/fonts/raleway/]{Raleway-Medium}\fontsize{11pt}{13pt}\selectfont
+\lettercontent{[Evidence: your most relevant experience, framed toward the tasks in the posting. Follow with up to three concrete bullets:]
 \begin{itemize}
-    \item \textbf{[Achievement 1]:} [concrete result with a number where possible]
-    \item \textbf{[Achievement 2]:} [skill or project mapped to a posting requirement]
-    \item \textbf{[Achievement 3]:} [evidence for a nice-to-have requirement]
-\end{itemize}\par}
-\vspace{6pt}
+    \item \textbf{[Requirement 1]:} [what you did, with a real number where the profile has one]
+    \item \textbf{[Requirement 2]:} [a project or skill mapped to a posting requirement]
+    \item \textbf{[Requirement 3]:} [evidence for a nice-to-have, or an honest bridge to a gap]
+\end{itemize}}
 
-\lettercontent{[Connection paragraph: why this company specifically. Reference a verified specific: a product, a stated priority, a team. Never generic.]}
+\lettercontent{[Company: why this company specifically. Reference one verified specific, such as a product, a stated priority or a team, and say what you would contribute to it.]}
 
-\lettercontent{[Personal fit paragraph: behavioral strengths and what you bring to the team, 2--3 sentences.]}
+\lettercontent{[Close: availability or logistics the posting raises, and one plain sentence inviting the next step.]}
 
-\lettercontent{I look forward to hearing from you.}
-
-\begin{flushright}
-% Note: no trailing \\ inside \closing{} - cover.cls appends its own \\, and a
-% doubled break triggers "There's no line here to end."
 \closing{Kind regards,}
-
 \signature{[YOUR NAME]}
-\end{flushright}
 \end{document}

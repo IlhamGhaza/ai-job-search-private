@@ -136,50 +136,35 @@ class TestAtsExtractionEncoding(unittest.TestCase):
         self.assert_pdftotext_commands_pin_utf8(CV_TEMPLATES)
 
 
-class TestPdflatexFontEncodingGuard(unittest.TestCase):
-    """#384: the pdflatex fallback must load T1 fontenc, and only under pdflatex.
+class TestCvClassKeepsTheTextLayerClean(unittest.TestCase):
+    """resume.cls and cover.cls exist so the ATS reads what the page shows."""
 
-    Without T1, pdflatex stores accented letters decomposed in the text layer
-    (`e` + U+0300), so an ATS keyword match on `Genève` fails while the PDF
-    looks right. moderncv 2.5 loads T1 itself; the apt-packaged 2.3.1 does not.
-    The line must be guarded so the documented lualatex path is untouched.
-    """
+    def test_both_classes_turn_off_ligatures_and_hyphenation(self):
+        for path in (REPO / "cv" / "resume.cls", REPO / "cover_letters" / "cover.cls"):
+            text = path.read_text(encoding="utf-8")
+            with self.subTest(path=path.name):
+                self.assertIn("NoCommon", text)
+                self.assertIn(r"\hyphenpenalty=10000", text)
 
-    GUARDED_FONTENC = re.compile(r"\\ifpdftex\s*\\usepackage\[T1\]\{fontenc\}\s*\\fi")
+    def test_cv_class_refuses_pdflatex_and_loads_no_icons(self):
+        text = (REPO / "cv" / "resume.cls").read_text(encoding="utf-8")
+        self.assertRegex(text, r"\\ifpdftex\s*\\ClassError")
+        self.assertNotIn("fontawesome", text)
 
-    def assert_has_guarded_fontenc(self, path):
-        text = path.read_text(encoding="utf-8")
-        self.assertRegex(
-            text,
-            self.GUARDED_FONTENC,
-            f"{path.name} must carry `\\ifpdftex\\usepackage[T1]{{fontenc}}\\fi` so a "
-            "pdflatex fallback keeps accents precomposed in the text layer",
-        )
-        unguarded = [
-            f"{path.name}:{lineno}: {line.strip()}"
-            for lineno, line in enumerate(text.splitlines(), 1)
-            if "fontenc" in line
-            and not line.lstrip().startswith("%")
-            and not self.GUARDED_FONTENC.search(line)
-        ]
-        self.assertEqual(
-            unguarded,
-            [],
-            "fontenc must stay inside the \\ifpdftex guard - lualatex output "
-            "must not change:\n" + "\n".join(unguarded),
-        )
+    def test_example_cv_uses_the_class(self):
+        self.assertIn(r"\documentclass{resume}", EXAMPLE_CV.read_text(encoding="utf-8"))
 
-    def test_example_cv_guards_fontenc_for_pdflatex(self):
-        self.assert_has_guarded_fontenc(EXAMPLE_CV)
-
-    def test_cv_guide_preamble_guards_fontenc_for_pdflatex(self):
-        self.assert_has_guarded_fontenc(CV_TEMPLATES)
+    def test_guides_protect_the_original_cv(self):
+        for path in (CV_TEMPLATES, COVER_TEMPLATES, APPLY, REPO / "CLAUDE.md"):
+            with self.subTest(path=path.name):
+                self.assertIn("documents/cv/", path.read_text(encoding="utf-8"))
+        self.assertRegex(CV_TEMPLATES.read_text(encoding="utf-8"), r"Never modify, overwrite, replace")
 
 
 class TestGeometryScaleAlignment(unittest.TestCase):
-    """The geometry scale specified in 05-cv-templates.md must match cv/main_example.tex."""
+    """The geometry specified in 05-cv-templates.md must match cv/main_example.tex."""
 
-    GEOMETRY_SCALE = re.compile(r"\\usepackage\[scale=([0-9.]+)\]\{geometry\}")
+    GEOMETRY_SCALE = re.compile(r"\\usepackage\[([^\]]+)\]\{geometry\}")
 
     def test_cv_guide_and_example_cv_share_geometry_scale(self):
         cv_match = self.GEOMETRY_SCALE.search(EXAMPLE_CV.read_text(encoding="utf-8"))

@@ -7,11 +7,8 @@ checked by looking at the rendered page, which is exactly how they get missed. E
 failure below produces a clean compile, a correct page count, and a PDF that passes
 `tools/verify_pdf.py`:
 
-  orphaned entry      A moderncv \\cventry renders as a tabular, so a job entry is one
-                      unbreakable block. When it does not fit, the whole entry moves to
-                      the next page - or its header lands at the bottom of one page with
-                      the bullets resuming on the next. CLAUDE.md calls this "the most
-                      common failure".
+  orphaned entry      A \\cventry header lands at the bottom of one page with the bullets
+                      resuming on the next. CLAUDE.md calls this "the most common failure".
   internal hole       The space an ejected entry leaves behind. Observed in the wild at
                       273pt, roughly 19 blank lines, mid-page, on a document whose page
                       count was correct and whose visual read looked fine.
@@ -38,7 +35,7 @@ as a font-size proxy to spot section headings. An orphaned entry header is found
 each line's TEXT starts, after any list marker merged into it, not by its left edge (see
 `find_orphans`).
 
-The thresholds below are calibrated for the stock moderncv (`cv/`) and cover.cls
+The thresholds below are calibrated for the stock resume.cls (`cv/`) and cover.cls
 (`cover_letters/`) geometry. A template registered via `/add-template` may need them
 retuned - an article-class page number sitting outside the 90pt footer band, for
 instance, is read as body text and turns the space above it into a phantom hole.
@@ -382,7 +379,7 @@ def find_orphans(pages: list[Page]) -> list[str]:
     return problems
 
 
-def report(path: Path, pages: list[Page]) -> list[str]:
+def report(path: Path, pages: list[Page], allow_short_last_page: bool = False) -> list[str]:
     problems: list[str] = []
     print(f"{path}: {len(pages)} page(s) (page count is verify_pdf.py's job, not checked here)")
 
@@ -403,7 +400,7 @@ def report(path: Path, pages: list[Page]) -> list[str]:
         if gap > GAP_LIMIT_PT:
             problems.append(
                 f"p{i} has a {gap:.0f}pt hole at y{gap_y:.0f} (~{gap / 14:.0f} blank lines). "
-                "A moderncv \\cventry is an unbreakable tabular: shorten the entry that "
+                "A block that did not fit jumped to the next page: shorten the entry that "
                 "follows the hole so it fits, or move a shorter section above it"
             )
         if i < len(pages) and share > BOTTOM_LIMIT_FRACTION:
@@ -416,7 +413,7 @@ def report(path: Path, pages: list[Page]) -> list[str]:
                 f"p{i} has body text inside the bottom margin band, colliding with the "
                 "footer; stop stretching the page with \\enlargethispage and cut content"
             )
-        if i == len(pages) > 1 and share > LAST_PAGE_THIN_FRACTION:
+        if i == len(pages) > 1 and share > LAST_PAGE_THIN_FRACTION and not allow_short_last_page:
             problems.append(
                 f"p{i} is the last page and {share * 100:.0f}% empty, which reads as an "
                 "unfinished document; restore the highest-relevance content previously cut"
@@ -443,6 +440,7 @@ def main() -> int:
     _force_utf8_output()
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("pdf", nargs="?", type=Path)
+    ap.add_argument("--allow-short-last-page", action="store_true", help="accept a partly full last page (a 1-2 page CV)")
     args = ap.parse_args()
 
     if not args.pdf:
@@ -457,7 +455,7 @@ def main() -> int:
         print(f"skipped: {exc}", file=sys.stderr)
         return 2
 
-    problems = report(args.pdf, pages)
+    problems = report(args.pdf, pages, args.allow_short_last_page)
     if problems:
         print("\nLAYOUT PROBLEMS:")
         for m in problems:

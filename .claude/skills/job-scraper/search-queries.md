@@ -25,7 +25,7 @@ Secondary (company career pages via Google):
 
 Target, accept/reject rules and the hard rules live in `04-job-evaluation.md` ("Global Junior Flutter Search - Hard Rules"). This section only says **what to ask each portal**. Searches are global; the priority countries below steer *where to look first* and how `/rank` orders results - they never exclude a job.
 
-**Priority countries:** US, CA, GB, IE, DE, NL, CH, AT, BE, LU, DK, SE, NO, FI, IS, SG, AU, NZ, JP, KR + Southeast Asia (SG, MY, PH, TH, VN, ID, BN, TL).
+**Priority countries:** the `relocation_countries` in `tools/data/salary_benchmarks.json` plus Indonesia (`python3 tools/job_rules.py benchmarks` lists them). The same list decides where onsite work is allowed, so search and relocation cannot drift apart.
 
 **Title vocabulary** (combine with `OR` where the portal supports it):
 `junior flutter`, `flutter developer`, `flutter engineer`, `junior dart`, `junior mobile developer`, `junior mobile engineer`, `cross-platform developer`, `associate mobile engineer`, `graduate mobile engineer`, `entry level flutter`.
@@ -100,10 +100,10 @@ site:wellfound.com Flutter developer remote
 
 ## Location Filter
 
-Preference is remote-first; relocation is acceptable only within the target countries below. When evaluating results, apply this filter:
+Preference is remote-first; relocation is acceptable only within the relocation countries in `tools/data/salary_benchmarks.json`. `tools/job_rules.py` enforces this; the filter below describes it:
 - **Ideal:** Fully remote, worldwide or Indonesia-inclusive
-- **Acceptable:** Remote or relocation-sponsored roles in United States, Canada, United Kingdom, Ireland, Germany, Netherlands, Switzerland, Austria, Belgium, Luxembourg, Denmark, Sweden, Norway, Finland, Iceland, Singapore, Australia, New Zealand, Japan, South Korea
-- **Borderline:** On-site-only roles in Indonesia (Bogor/Jakarta area) - flag, not a hard pass, since preference is remote
+- **Acceptable:** Remote, or onsite/hybrid in a relocation country (the developed markets plus Malaysia, Philippines, Thailand, Vietnam, Brunei and Timor-Leste)
+- **Indonesia onsite:** Jabodetabek allowed (`onsite (prefers remote)`); other cities allowed as `relocation: domestic`, ranked lower
 - **Too far / exclude:** Relocation required to a country outside the list above, or to a country with active conflict, severe political instability, or very limited tech market
 
 ## Language Filter

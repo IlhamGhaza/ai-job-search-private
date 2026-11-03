@@ -33,6 +33,8 @@ Optional arguments:
 - A focus area, e.g. "/scrape data science" or "/scrape geophysics"
 - "broad" to run all search categories, e.g. "/scrape broad"
 - `--jobs-only` / `--gigs-only`: which record types to find. Default both: jobs from the portal skills, gigs from the freelance skills. `/gigs` is an alias for `/scrape --gigs-only`.
+- `--intern [off|remote|onsite]`: internships. Default `remote` (a bare `--intern` also means `remote`). `off` neither searches for nor keeps them; `remote` keeps remote ones only; `onsite` also accepts onsite and hybrid. Unpaid is rejected in every mode. Pass the mode to every `tools/connector_sources.py` and `tools/job_rules.py evaluate` call below. Unless the mode is `off`, also run each enabled portal skill's search once more with `flutter intern` as the query. It has no effect on gigs.
+- `--dry-run`: run Steps 0-2.25 and report what each source returned (per-source counts, empty countries, Firecrawl calls and estimated credits), but store nothing in `job_scraper/seen_jobs.json`
 - "health" to run the portal health check only (Step 4.75), without searching, deduplicating, or presenting jobs - e.g. "/scrape health", or "/scrape health jobnet" to probe one portal even if disabled
 
 ---
@@ -69,7 +71,7 @@ If this fails (bun not installed), skip to **1c (WebSearch fallback)** for all p
 
 #### 1b. Run CLI tools (primary — run these in parallel where possible)
 
-Discover all installed portal CLI skills by reading every `SKILL.md` found under `.agents/skills/*/SKILL.md`. Each file documents that portal's exact CLI flags and usage examples. **Use each portal's own documented interface — do not guess flags.** This approach automatically includes any new portals added via `/add-portal` without requiring changes to this file.
+Discover all installed portal CLI skills by reading every `SKILL.md` found under `.agents/skills/*/SKILL.md` whose directory has a `cli/` folder (a skill without one, such as `frontend-design`, is not a portal). Each file documents that portal's exact CLI flags and usage examples. **Use each portal's own documented interface — do not guess flags.** This approach automatically includes any new portals added via `/add-portal` without requiring changes to this file.
 
 **Freelance skills are not part of this pool.** A skill whose frontmatter sets `category: freelance` (Upwork, Freelancer.com, Contra, ...) returns gigs, not jobs. Step 4.6 runs it, and its results never enter `job_scraper/seen_jobs.json`.
 
@@ -88,6 +90,24 @@ Run all portal CLI calls in parallel where possible using the Agent tool. Collec
 If a CLI tool exits with a non-zero code, log the error message and continue — do not abort the whole search. Record each such portal for the Step 5 `failed portals` count. Two codes are not failures: `MISSING_CREDENTIALS` (e.g. `BRAVE_SEARCH_API_TOKEN` unset for `linkedin-posts-search`, `jobstreet-search`, `jobsites-search`) is reported as `skipped (no credentials)`, and stderr lines with `"code": "WARNING"` (one company board or one site failed inside a multi-source portal) are listed but the portal's results still count.
 
 **Discovery-only portals.** `linkedin-posts-search`, `jobstreet-search` and `jobsites-search` return search-engine leads (`verification_status: unverified_lead`; LinkedIn posts also `source_type: social_post`). Keep them in the pool, but never present a lead as a verified posting: their `detail` returns `MANUAL_ONLY` for boards that may not be fetched - those jobs need the real listing (employer site / ATS) or a pasted description before `/apply`.
+
+#### 1d. Connector sources (Indeed, ZipRecruiter, Dice, Upwork, Firecrawl)
+
+The claude.ai connectors are extra sources next to the portal skills. They are MCP tools, so you call them; `tools/connector_sources.py` plans, gates and normalises. Settings, allowed tools and per-source notes are in [connectors.md](connectors.md) (each connector has an `enabled` switch there). **Never call LinkedIn Hiring Pro or Snagajob** (they post jobs / are US retail), and never an Upwork tool that writes, spends Connects or changes the account: they are denied in `.claude/settings.json`.
+
+1. **Which are loaded.** List the MCP tools in this session. A connector whose tools are absent or that needs authentication is `missing`: say so in the Step 5 summary and skip it, never fail the run.
+2. **Plan** (add `--jobs-only` / `--gigs-only` per the arguments):
+   ```bash
+   python3 tools/connector_sources.py plan
+   ```
+   It lists the exact calls per enabled connector: Indeed per priority country (and `remote`), ZipRecruiter US/CA, Dice remote and `willing_to_sponsor`, Upwork read-only searches, and the Firecrawl searches for portals without an API (capped).
+3. **Run each call, then ingest its raw answer.** Before a call you are unsure of: `check-tool --tool <name> --args '<json>'` (exit 3 = do not call). Save the tool's answer to a temporary file and run:
+   ```bash
+   python3 tools/connector_sources.py ingest --connector indeed --file <answer.json> --meta '{"country":"SG"}'
+   ```
+   It writes normalised records to `job_scraper/connector_pool.json` (`type: job` or `gig`) and prints `empty` (log it; an empty country is not an error), `detail_candidates` (call `get_job_details` only for these, max per `connectors.md`) and `next` (the next page: for ZipRecruiter echo its `offset` and `conversation_id`, for Upwork the `cursor`; stop on `null`). Detail answers go through `ingest --detail --meta '{"job_id":"<id>"}'`. Dice's detail id is the `guid`. Stop Upwork `get` calls on `JOB_BROWSE_COOLDOWN`; call it only for shortlisted gigs.
+4. **Firecrawl** replaces the Brave Search API wherever a portal skill needed one (`linkedin-posts-search`, `jobstreet-search`, `jobsites-search`, the gig discovery skills): run `fc-begin` once per run, then **`fc-check` before every call** (`use_cache` = use `results`, `call` = make it, `cap_reached` = stop, `refused` = skip), then `fc-store` the answer. Search results and public pages only: no login, no saved profile, no stealth/enhanced proxy; never scrape the LinkedIn feed or any Upwork page; `fc-check --url` checks robots.txt first. Ingest results with `--connector firecrawl --meta '{"source":"<source key>","query":"<query>"}'`: they are unverified leads, never confirmed postings. Skip a Brave-based skill when `firecrawl.web_search_provider = firecrawl`. **When it is `router`** (Tavily first, Brave only as the last resort, monthly caps enforced in `tools/search_router.py`), skip Firecrawl and the Brave-based skills too and run `python3 tools/connector_sources.py ws-run [--jobs-only|--gigs-only] [--source <key>]` once: it searches every query and ingests the hits as unverified leads (portal `websearch-<source>`). Exit 3 means Tavily and Brave are both exhausted or missing a key: report it in the Step 5 summary and carry on without those sources.
+5. **Merge.** `jobs` from the pool join Step 1b's pool for Step 2 (`job_dedup.py` merges an Indeed record with the same job from a portal skill, keeping the portal's listing as the one to apply through; the hard rules in Step 2.25 apply unchanged: Indeed salary is usually missing, so `needs_salary_verification`; a Dice US onsite job without sponsorship goes to Needs verification). `gigs` go to Step 4.6 with the freelance skills' output, where Upwork comes from the connector instead of the search-engine mode.
 
 #### 1c. WebSearch fallback
 
@@ -159,12 +179,12 @@ The `candidates` command applies these rules before a detail request:
 Run the fetched jobs (search output plus any `detail` fields) through the hard rules before the quick fit check:
 
 ```bash
-python3 tools/job_rules.py evaluate --in "<temporary fetched jobs.json>"
+python3 tools/job_rules.py evaluate --in "<temporary fetched jobs.json>" --intern <mode>
 ```
 
-It applies `04-job-evaluation.md`'s "Global Junior Flutter Search - Hard Rules" in code - Cambodia, India onsite/hybrid, internships / training programs / unpaid / senior roles, the IDR 5,000,000 monthly salary floor with currency conversion (`tools/fx_rates.py`, cached daily), remote eligibility, visa evidence, safety screening and `apply_method` - and returns each job under one section (`confirmed`, `needs_verification`, `manual_safety_review`, `rejected`) with its reasons, plus a `needs_login` map grouped by portal. **Its verdict is final for those rules**: never override a `rejected` with fit judgment, and never upgrade a `safety_screening`.
+It applies `04-job-evaluation.md`'s "Global Junior Flutter Search - Hard Rules" in code - Cambodia, India onsite/hybrid, internships per `--intern`, training programs / unpaid / senior roles, the pay rules from `tools/data/salary_benchmarks.json` (salary floor for remote, net pay vs living cost for onsite and hybrid, salary tiers for undisclosed pay) with currency conversion (`tools/fx_rates.py`, cached daily), the relocation countries, remote eligibility, visa evidence, safety screening and `apply_method` - and returns each job under one section (`confirmed`, `needs_verification`, `manual_safety_review`, `rejected`) with its reasons, plus a `needs_login` map grouped by portal. **Its verdict is final for those rules**: never override a `rejected` with fit judgment, and never upgrade a `safety_screening`.
 
-Copy these fields onto each job before Step 4 stores it (additive to the schema): `rules_section`, `rules_reasons` (the `reasons` list), `safety_screening`, `apply_method`, `salary_idr_monthly_min`, `fx_rate`, `fx_date`. A `rejected` job is stored with `"status": "skipped"` and `"fit": "low"` so it is never re-fetched, and is not presented as a match.
+Copy these fields onto each job before Step 4 stores it (additive to the schema): `rules_section`, `rules_reasons` (the `reasons` list), `safety_screening`, `apply_method`, `eligibility` (from `location`), `salary_source`, `salary_tier`, `benchmark_median_idr`, `underpaid_for_market`, `arrangement`, `expected_salary_suggestion`, `salary_idr_monthly_min`, `fx_rate`, `fx_date`. A `rejected` job is stored with `"status": "skipped"` and `"fit": "low"` so it is never re-fetched, and is not presented as a match.
 
 ### Step 2.5: Mass-Posting Detection (within this run)
 

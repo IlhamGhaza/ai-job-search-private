@@ -206,7 +206,7 @@ jobs:
         if: github.repository == 'ai-job-search-dev/ai-job-search'
         run: |
           python3 tools/verify_pdf.py cv/main_example.pdf \
-            --pages 2 \
+            --max-pages 2 \
             --ascii-dates \
             --contains '[your.email@example.com]' \
             --contains 'Professional Experience' \

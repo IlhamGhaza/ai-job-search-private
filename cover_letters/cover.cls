@@ -1,96 +1,69 @@
-% Intro Options
-\ProvidesClass{cover}[2024/04/30 Cover letter class]
+% cover.cls - one-page cover letter class. Compile with xelatex.
+%
+% Shares its font, colour and header with cv/resume.cls. \lettercontent can hold
+% an itemize directly and every paragraph uses one font, so no \fontspec wrapper
+% is needed around a list. Common ligatures and hyphenation are off to keep the
+% text layer clean.
+\ProvidesClass{cover}[2026/10/31 Cover letter class]
 \NeedsTeXFormat{LaTeX2e}
-\DeclareOption{print}{\def\@cv@print{}}
 \DeclareOption*{%
   \PassOptionsToClass{\CurrentOption}{article}
 }
 \ProcessOptions\relax
-\LoadClass{article}
+\LoadClass[a4paper]{article}
 
 % Package Imports
-\usepackage[hmargin=2.3cm, vmargin=2.3cm]{geometry}
+\usepackage[hmargin=25mm,top=22mm,bottom=22mm]{geometry}
+\usepackage{xcolor}
+\usepackage{fontspec}
+\usepackage{enumitem}
 \usepackage[hidelinks]{hyperref}
-\usepackage[usenames,dvipsnames]{xcolor}
-\usepackage{titlesec}
-\usepackage[absolute]{textpos}
-\usepackage{fontspec,xltxtra,xunicode}
 
-% Publications
-\usepackage{cite}
-\renewcommand\refname{\vskip -1.5cm}
+% Fonts and colours: keep in step with resume.cls
+\definecolor{accent}{HTML}{1F3A5F}
+\definecolor{bodytext}{HTML}{222222}
+\definecolor{muted}{HTML}{555555}
+\definecolor{rulecolor}{HTML}{C5CDD8}
 
-% Color definitions
-\definecolor{date}{HTML}{666666}
-\definecolor{primary}{HTML}{2b2b2b}
-\definecolor{headings}{HTML}{6A6A6A}
-\definecolor{subheadings}{HTML}{333333}
+\setmainfont{Lato}[
+  Path=OpenFonts/fonts/lato/,
+  Extension=.ttf,
+  UprightFont=*-Reg,
+  BoldFont=*-Bol,
+  ItalicFont=*-RegIta,
+  BoldItalicFont=*-BolIta,
+  Ligatures={TeX,NoCommon},
+]
+\renewcommand{\normalsize}{\fontsize{10.5pt}{15pt}\selectfont}
+\AtBeginDocument{\color{bodytext}\raggedright}
+\hypersetup{colorlinks=true,linkcolor=accent,urlcolor=accent,pdfpagemode=UseNone}
+\urlstyle{same}
 
-% Set main fonts
-\setmainfont[Color=primary, Path = OpenFonts/fonts/lato/,BoldItalicFont=Lato-RegIta,BoldFont=Lato-Reg,ItalicFont=Lato-LigIta]{Lato-Lig}
-\setsansfont[Scale=MatchLowercase,Mapping=tex-text, Path = OpenFonts/fonts/raleway/]{Raleway-ExtraLight}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0pt}
+\pagestyle{empty}
+\hyphenpenalty=10000
+\exhyphenpenalty=10000
+\emergencystretch=2em
 
-% Date command
-\setlength{\TPHorizModule}{1mm}
-\setlength{\TPVertModule}{1mm}
-\newcommand{\lastupdated}{\begin{textblock}{60}(155,5)
-\color{date}\fontspec[Path = OpenFonts/fonts/raleway/]{Raleway-ExtraLight}\fontsize{8pt}{10pt}\selectfont 
-Last Updated on \today
-\end{textblock}}
+\newcommand{\contactsep}{\ \textcolor{rulecolor}{|}\ }
 
-% Name command
-\newcommand{\namesection}[3]{
-\centering{
-\fontsize{40pt}{60pt}
-\fontspec[Path = OpenFonts/fonts/lato/]{Lato-Hai}\selectfont #1 
-\fontspec[Path = OpenFonts/fonts/lato/]{Lato-Lig}\selectfont #2
-} \\[5pt]
-\centering{
-\color{headings}
-\fontspec[Path = OpenFonts/fonts/raleway/]{Raleway-Medium}\fontsize{11pt}{14pt}\selectfont #3}
-\noindent\makebox[\linewidth]{\color{headings}\rule{\paperwidth}{0.0pt}}
-\vspace{0pt}
+% \namesection{unused}{name}{contact line}
+\newcommand{\namesection}[3]{%
+  {\fontsize{22pt}{26pt}\selectfont\bfseries\color{accent}#1#2\par}%
+  \vspace{4pt}%
+  {\color{muted}\fontsize{9.5pt}{13pt}\selectfont #3\par}%
+  \vspace{6pt}%
+  {\color{accent}\hrule height 1pt}%
+  \vspace{14pt}%
 }
 
-% Section seperators
-\titlespacing{\section}{0pt}{0pt}{0pt}
-\titlespacing{\subsection}{0pt}{0pt}{0pt}
-\newcommand{\sectionsep}{\vspace{8pt}}
+% Letter blocks. A recipient block is optional.
+\newcommand{\currentdate}[1]{{\color{muted}#1\par}\vspace{10pt}}
+\newcommand{\companyname}[1]{{\bfseries #1\par}}
+\newcommand{\companyaddress}[1]{{#1\par}\vspace{10pt}}
+\newcommand{\lettercontent}[1]{{#1\par}\vspace{9pt}}
+\newcommand{\closing}[1]{\vspace{3pt}{#1\par}\vspace{16pt}}
+\newcommand{\signature}[1]{{\bfseries #1\par}}
 
-% Headings command
-\titleformat{\section}{\color{headings}
-\scshape\fontspec[Path = OpenFonts/fonts/lato/]{Lato-Lig}\fontsize{16pt}{24pt}\selectfont \raggedright\uppercase}{}{0em}{}
-
-% Subeadings command
-\titleformat{\subsection}{
-\color{subheadings}\fontspec[Path = OpenFonts/fonts/lato/]{Lato-Bol}\fontsize{12pt}{12pt}\selectfont\bfseries\uppercase}{}{0em}{}
-
-\newcommand{\runsubsection}[1]{
-\color{subheadings}\fontspec[Path = OpenFonts/fonts/lato/]{Lato-Bol}\fontsize{12pt}{12pt}\selectfont\bfseries\uppercase {#1} \normalfont}
-
-% Descriptors command
-\newcommand{\descript}[1]{
-\color{subheadings}\raggedright\scshape\fontspec[Path = OpenFonts/fonts/raleway/]{Raleway-Medium}\fontsize{11pt}{13pt}\selectfont {#1 \\} \normalfont}
-
-% Location command
-\newcommand{\location}[1]{
-\color{headings}\raggedright\fontspec[Path = OpenFonts/fonts/raleway/]{Raleway-Medium}\fontsize{10pt}{12pt}\selectfont {#1\\} \normalfont}
-
-% Bullet Lists with fewer gaps command
-\newenvironment{tightemize}{
-\vspace{-\topsep}\begin{itemize}\itemsep1pt \parskip0pt \parsep0pt}
-{\end{itemize}\vspace{-\topsep}}
-
-% Cover Letter
-\newcommand{\companyname}[1]{\raggedright\fontspec[Path = OpenFonts/fonts/lato/]{Lato-Bol}\fontsize{12pt}{14pt}\selectfont {#1 \\} \normalfont}
-
-\newcommand{\companyaddress}[1]{\raggedright\fontspec[Path = OpenFonts/fonts/raleway/]{Raleway-Medium}\fontsize{11pt}{13pt}\selectfont {#1 \\}\mbox{}\\\mbox{}\\ \normalfont}
-
-\newcommand{\currentdate}[1]{\raggedleft\fontspec[Path = OpenFonts/fonts/raleway/]{Raleway-Medium}\fontsize{11pt}{13pt}\selectfont {#1 \\} \normalfont}
-
-% Letter content command
-\newcommand{\lettercontent}[1]{\raggedright\fontspec[Path = OpenFonts/fonts/raleway/]{Raleway-Medium}\fontsize{11pt}{13pt}\selectfont {#1 \\}\mbox{}\\ \normalfont}
-
-\newcommand{\closing}[1]{\raggedright\fontspec[Path = OpenFonts/fonts/raleway/]{Raleway-Medium}\fontsize{11pt}{13pt}\selectfont {#1 \\}\mbox{}\\\mbox{}\\ \normalfont}
-
-\newcommand{\signature}[1]{\raggedright\fontspec[Path = OpenFonts/fonts/raleway/]{Raleway-Medium}\fontsize{11pt}{13pt}\selectfont {#1 \\} \normalfont}
+\setlist[itemize]{leftmargin=14pt,labelsep=5pt,topsep=3pt,partopsep=0pt,parsep=0pt,itemsep=3pt,label={\textbullet}}

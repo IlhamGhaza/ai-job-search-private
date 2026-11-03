@@ -25,7 +25,7 @@ source_type (api|search_lead), verification_status, description.
 
 Rules:
 1. Rate floor. Hourly: the minimum rate converted to IDR must be >= monthly
-   floor / hours per month (IDR 5,000,000 / 173 h = IDR 28,902/h by default).
+   floor / hours per month, both from tools/data/salary_benchmarks.json (floor / 173 h by default).
    Fixed price: converted to IDR; with a duration, the effective monthly rate
    (total / longest stated duration in months) must be >= the monthly floor;
    without one the gig goes to needs_budget_client_review, never rejected.
@@ -64,6 +64,7 @@ from job_rules import (  # noqa: E402
     CAMBODIA_PLACES,
     INDIA_PLACES,
     INJECTION,
+    HOURS_PER_MONTH as HOURS_FROM_CONFIG,
     SAFETY_REJECT,
     SALARY_FLOOR_IDR_MONTHLY,
     UNPAID,
@@ -78,7 +79,7 @@ ROOT = Path(__file__).resolve().parent.parent
 DATA = Path(__file__).resolve().parent / "data"
 TRACKER = ROOT / "freelance_tracker.csv"
 
-HOURS_PER_MONTH = 173
+HOURS_PER_MONTH = HOURS_FROM_CONFIG
 SECTIONS = ("good_fits", "needs_budget_client_review", "manual_safety_review", "rejected")
 
 # ---------------------------------------------------------------- patterns
@@ -135,6 +136,11 @@ HARD_REJECT: list[tuple[re.Pattern, str]] = [
                 r"(?:rent|lend|sell)\s+(?:me\s+)?(?:your\s+)?(?:google\s+play|play\s+console|apple)\s+developer\s+account|\bcloaking\b|"
                 r"(?:re-?skin|clone)\s+(?:of\s+)?(?:an?\s+)?(?:existing|banned|removed)\s+app", re.I),
      "app store fraud"),
+    (re.compile(r"\b(?:revenue[- ]?shar(?:e|ing)|rev[- ]?share|profit[- ]?shar(?:e|ing)|50\s*/\s*50\s+(?:partner|split|deal)|"
+                r"(?:co-?founder|partner)\s+(?:role\s+)?(?:with|for)\s+(?:no|without)\s+(?:upfront\s+)?(?:pay|salary)|"
+                r"equity[- ]only|(?:paid|compensated)\s+(?:in|with)\s+equity\s+only|(?:no|without)\s+(?:guaranteed|upfront|fixed)\s+(?:pay|payment|salary|compensation)|"
+                r"(?:pay|payment)\s+(?:only\s+)?(?:if|when)\s+(?:the\s+)?(?:app|product|project)\s+(?:makes|earns|succeeds|launches)|commission[- ]only|on\s+a\s+success\s+basis)\b", re.I),
+     "revenue-share or equity-only offer with no guaranteed pay"),
     (re.compile(r"\b(?:casino|gambling|betting|judi|togel|slot\s+(?:machine|game)s?|real[- ]money\s+poker)\s+(?:app|game|platform|site)|"
                 r"\b(?:ponzi|pyramid\s+scheme|investment\s+scam|fake\s+(?:bank|wallet|exchange|loan)\s+app|pinjol\s+ilegal|illegal\s+loan|phishing|"
                 r"spy\s*ware|stalker\s*ware|keylogger)\b|(?:crypto|forex)\s+(?:investment|trading)\s+(?:app|platform)\s+(?:with\s+)?(?:guaranteed|fixed)\s+(?:daily\s+)?returns", re.I),
@@ -289,6 +295,8 @@ def safety_check(gig: dict, rate: dict) -> dict:
     reject += [f"safety: {label}" for rx, label in SAFETY_REJECT if rx.search(text)]
     if UNPAID.search(text):
         reject.append("unpaid work")
+    if any("already hired" in str(e) for e in gig.get("evidence") or []):
+        reject.append("posting already hired a freelancer")
     review = []
     if gig.get("client_verified_payment") is False:
         review.append("client payment method not verified")
@@ -376,6 +384,14 @@ def idr_monthly_equiv(gig: dict, rate: dict, hours: float = HOURS_PER_MONTH) -> 
     return None
 
 
+def tier_floor(tier) -> int | None:
+    """Lower bound of a proposals tier ("20 to 50" -> 20, "50+" -> 50, "Fewer than 5" -> 0) for ranking only; never shown as a count."""
+    m = re.search(r"(\d+)", str(tier or ""))
+    if not m:
+        return None
+    return 0 if re.search(r"fewer|less", str(tier), re.I) else int(m.group(1))
+
+
 def fit_score(rel: int, junior_fit: str, client: float) -> int:
     """0-100 tie-breaker for gigs, which /rank's scoring agents do not score."""
     return round(rel / 3 * 60 + {"junior": 20, "unspecified": 10, "stretch": 5}.get(junior_fit, 0) + client * 2)
@@ -417,6 +433,8 @@ def evaluate_gig(gig: dict, fx: FxTable | None, today: date, *, monthly_floor: f
     posted = norm_date(gig.get("posted_at"))
     age = (today - posted).days if posted else 999
     proposals = gig.get("proposals_count")
+    if not isinstance(proposals, (int, float)):
+        proposals = tier_floor(gig.get("proposals_tier"))
     rank_key = [-rel, JUNIOR_ORDER.get(junior["fit"], 1), -client_score(gig), -(rate.get("ratio_to_floor") or 0),
                 proposals if isinstance(proposals, (int, float)) else 999, age]
     return {
@@ -490,7 +508,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--fx-cache", type=Path, default=DEFAULT_CACHE)
     parser.add_argument("--offline", action="store_true", help="never fetch exchange rates; cache only")
     parser.add_argument("--today", help="YYYY-MM-DD (tests)")
-    parser.add_argument("--monthly-floor", type=float, default=SALARY_FLOOR_IDR_MONTHLY, help="IDR per month (default 5,000,000)")
+    parser.add_argument("--monthly-floor", type=float, default=SALARY_FLOOR_IDR_MONTHLY, help="IDR per month (default: salary_floor_idr_monthly in tools/data/salary_benchmarks.json)")
     parser.add_argument("--hours-per-month", type=float, default=HOURS_PER_MONTH, help="hours that make a month (default 173)")
     parser.add_argument("--tracker", type=Path, default=TRACKER)
     args = parser.parse_args(argv)

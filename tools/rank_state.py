@@ -29,7 +29,7 @@ Nothing here fetches a posting or judges a fit. Scoring stays with the model;
 this only removes the state file from the conversation.
 
 Usage:
-  python3 tools/rank_state.py candidates [--all] [--focus TEXT] [--limit N]
+  python3 tools/rank_state.py candidates [--all] [--focus TEXT] [--limit N] [--max-age-days N]
   python3 tools/rank_state.py sweep [--write] [--exclude KEY,KEY]
   python3 tools/rank_state.py apply --results results.json [--dry-run] [--now ISO-DATETIME]
 
@@ -182,7 +182,7 @@ def cmd_candidates(args) -> int:
     _, seen = load_state(args.state)
     excluded = tracker_pairs(args.tracker)
 
-    selected, skipped_tracker = [], 0
+    selected, skipped_tracker, skipped_old = [], 0, 0
     for key, entry in seen.items():
         status = entry.get("status")
         if args.all:
@@ -201,6 +201,11 @@ def cmd_candidates(args) -> int:
             ).lower()
             if args.focus.lower() not in haystack:
                 continue
+        # Only a date the portal stated can make a job too old; no date is no evidence.
+        posted = parse_iso(entry.get("posted_date"))
+        if args.max_age_days is not None and posted and (args.today - posted).days > args.max_age_days:
+            skipped_old += 1
+            continue
         selected.append(
             {
                 "key": key,
@@ -223,6 +228,7 @@ def cmd_candidates(args) -> int:
                 "selected": selected,
                 "deferred": max(0, eligible - len(selected)),
                 "excluded_by_tracker": skipped_tracker,
+                "excluded_by_age": skipped_old,
                 "total_entries": len(seen),
             },
             indent=2,
@@ -544,6 +550,7 @@ def main() -> int:
     cand.add_argument("--all", action="store_true", help="include every non-skipped status")
     cand.add_argument("--focus", help="substring filter over title, company and stored fit notes")
     cand.add_argument("--limit", type=int, default=DEFAULT_LIMIT, help="0 for no cap")
+    cand.add_argument("--max-age-days", type=int, help="leave out jobs posted longer ago than this (/autopilot: 14)")
     cand.set_defaults(func=cmd_candidates)
 
     sweep = sub.add_parser("sweep", parents=[common], help="rule 6's expiry pass, no fetch")

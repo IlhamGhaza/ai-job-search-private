@@ -318,6 +318,21 @@ class VerifyPdfTests(unittest.TestCase):
         self.assertEqual(mock_run_tool.call_args_list[0][0][0][:3], ["pdftotext", "-layout", "-enc"])
 
 
+class MaxPagesTests(unittest.TestCase):
+    def run_check(self, pages, limit):
+        with tempfile.TemporaryDirectory() as tmp:
+            pdf = Path(tmp) / "cv.pdf"
+            pdf.write_bytes(b"%PDF")
+            with patch("tools.verify_pdf.extract_text_layer", return_value=("Some text", pages, "test")):
+                return verify_pdf(pdf, max_pages=limit)
+
+    def test_one_or_two_pages_pass_and_three_fail(self):
+        self.assertEqual(self.run_check(1, 2)[2], 1)
+        self.assertEqual(self.run_check(2, 2)[2], 2)
+        with self.assertRaisesRegex(VerificationError, "at most 2 page"):
+            self.run_check(3, 2)
+
+
 class RunToolTests(unittest.TestCase):
     @patch("tools.verify_pdf.subprocess.run", side_effect=FileNotFoundError)
     def test_reports_missing_poppler_command(self, _mock_run):

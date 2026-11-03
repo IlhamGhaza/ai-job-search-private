@@ -10,21 +10,25 @@ framework_version: 1.2.8
 
 **Target.** Junior / entry-level **Flutter Developer or Engineer** first; also Junior Dart, Junior Mobile, Junior Cross-Platform, and Associate / Graduate Mobile Engineer **only when it is a real full-time job**. Judge by the real duties and the required experience, never by the title alone: a "Software Engineer" whose duties are Flutter apps and who asks for 0-2 years is on target; a "Junior Flutter Developer" who needs 5 years is not.
 
-**Accept:** full-time employment, or a paid contract/freelance engagement. **Reject:** internships, student placements, working-student roles, intern-to-hire, unpaid roles, bootcamps / training programs (especially any that charge a fee), and senior / lead roles.
+**Accept:** full-time employment, a paid contract/freelance engagement, or a paid internship the `--intern` mode allows. **Reject:** unpaid roles, student placements and working-student roles (they require current enrolment; the candidate has graduated), bootcamps / training programs (especially any that charge a fee), and senior / lead roles.
 
-**Search is global.** The priority countries - US, CA, GB, IE, DE, NL, CH, AT, BE, LU, DK, SE, NO, FI, IS, SG, AU, NZ, JP, KR plus Southeast Asia (SG, MY, PH, TH, VN, ID, BN, TL) - raise a job's **rank**; they never filter a job out. The candidate is Indonesian, based in Indonesia and willing to relocate. **Never assume** an international remote job accepts Indonesia-based applicants, or that an employer sponsors a visa or relocation, without explicit evidence in the employer's own text. A portal's "visa sponsorship" tag is evidence to verify, not proof.
+**Internship mode (`--intern off|remote|onsite`, default `remote`).** `off` rejects every internship. `remote` keeps remote internships only: onsite and hybrid are rejected, and an unstated arrangement goes to Needs verification. `onsite` also accepts onsite and hybrid internships. Unpaid is rejected in every mode and unstated pay is never Confirmed. A remote internship has no salary floor: any stated pay above zero passes, except India remote, which keeps the floor. An onsite or hybrid internship takes the onsite pay rule, like any onsite job. An internship the mode allows is not a deal-breaker, and a low stipend on a remote internship is not a mark against it.
+
+**Search is global.** The priority countries - the `relocation_countries` in `tools/data/salary_benchmarks.json` plus Indonesia - raise a job's **rank**; they never filter a job out. The same list decides where an onsite or hybrid job may be. The candidate is Indonesian, based in Indonesia and willing to relocate. **Never assume** an international remote job accepts Indonesia-based applicants, or that an employer sponsors a visa or relocation, without explicit evidence in the employer's own text. A portal's "visa sponsorship" tag is evidence to verify, not proof.
 
 These rules override any fit score. They are implemented deterministically in `tools/job_rules.py` (tested in `tests/test_job_rules.py`) so they do not depend on model judgment; the prose here is the specification.
 
 1. **Cambodia-based jobs: always reject**, from any source.
 2. **India onsite or hybrid jobs: always reject.** India **remote** jobs are allowed only if they pass rule 3. An India job with no stated remote arrangement is treated as onsite.
-3. **Salary floor - every job, every country, every work mode:** the **minimum** monthly pay converted to IDR must be **strictly greater than IDR 5,000,000**.
-   - Exactly IDR 5,000,000 or lower → reject. A range is judged by its minimum.
-   - Undisclosed → **Needs verification (salary)**, never a confirmed match.
+3. **Pay check.** Every number lives in `tools/data/salary_benchmarks.json` (floor, benchmarks, living costs, tax rates); this text only describes the rules.
+   - **Remote, or arrangement not stated** (remote internships excepted, see Internship mode): the **minimum** gross monthly pay converted to IDR must be **strictly greater than** the configured salary floor (currently IDR 5,729,876/month, UMP DKI Jakarta 2026). Pay exactly at the floor or lower → reject. A range is judged by its minimum.
+   - **Onsite and hybrid** (hybrid is onsite): estimated **net** pay must be above the higher of the floor and the local living cost (Indonesia: the city's UMK 2026; elsewhere: single-person cost incl. rent). Net = gross × (1 − the country's tax + employee social-security rate); an unknown rate → 30% and a flag. Within **±5%** of that threshold, in rupiah or any other currency → needs verification (living costs are estimates). No living-cost figure → needs verification. A job with no stated arrangement whose net pay is under that threshold also needs verification.
+   - **Undisclosed pay** is estimated from the benchmark's **low end** converted to IDR: **tier A** (≥ 2× floor) and **tier B** (≥ floor) are processed as a match, labelled `salary: estimated (tier A)` / `salary: estimated (tier B), ask in interview`; **tier C** (< floor) → reject `undisclosed salary in tier C`. Remote jobs use the employer's country (`employer_country`); unknown → tier B. Onsite jobs use the job's city or country. A country missing from the table → tier B and a "benchmark missing" flag. Internships are excluded: their pay must be confirmed.
+   - **Market check, not a deal-breaker:** disclosed pay below the benchmark's low end (employer country for remote, job location for onsite; unknown employer → the tier B reference) → flag `underpaid_for_market` and a lower rank.
    - Annual pay ÷ 12; weekly, daily and hourly pay are converted only when both currency and period are explicit (week × 52/12, day × 260/12, hour × 40 × 52/12). Unclear currency (a bare `$` or `¥`) or period → needs verification.
    - Foreign currency is converted with the day's rate from `tools/fx_rates.py` (public ExchangeRate-API feed, cached once per day in `job_scraper/fx_rates.json`); the record keeps `salary_idr_monthly_min`, `fx_rate` and `fx_date` beside the original amount, currency, period and gross/net. A failed refresh uses the last cached rate and flags it; with no cache there is no rate and the job needs verification - **a rate is never guessed**.
-   - Foreign-currency pay within **±5% of the floor** after conversion → needs verification (rates move). IDR pay has no such band.
-   - Never infer pay from the employer's reputation. The floor is a minimum only: jobs abroad are still ranked on pay against local cost of living (`tools/data/cost_of_living.json`, rough planning figures).
+   - Remote: foreign-currency pay within **±5% of the floor** after conversion → needs verification (rates move); IDR pay has no band there.
+   - Never infer pay from the employer's reputation. Living costs and benchmarks are planning figures with sources and dates in the config; `/benchmarks refresh` updates them. Jobs are also ranked on pay against local cost of living.
 4. **Safety screening is a separate stage, independent of fit**, with exactly one status per job: `verified_low_concern` | `verification_pending` | `high_risk_manual_review` | `rejected_safety_risk` | `unknown`.
    - **Reject** on reliable evidence of trafficking, forced labour or a scam compound; fraud, scam or illegal-gambling duties; passport retention; recruitment or upfront fees; a worksite materially different from the ad; or an official warning about the employer, recruiter or site (`tools/data/safety_watchlist.json`, each entry with source and date).
    - **Manual review** on: very high pay for vague requirements; an unverifiable employer or address; recruiting only through personal chat accounts (WhatsApp, Telegram, LINE, WeChat); vague duties; urgency pressure; no written contract; vague visa promises; requests for upfront payment or personal documents; crypto promotion or mass messaging. Urgency or an unnamed employer alone only asks for verification; combined with another signal it escalates.
@@ -120,10 +124,11 @@ Does the role and company culture match the behavioral profile?
 **Red flags to research:** Department disorganization, work dominated by maintenance over development, poor chemistry with leadership, culture mismatches. Check reviews, media coverage, LinkedIn connections, and network contacts for insider perspective.
 
 ### 4. Location & Logistics (Pass/Fail + Notes)
-- Remote (fully or hybrid): PASS
-- Requires relocation to a target country (US, Canada, UK, Ireland, Germany, Netherlands, Switzerland, Austria, Belgium, Luxembourg, Denmark, Sweden, Norway, Finland, Iceland, Singapore, Australia, New Zealand, Japan, South Korea): PASS - note visa/relocation support if mentioned
-- Requires relocation to a country outside that list, or one with active conflict, severe instability, or very limited tech market: FAIL (deal-breaker)
-- On-site-only in Indonesia with no remote option: FLAG (discuss with user - not a stated deal-breaker, but counter to stated preference)
+- Fully remote: PASS. Hybrid counts as onsite (below)
+- Onsite or hybrid in a relocation country (`relocation_countries` in `tools/data/salary_benchmarks.json`): PASS - note visa/relocation support if mentioned
+- Onsite or hybrid outside Indonesia and the relocation countries, or in one with active conflict, severe instability, or very limited tech market: FAIL (deal-breaker; `tools/job_rules.py` rejects it)
+- Onsite or hybrid in Jabodetabek: PASS, labelled `onsite (prefers remote)`
+- Onsite or hybrid in another Indonesian city: PASS, labelled `relocation: domestic` (ranked below remote and Jabodetabek)
 - Frequent international travel: FLAG (discuss with user)
 
 ### 5. Career Alignment & Motivation (0-100)
@@ -147,7 +152,7 @@ Does this role advance career goals and contain tasks that energize?
 - Non-task factors: flexible work style (comfortable independent or collaborative), high-ownership environments, remote-friendly culture
 
 **Life situation alignment:** Consider personal constraints:
-- **Security**: Available immediately; full-time, contract, or freelance roles only - not internships, not unpaid/underpaid
+- **Security**: Available immediately; full-time, contract, freelance, or a paid internship the `--intern` mode allows - never unpaid, and never below the pay rules in rule 3
 - **Flexibility**: Remote-first; open to relocation only to developed, stable, high-income countries with strong tech ecosystems and realistic visa pathways (see CLAUDE.md Relocation / Location Constraints)
 - **Professional development**: Prioritizes roles offering architectural/technical depth over breadth-only generalist work
 
@@ -176,7 +181,7 @@ Interpret results relative to the baseline defined in the data file's metadata. 
 
 If the salary tool is not configured, skip this section.
 
-**Candidate baseline comparison (always applicable, regardless of tool):** compare any stated posting pay against the candidate's own baseline in CLAUDE.md's Salary Expectations section (~USD 55k-65k/year for remote/relocation junior Flutter/mobile roles). Pay far below this baseline is a red flag against the "no unpaid/underpaid roles" deal-breaker even when skills/experience match is strong - note it explicitly in the evaluation rather than letting a high skills score mask it.
+**Market comparison (always applicable, regardless of tool):** read `underpaid_for_market` from the rules output (`python3 tools/job_rules.py evaluate`). It compares disclosed pay with the junior benchmark low end of the employer's country (remote) or the job's city/country (onsite) in `tools/data/salary_benchmarks.json`. Mention it in the evaluation and rank the job lower, but it is **not** a deal-breaker; only the hard pay rules (floor, living cost, tier C) reject. With `salary_source: estimated`, say that pay is unknown and should be raised in the interview.
 
 ## Output Format
 

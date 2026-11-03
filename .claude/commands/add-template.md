@@ -1,6 +1,6 @@
 # /add-template - Register a Custom CV or Cover Letter Template
 
-You are helping the user register their own CV or cover letter template with the AI Job Search framework — LaTeX, Typst, or any other toolchain that compiles to PDF from the command line. The framework ships with moderncv (banking style) for CVs and a custom `cover.cls` for cover letters. This command lets the user swap in their own template: store the template files, capture usage instructions (source extension, compile command, fonts, style rules, page limits), verify the template compiles, and wire it into the `/apply` workflow so every future application uses it.
+You are helping the user register their own CV or cover letter template with the AI Job Search framework — LaTeX, Typst, or any other toolchain that compiles to PDF from the command line. The framework ships with `resume.cls` for CVs and `cover.cls` for cover letters. This command lets the user swap in their own template: store the template files, capture usage instructions (source extension, compile command, fonts, style rules, page limits), verify the template compiles, and wire it into the `/apply` workflow so every future application uses it.
 
 `$ARGUMENTS` may contain a subcommand, a file path, or nothing.
 
@@ -173,7 +173,7 @@ Insert (or replace, if one exists) this block immediately after the file's H1 ti
 Rules:
 
 - Exactly **one** managed block per guidance file. Replace the whole block between the `BEGIN`/`END` markers when switching templates; never stack blocks.
-- **`--use default`**: remove the managed block entirely. The stock moderncv / cover.cls guidance below it is untouched and takes over again.
+- **`--use default`**: remove the managed block entirely. The stock resume.cls / cover.cls guidance below it is untouched and takes over again.
 - Do not modify anything outside the markers.
 
 ---
@@ -191,7 +191,7 @@ Present a summary:
 > Useful follow-ups:
 > - `/add-template --list` — see all registered templates
 > - `/add-template --use <other-name>` — switch templates
-> - `/add-template --use default` — go back to the stock <moderncv | cover.cls> template
+> - `/add-template --use default` — go back to the stock <resume.cls | cover.cls> template
 
 ---
 

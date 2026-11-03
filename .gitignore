@@ -139,6 +139,12 @@ company_research/*.json
 freelance_tracker.csv
 **/job_scraper/gigs_*.json
 
+# Connector sources: the pooled results of one /scrape and the Firecrawl 24 h cache.
+**/job_scraper/connector_pool.json
+**/job_scraper/firecrawl_state.json
+**/job_scraper/tavily_state.json
+**/job_scraper/brave_state.json
+
 # /autopilot and /submit: the email queue holds bodies and addresses; the run and
 # merged list name every employer and client.
 **/job_scraper/email_queue.json

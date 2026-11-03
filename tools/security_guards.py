@@ -146,6 +146,23 @@ ALLOWED_PERMISSIONS = {
     "Bash(bun run .agents/skills/twine-search/cli/src/cli.ts:*)",
     "Bash(bun run .agents/skills/projects-co-id-search/cli/src/cli.ts:*)",
     "Bash(bun run .agents/skills/fastwork-search/cli/src/cli.ts:*)",
+    # Connector sources (/scrape Step 1d). Read-only calls of the claude.ai connectors and the local
+    # planner/normaliser (no network, no send). Billed Firecrawl calls, Gmail and every Upwork tool
+    # that writes are deliberately absent: they keep prompting or are denied (REQUIRED_DENY_RULES).
+    "mcp__claude_ai_Indeed__search_jobs",
+    "mcp__claude_ai_Indeed__get_job_details",
+    "mcp__claude_ai_ZipRecruiter__search_jobs",
+    "mcp__claude_ai_Dice__search_jobs",
+    "mcp__claude_ai_Dice__get_job_details",
+    "mcp__claude_ai_Upwork__upwork__list_accounts",
+    "mcp__claude_ai_Upwork__upwork__get_account",
+    "mcp__claude_ai_Upwork__upwork__find_jobs",
+    "mcp__claude_ai_Upwork__upwork__find_saved_jobs",
+    "mcp__claude_ai_Upwork__upwork__get_profile",
+    "mcp__claude_ai_Upwork__upwork__list_freelancer_proposals",
+    "mcp__claude_ai_Upwork__upwork__get_tool_help",
+    "Bash(python tools/connector_sources.py:*)",
+    "Bash(python3 tools/connector_sources.py:*)",
     # /autopilot and /submit: selection, order, reports, local queue and tracker
     # bookkeeping. email_send.py approve, next, send-next, mark-sent and mark-failed
     # stay out: approving and sending keep prompting on purpose.
@@ -219,6 +236,26 @@ REQUIRED_ASK_RULES = [
 # rules are tripwires, not walls: `curl -sS -d` is not caught by `curl -d`.
 # SECURITY.md says so. Extra deny rules are fine; removing one of these fails.
 REQUIRED_DENY_RULES = [
+    # Connector tools that write, spend Connects, change an account or post jobs (Upwork write tools,
+    # LinkedIn Hiring Pro, Snagajob). A deny rule blocks them in every mode.
+    "mcp__claude_ai_Upwork__upwork__boost_profile",
+    "mcp__claude_ai_Upwork__upwork__confirm_attachment_upload",
+    "mcp__claude_ai_Upwork__upwork__confirm_preview",
+    "mcp__claude_ai_Upwork__upwork__get_preview",
+    "mcp__claude_ai_Upwork__upwork__manage_meetings",
+    "mcp__claude_ai_Upwork__upwork__manage_proposals",
+    "mcp__claude_ai_Upwork__upwork__respond_to_offer",
+    "mcp__claude_ai_Upwork__upwork__save_job",
+    "mcp__claude_ai_Upwork__upwork__send_message",
+    "mcp__claude_ai_Upwork__upwork__set_tool_mode",
+    "mcp__claude_ai_Upwork__upwork__set_tool_permission",
+    "mcp__claude_ai_Upwork__upwork__start_attachment_upload",
+    "mcp__claude_ai_Upwork__upwork__store_uploaded_files",
+    "mcp__claude_ai_Upwork__upwork__submit_feedback",
+    "mcp__claude_ai_Upwork__upwork__submit_milestones",
+    "mcp__claude_ai_Upwork__upwork__update_profile",
+    "mcp__claude_ai_LinkedIn_Hiring_Pro",
+    "mcp__claude_ai_Snagajob",
     "Read(.env)",
     "Read(.env.*)",
     "Read(~/.ssh/**)",
@@ -298,6 +335,8 @@ REQUIRED_IGNORE_RULES = [
     # /propose: the freelance proposal tracker (gigs, clients, rates) and /gigs result pools.
     "freelance_tracker.csv",
     "**/job_scraper/gigs_*.json",
+    "**/job_scraper/connector_pool.json",
+    "**/job_scraper/firecrawl_state.json",
     "**/job_scraper/email_queue.json",
     "**/job_scraper/autopilot_run.json",
     "**/job_scraper/rank_combined.json",

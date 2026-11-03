@@ -4,8 +4,8 @@
     {
       "name": "Upwork",
       "skill": "upwork-search",
-      "access": "official_api_or_search_provider",
-      "detail": "Official GraphQL API with an approved key (UPWORK_ACCESS_TOKEN); without one, Brave search leads + manual URL. Upwork pages are never scraped (Terms forbid it). Proposals: fill only, you click Send."
+      "access": "official_connector",
+      "detail": "claude.ai Upwork connector (read-only: find_jobs search/get/smart_search) is the source; no write tool is ever called. Without it: official GraphQL API with an approved key (UPWORK_ACCESS_TOKEN), else Brave search leads + manual URL. Upwork pages are never scraped. Proposals: fill only, you click Send."
     },
     {
       "name": "Freelancer.com / Freelancer.co.id",

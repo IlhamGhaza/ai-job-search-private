@@ -4,13 +4,14 @@ framework_version: 1.0.2
 
 # Cover Letter Templates and Tailoring Guide
 
-## Template: Custom cover.cls (XeLaTeX)
+## Template: `cover_letters/cover.cls` (XeLaTeX)
 
-Cover letters use a custom LaTeX document class (`cover.cls`) with Lato/Raleway fonts.
+Cover letters use `cover.cls`, which shares its Lato font, navy accent and header with `cv/resume.cls`.
 
 **Output file:** `cover_letters/cover_<company>_<role>.tex`
 **Compile with:** XeLaTeX (cover.cls requires fontspec)
 **Font directory:** `cover_letters/OpenFonts/fonts/`
+**Candidate facts:** the master CV in `documents/cv/` (read-only, never overwritten) and `01-candidate-profile.md`
 
 ### Compile command
 
@@ -18,7 +19,7 @@ Cover letters use a custom LaTeX document class (`cover.cls`) with Lato/Raleway 
 cd cover_letters && xelatex -interaction=nonstopmode cover_<company>_<role>.tex
 ```
 
-Expected output: `Output written on cover_<company>_<role>.pdf (1 page, ...)`. Any page count other than 1 is a failure that must be fixed before presenting to the user.
+Expected output: `Output written on cover_<company>_<role>.pdf (1 page)`. Any page count other than 1 is a failure that must be fixed before presenting to the user.
 
 ## Compile-and-Inspect Loop (MANDATORY)
 
@@ -26,34 +27,8 @@ After writing the cover letter and before presenting to the user, always compile
 
 1. Run `xelatex -interaction=nonstopmode cover_<company>_<role>.tex`
 2. Confirm page count is exactly 1 and compile succeeded
-3. Read the PDF via the Read tool and visually check: signature fits at the bottom, no text cut off, bullet font matches body
-
-### Known template pitfall: itemize inside `\lettercontent{}`
-
-The `\lettercontent{}` macro appends `\\` to its argument. This breaks when the argument ends in `\end{itemize}` because `\\` has no line to break after the environment closes, producing `! LaTeX Error: There's no line here to end.` and no PDF output.
-
-**Wrong (breaks compile):**
-```latex
-\lettercontent{Here is how my experience maps:
-\begin{itemize}
-    \item ...
-\end{itemize}}
-```
-
-**Correct — close `\lettercontent{}` before the list and wrap the list in the matching Raleway-Medium font so typography stays consistent:**
-```latex
-\lettercontent{Here is how my experience maps:}
-
-{\raggedright\fontspec[Path = OpenFonts/fonts/raleway/]{Raleway-Medium}\fontsize{11pt}{13pt}\selectfont
-\begin{itemize}
-    \item ...
-\end{itemize}\par}
-\vspace{6pt}
-
-\lettercontent{[next paragraph]}
-```
-
-The font wrapper is mandatory — if you just move `\begin{itemize}` outside `\lettercontent{}` without the `\fontspec` block, bullets render in the default body font (Lato) and visually mismatch the rest of the letter.
+3. Read the PDF via the Read tool and visually check: signature fits, no text cut off, links readable
+4. Extract the text and count the body words, from the salutation to the closing: the target is 250-300
 
 ## Document Structure
 
@@ -62,54 +37,31 @@ The font wrapper is mandatory — if you just move `\begin{itemize}` outside `\l
 % Cover Letter - [Company], [Role]
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\documentclass[]{cover}
-\usepackage{fancyhdr}
-
-\pagestyle{fancy}
-\fancyhf{}
-
-\rfoot{Page \thepage \hspace{0pt}}
-\thispagestyle{empty}
-\renewcommand{\headrulewidth}{0pt}
+\documentclass{cover}
+\hypersetup{pdftitle={Muhammad Ilham Ghazali - Cover Letter},pdfauthor={Muhammad Ilham Ghazali}}
 \begin{document}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%     TITLE NAME
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\namesection{}{\Huge{Muhammad Ilham Ghazali}}{  \href{mailto:m.ilhamghazali@gmail.com}{m.ilhamghazali@gmail.com} | +62 813-1524-4423 |  \urlstyle{same}\href{https://linkedin.com/in/muhammadilhamghazali}{LinkedIn}
-}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%     MAIN COVER LETTER CONTENT
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\namesection{}{Muhammad Ilham Ghazali}{Bogor, West Java, Indonesia\contactsep \href{mailto:m.ilhamghazali@gmail.com}{m.ilhamghazali@gmail.com}\contactsep +62 813-1524-4423\\
+\href{https://linkedin.com/in/muhammadilhamghazali}{linkedin.com/in/muhammadilhamghazali}\contactsep\href{https://github.com/IlhamGhaza}{github.com/IlhamGhaza}}
 
 \currentdate{\today}
+
 \lettercontent{Dear [Name/Team],}
 
-\lettercontent{[Opening paragraph - role, connection to background, 2-3 sentences]}
+\lettercontent{[Opening - the role, your strongest connection to it, why this company, 2-3 sentences]}
 
-\lettercontent{[Body paragraph - most relevant experience, introducing the bullet list]}
-
-{\raggedright\fontspec[Path = OpenFonts/fonts/raleway/]{Raleway-Medium}\fontsize{11pt}{13pt}\selectfont
+\lettercontent{[Evidence - the most relevant experience, leading into up to three bullets:]
 \begin{itemize}
-    \item {[Concrete achievement/skill 1]}
-    \item {[Concrete achievement/skill 2]}
-    \item {[Concrete achievement/skill 3]}
-\end{itemize}\par}
+    \item \textbf{[Requirement]:} [what you did, with a real number where the profile has one]
+    \item \textbf{[Requirement]:} [project or skill mapped to a posting requirement]
+\end{itemize}}
 
-\lettercontent{[Connection to company - why this role, why this company specifically]}
+\lettercontent{[Company - one verified specific about this company, and what you would contribute to it]}
 
-\lettercontent{[Personal fit paragraph - behavioral strengths, team contribution, 2-3 sentences]}
+\lettercontent{[Close - logistics the posting raises, and one plain sentence inviting the next step]}
 
-\lettercontent{I look forward to hearing from you.}
-
-\begin{flushright}
-% No trailing \\ inside \closing{} - cover.cls appends its own \\, and a
-% doubled break triggers "! LaTeX Error: There's no line here to end."
 \closing{Kind regards,}
-
 \signature{Muhammad Ilham Ghazali}
-\end{flushright}
 \end{document}
 ```
 
@@ -119,7 +71,8 @@ The font wrapper is mandatory — if you just move `\begin{itemize}` outside `\l
 |---------|---------|
 | `\namesection{}{Name}{contact info}` | Header with name and contact |
 | `\currentdate{date}` | Date field (use `\today` or explicit date) |
-| `\lettercontent{text}` | Body paragraph (adds spacing after) |
+| `\lettercontent{text}` | Body paragraph (adds spacing after); may contain an `itemize` |
+| `\contactsep` | Separator between contact details |
 | `\closing{text}` | Closing line |
 | `\signature{name}` | Printed name below signature |
 
@@ -133,18 +86,24 @@ The font wrapper is mandatory — if you just move `\begin{itemize}` outside `\l
 ### Length - Hard 1-Page Limit
 - Target: 1 page including signature block
 - Maximum: **never exceed 1 page**
-- **Word budget: 250-300 words** of body text (not counting LaTeX markup). This is the safe maximum. 350 words will overflow.
+- **Word budget: 250-300 words** of body text (not counting LaTeX markup).
 - **Always count**: opening paragraph + bullet list paragraph + closing paragraph = 3 blocks. Add a 4th only if the others are short.
 - When adding company-specific content, trim other content to compensate rather than adding net length
 
-### Line Spacing
-- Add `\usepackage{setspace}` and `\setstretch{1.0}` if the letter is long and needs to fit on one page
-- Use `\vspace{.5cm}` between major sections for readability (only if space permits)
+### Content and Voice
+- **Company-specific motivation:** name at least one specific about the company, verified independently of the posting text. Never invent company information. If nothing can be verified, say why the role fits instead.
+- **Relevance over coverage:** pick the two or three experiences closest to the posting and say what you would contribute with them. Do not retell the CV.
+- **Natural language:** no stock phrases ("I am excited to apply", "passionate", "proven track record", "fast-paced environment", "leverage"), and no point made twice.
+- **Honest gaps:** a stated requirement the candidate lacks gets one plain sentence and a bridge.
+
+### Layout
+- Do not change fonts, colours, margins or line spacing per application. If the letter overflows, cut words.
+- Print contact details and link addresses as readable text. Text stays selectable and hyperlinks clickable because the class uses real fonts and `hyperref`.
 
 ### Bullet Lists
-- Place `\begin{itemize}...\end{itemize}` **outside** a `\lettercontent{}` block (see "Known template pitfall" above), wrapped in the matching Raleway-Medium `\fontspec` so the bullet font matches the body
-- 3-5 bullets is ideal
-- Start each bullet with bold label or action verb
+- Place `\begin{itemize}...\end{itemize}` inside `\lettercontent{}`, as in the template above. No font wrapper is needed
+- Three bullets at most, and none if prose reads better
+- Start each bullet with a bold label or action verb
 - Use `\textbf{Label:}` for category-style bullets
 - A bullet whose text begins with a literal `[` must be braced: `\item {[text]}`. Unbraced, LaTeX parses `[text]` as `\item`'s optional label and renders it off the left page edge, missing from the PDF text layer entirely
 
@@ -162,10 +121,12 @@ Escape these wherever they appear in body text:
 
 ## Checklist Before Finalizing
 - [ ] No em-dashes (use commas or periods instead)
-- [ ] No cliches or empty filler
+- [ ] No cliches, empty filler or repeated points
+- [ ] Body is 250-300 words
+- [ ] Links are readable and clickable; text is selectable
 - [ ] Every claim backed by specific example
 - [ ] Forward-looking framing: focuses on tasks you'll solve, not just past duties
-- [ ] Motivation section references this specific company's mission/values
+- [ ] Motivation section references a verified specific about this company
 - [ ] Company name and role are correct throughout
 - [ ] Date is current
 - [ ] Fits on one page

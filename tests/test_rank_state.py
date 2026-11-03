@@ -100,6 +100,14 @@ class Candidates(RankStateCase):
         self.assertEqual(len(out["selected"]), 15)
         self.assertEqual(out["deferred"], 0)
 
+    def test_max_age_leaves_out_only_postings_provably_too_old(self):
+        self.write_state({"edge": entry(posted_date="2026-08-18"), "old": entry(posted_date="2026-08-17"), "none": entry(posted_date=None), "bad": entry(posted_date="ASAP")})
+        out = self.run_tool("candidates", "--limit", "0", "--max-age-days", "14", "--tracker", str(self.tmp / "none.csv"), today="2026-09-01")
+        self.assertEqual(sorted(row["key"] for row in out["selected"]), ["bad", "edge", "none"])
+        self.assertEqual((out["excluded_by_age"], out["deferred"]), (1, 0))
+        plain = self.run_tool("candidates", "--limit", "0", "--tracker", str(self.tmp / "none.csv"), today="2026-09-01")
+        self.assertEqual(len(plain["selected"]), 4, "plain /rank never filters on age")
+
     def test_tracker_pairs_are_excluded(self):
         self.write_state({"a": entry(company="Acme", title="SOC Analyst"), "b": entry(company="Other")})
         tracker = self.tmp / "tracker.csv"

@@ -26,6 +26,20 @@ def line(top: float, left: float = 50.0, height: float = 10.0, text: str = "x") 
     return Line(top=top, bottom=top + height, left=left, height=height, text=text)
 
 
+class TestShortLastPage(unittest.TestCase):
+    def pages(self):
+        full = Page(A4_HEIGHT, [line(50 + 14 * i) for i in range(48)])
+        return [full, Page(A4_HEIGHT, [line(50), line(64)])]
+
+    def problems(self, **kw):
+        with redirect_stdout(io.StringIO()):
+            return report(Path("synthetic"), self.pages(), **kw)
+
+    def test_a_short_last_page_fails_unless_allowed(self):
+        self.assertTrue(any("last page" in p for p in self.problems()))
+        self.assertFalse(any("last page" in p for p in self.problems(allow_short_last_page=True)))
+
+
 class TestGapAndBottomSpace(unittest.TestCase):
     def setUp(self):
         # Three body lines, then a 322pt jump, then the page-number footer.

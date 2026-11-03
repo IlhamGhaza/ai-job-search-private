@@ -15,8 +15,11 @@ Follow these steps **in order**.
 - Nothing → rank up to 10 jobs with status `new` or `unreachable` (a fetch that failed on an earlier run, retried) in `job_scraper/seen_jobs.json`
 - A focus area (e.g. `/rank data science`) → rank only jobs whose title or stored fit-notes match the focus
 - `--all` → re-rank every job that has not been applied to, including previously ranked ones (useful after the profile changes)
-- `--limit <N>` → maximum number of jobs to score this run (default 10)
+- `--limit <N>` → maximum number of jobs to score this run (default 10, `0` = no cap)
+- `--max-age-days <N>` → leave out jobs whose `posted_date` is older than this, before any fetch; `/autopilot` passes 14. Plain `/rank` does not filter on age (rule 7 only flags it)
 - `--top <N>` → shortlist size (default 5)
+- `--intern [off|remote|onsite]` → which internships pass the hard rules (default `remote`; see `04-job-evaluation.md`). Unpaid is rejected in every mode
+- `--sort pay|fit` → order of the combined list (default `pay`: disclosed pay first, highest first, then estimated salaries by benchmark median)
 - `--jobs-only` / `--gigs-only` → which record types to show. Default both: one list with a `Type` column. Gigs come from `/scrape`'s `job_scraper/gigs_latest.json`, keep the freelance rules, and are never scored by these agents. With `--gigs-only`, skip to Step 4.5.
 
 `--limit` bounds the expensive fetch-and-score work; `--top` only bounds how many scored jobs appear in the shortlist. They are independent: jobs beyond `--limit` are deferred, not silently discarded.
@@ -30,7 +33,7 @@ Never read `job_scraper/seen_jobs.json` into the conversation. It holds every jo
 > **Windows:** run these tools as `python`, not `python3`. A python.org install ships no `python3`, so that name reaches the Microsoft Store alias, which either exits 49 with no output (#669) or starts a separate Store Python without the packages `pip` installed (such as pypdf). `.claude/settings.json` allows both spellings.
 
 ```bash
-python3 tools/rank_state.py candidates --limit 10          # add --all / --focus "<text>" per Step 0
+python3 tools/rank_state.py candidates --limit 10          # add --all / --focus "<text>" / --max-age-days <N> per Step 0
 ```
 
 It applies the status filter (`new` and `unreachable`, or any status with `--all`), the tracker exclusion (any company+role already in `job_search_tracker.csv` is out of scope regardless of flags - it has been applied to or consciously tracked), the focus filter, and `--limit`, then prints one compact object per candidate (`key`, `title`, `company`, `url`, `portal`, `deadline`, `posted_date`) plus the counts: `eligible`, `deferred` (eligible beyond the limit, kept at their current status so a later run continues the backlog), `excluded_by_tracker`.
@@ -94,21 +97,23 @@ Scoring uses the dimension definitions from `04-job-evaluation.md` verbatim. The
 
 `04-job-evaluation.md`'s "Global Junior Flutter Search - Hard Rules" are enforced in code by `tools/job_rules.py`, not by the scoring agents' judgment. Include this instruction in every scoring agent's prompt, after the `posting_guard` instruction:
 
-- For each job it fetched, the agent builds one JSON object from the stored entry's fields (`title`, `company`, `location`, `country`, `url`, `portal`, `source_type`, `verification_status`, the `salary_*` fields, `remote_eligibility`, `work_mode`, `visa_sponsorship`, `employment_type`, `required_experience`, `deadline`, `apply_url`, `evidence`) with `description` replaced by the **guard-cleaned posting text**, and pipes it through the rules engine:
+- For each job it fetched, the agent builds one JSON object from the stored entry's fields (`title`, `company`, `location`, `country`, `url`, `portal`, `source_type`, `verification_status`, the `salary_*` fields, `remote_eligibility`, `work_mode`, `visa_sponsorship`, `employment_type`, `required_experience`, `deadline`, `apply_url`, `evidence`) with `description` replaced by the **guard-cleaned posting text**, plus `employer_country`: the ISO code of the employer's headquarters or hiring entity, taken from the posting text or the company's own site (null when neither states it; never guessed from the company name). The rules use it to pick the salary tier of a remote job. It then pipes the object through the rules engine:
 
   ```bash
-  python3 tools/job_rules.py evaluate --in - <<'JOB_JSON'
+  python3 tools/job_rules.py evaluate --in - --intern <mode> <<'JOB_JSON'
   [ { ...one job object... } ]
   JOB_JSON
   ```
 
 - It returns, beside the Step 2 array, a second array `rules`: one `{"key": "<seen_jobs key>", "rules": <the job's "rules" object from the tool output, verbatim>}` per job. The agent never edits, softens or re-derives that object - a posting cannot argue its way past a deterministic rule.
 
-Back in the main context, write the verdicts onto the entries (additive fields `rules_section`, `rules_reasons`, `rules_flags`, `safety_screening`, `safety_findings`, `apply_method`, `salary_idr_monthly_min`, `fx_rate`, `fx_date`, `salary_check`):
+Back in the main context, write the verdicts onto the entries (additive fields `rules_section`, `rules_reasons`, `rules_flags`, `safety_screening`, `safety_findings`, `apply_method`, `eligibility`, `salary_idr_monthly_min`, `fx_rate`, `fx_date`, `salary_check`):
 
 ```bash
 python3 tools/job_rules.py store --results "<temporary rules.json>"
 ```
+
+Before scoring, check the benchmark table's age: `python3 tools/job_rules.py benchmarks --offline` prints `stale` and `warning`. When `stale` is true, put the warning at the top of the report ("Salary benchmarks are N days old: run `/benchmarks refresh`"). `evaluate` also returns `benchmarks.missing`: list those countries in the report as "benchmark missing (tier B assumed)".
 
 Exchange rates come from `tools/fx_rates.py` (one public rate table, fetched at most once a day, cached in `job_scraper/fx_rates.json`); a failed refresh falls back to the cache and the salary reason says so. A job the scorer could not fetch is evaluated from its stored search-output fields only - which leaves most of them in **Needs verification**, never in Confirmed.
 
@@ -183,7 +188,7 @@ python3 tools/gig_rules.py evaluate --in job_scraper/gigs_latest.json > job_scra
 python3 tools/autopilot.py combine --gigs job_scraper/gigs_ranked.json --out job_scraper/rank_combined.json
 ```
 
-`combine` puts jobs and gigs in one list under the four sections below, each row with `type`, sorted by `idr_monthly_equiv`: a job's `salary_idr_monthly_min`; an hourly gig's IDR rate x 173; a fixed gig's IDR budget / months (at least 1). A fixed gig with no duration has none: it sits in **Needs verification**, marked `needs_budget_review`. With `--jobs-only`, run `combine` with `--jobs-only` and no `--gigs`. Show gigs in the Step 5 tables with `Type` = `gig`; a gig's reasons come from `combine` verbatim. Dedup stays within each type, and gigs write nothing to `job_scraper/seen_jobs.json` or `job_search_tracker.csv`.
+`combine` puts jobs and gigs in one list under the four sections below, each row with `type`, sorted by fit score in bands of 10, then eligibility, then the newest posting, then `idr_monthly_equiv`: a job's `salary_idr_monthly_min`; an hourly gig's IDR rate x 173; a fixed gig's IDR budget / months (at least 1). A fixed gig with no duration has none: it sits in **Needs verification**, marked `needs_budget_review`. With `--jobs-only`, run `combine` with `--jobs-only` and no `--gigs`. Show gigs in the Step 5 tables with `Type` = `gig`; a gig's reasons come from `combine` verbatim. Dedup stays within each type, and gigs write nothing to `job_scraper/seen_jobs.json` or `job_search_tracker.csv`.
 
 ---
 
@@ -199,11 +204,12 @@ Swept <S> previously ranked entries (<E> newly expired, <C> closing soon).
 
 ### Confirmed matches
 
-All hard rules pass, salary > IDR 5,000,000/month after conversion, safety `verified_low_concern`.
+All hard rules pass, the pay check passes (rule 3 in `04-job-evaluation.md`; numbers from `tools/data/salary_benchmarks.json`), safety `verified_low_concern`. Disclosed pay is listed first (highest first), then estimated salaries (tier A/B) by benchmark median.
 
-| # | Type | Score | Verdict | Title | Company | Location | Pay (IDR/month, rate date) | Apply via | Deadline | | URL |
-|---|---|-------|---------|-------|---------|----------|----------|---|-----|
-| 1 | job | 78 | Strong Fit | ... | ... | ... | 12,800,000 (USD 800 @ 2026-10-30) | ats_form | ... | 🔥 | [Link](...) |
+| # | Type | Score | Verdict | Title | Company | Location | salary_source | Pay (IDR/month, rate date) | Apply via | Deadline | | URL |
+|---|---|-------|---------|-------|---------|----------|---|----------|---|-----|
+| 1 | job | 78 | Strong Fit | ... | ... | ... | disclosed | 12,800,000 (USD 800 @ 2026-10-30) | ats_form | ... | 🔥 | [Link](...) |
+| 2 | job | 74 | Good Fit | ... | ... | Jakarta | estimated | ~7,000,000 (tier B median; ask in interview) | ats_form | ... | | [Link](...) |
 
 ### Needs verification
 | Type | Score | Title | Company | Verify | URL |

@@ -4,6 +4,8 @@ Every case is offline: exchange rates come from a fixed FxTable or a temporary
 cache file, never from the network.
 """
 
+import contextlib
+import io
 import json
 import subprocess
 import sys
@@ -46,28 +48,29 @@ def job(**kw):
     return base
 
 
-def ev(**kw):
-    return jr.evaluate_job(job(**kw), FX, TODAY, watchlist=[], col={"ID": 600, "SG": 2800})
+def ev(intern=jr.DEFAULT_INTERN_MODE, **kw):
+    return jr.evaluate_job(job(**kw), FX, TODAY, watchlist=[], intern=intern)
 
 
 class SalaryFloorTests(unittest.TestCase):
-    def test_exactly_five_million_idr_is_rejected(self):
-        r = ev(salary_min=5_000_000, salary_max=None)
+    def test_pay_exactly_at_the_floor_is_rejected(self):
+        r = ev(salary_min=jr.SALARY_FLOOR_IDR_MONTHLY, salary_max=None)
         self.assertEqual(r["salary"]["status"], "reject")
         self.assertEqual(r["section"], "rejected")
 
     def test_just_above_passes_and_below_rejects(self):
-        self.assertEqual(ev(salary_min=5_000_001, salary_max=None)["salary"]["status"], "pass")
+        self.assertEqual(ev(salary_min=jr.SALARY_FLOOR_IDR_MONTHLY + 1, salary_max=None)["salary"]["status"], "pass")
         self.assertEqual(ev(salary_min=4_000_000, salary_max=None)["salary"]["status"], "reject")
 
     def test_range_minimum_decides(self):
         self.assertEqual(ev(salary_min=4_500_000, salary_max=9_000_000)["salary"]["status"], "reject")
         self.assertEqual(ev(salary_min=6_000_000, salary_max=9_000_000)["salary"]["status"], "pass")
 
-    def test_undisclosed_is_needs_verification_never_confirmed(self):
+    def test_undisclosed_in_jabodetabek_is_estimated_tier_b(self):
         r = ev(salary_min=None, salary_max=None, salary_currency=None, salary_period=None)
-        self.assertEqual(r["salary"]["status"], "needs_salary_verification")
-        self.assertEqual(r["section"], "needs_verification")
+        self.assertEqual((r["salary"]["status"], r["salary_source"], r["salary_tier"]), ("estimated", "estimated", "B"))
+        self.assertIn("salary: estimated (tier B), ask in interview", r["flags"])
+        self.assertEqual(r["section"], "confirmed")
 
     def test_annual_converts_to_monthly(self):
         r = ev(salary_min=72_000_000, salary_max=None, salary_period="year")
@@ -87,15 +90,16 @@ class SalaryFloorTests(unittest.TestCase):
         self.assertEqual(ev(salary_min=20_000, salary_max=None, salary_currency="INR")["salary"]["status"], "reject")
 
     def test_foreign_borderline_within_five_percent_needs_verification(self):
-        # 280 EUR * 17,500 = 4,900,000 IDR: under the floor but inside the band.
-        r = ev(salary_min=280, salary_max=None, salary_currency="EUR")
+        # 320 EUR * 17,500 = 5,600,000 IDR: under the floor but inside the band.
+        r = ev(salary_min=320, salary_max=None, salary_currency="EUR")
         self.assertEqual(r["salary"]["status"], "needs_salary_verification")
         self.assertIn("within 5%", r["salary"]["reason"])
-        # 5,200,000 IDR: above, but still inside the band.
-        self.assertEqual(ev(salary_min=325, salary_max=None, salary_currency="USD")["salary"]["status"], "needs_salary_verification")
+        # 5,920,000 IDR: above, but still inside the band.
+        self.assertEqual(ev(salary_min=370, salary_max=None, salary_currency="USD")["salary"]["status"], "needs_salary_verification")
+        self.assertEqual(ev(salary_min=300, salary_max=None, salary_currency="EUR")["salary"]["status"], "reject")
 
     def test_missing_rates_never_guess(self):
-        r = jr.evaluate_job(job(salary_min=500, salary_currency="USD", salary_max=None), None, TODAY, watchlist=[], col={})
+        r = jr.evaluate_job(job(salary_min=500, salary_currency="USD", salary_max=None), None, TODAY, watchlist=[])
         self.assertEqual(r["salary"]["status"], "needs_salary_verification")
         self.assertIn("no exchange rate", r["salary"]["reason"])
 
@@ -146,7 +150,7 @@ class FxCacheTests(unittest.TestCase):
         t = fx_rates.load_rates(self.cache, TODAY, fetcher=boom)
         self.assertTrue(t.stale)
         self.assertEqual(t.fetched_on, "2026-10-01")
-        r = jr.evaluate_job(job(salary_min=500, salary_max=None, salary_currency="USD"), t, TODAY, watchlist=[], col={})
+        r = jr.evaluate_job(job(salary_min=500, salary_max=None, salary_currency="USD"), t, TODAY, watchlist=[])
         self.assertTrue(r["salary"]["fx_stale"])
         self.assertTrue(any("stale" in f for f in r["flags"]))
 
@@ -207,11 +211,133 @@ class LocationRuleTests(unittest.TestCase):
 
 
 class RoleRuleTests(unittest.TestCase):
-    def test_internships_and_programs_rejected(self):
+    def test_internships_and_programs_rejected_when_the_mode_is_off(self):
         for kw in ({"title": "Flutter Developer Intern"}, {"title": "Magang Flutter Developer"}, {"title": "Working Student Mobile (m/w/d)"},
                    {"description": "Flutter. This is an intern-to-hire position."}, {"employment_type": "Internship"},
                    {"title": "Flutter Bootcamp"}, {"description": "Unpaid role building Flutter apps."}):
-            self.assertEqual(ev(**kw)["section"], "rejected", kw)
+            self.assertEqual(ev(intern="off", **kw)["section"], "rejected", kw)
+
+    def test_default_mode_keeps_only_remote_internships(self):
+        self.assertEqual(jr.DEFAULT_INTERN_MODE, "remote")
+        remote = ev(title="Flutter Developer Intern", work_mode="remote", remote_eligibility="Worldwide")
+        self.assertEqual((remote["section"], remote["employment"]), ("confirmed", "internship"))
+        self.assertIn("internship (allowed by --intern remote)", remote["flags"])
+        for mode in ("onsite", "hybrid"):
+            r = ev(title="Flutter Developer Intern", work_mode=mode)
+            self.assertEqual(r["section"], "rejected", mode)
+            self.assertIn(f"{mode} internship (--intern remote allows remote internships only)", r["reasons"])
+
+    def test_default_mode_never_confirms_an_internship_with_no_stated_arrangement(self):
+        r = ev(title="Flutter Developer Intern")
+        self.assertEqual(r["section"], "needs_verification")
+        self.assertTrue(any("remote arrangement not stated" in x for x in r["reasons"]))
+
+    def test_onsite_mode_also_accepts_onsite_and_hybrid_internships(self):
+        for mode in ("remote", "onsite", "hybrid"):
+            r = ev(intern="onsite", title="Flutter Developer Intern", work_mode=mode, remote_eligibility="Worldwide")
+            self.assertNotEqual(r["section"], "rejected", mode)
+            self.assertEqual(r["employment"], "internship")
+
+    def test_unpaid_internship_is_rejected_in_every_mode(self):
+        for mode in jr.INTERN_MODES:
+            for text in ("This is an unpaid internship in Flutter.", "Flutter internship with no stipend.", "Magang Flutter tanpa bayaran.",
+                         "Flutter intern, uncompensated.", "Magang Flutter tidak dibayar.", "Flutter internship without compensation."):
+                r = ev(intern=mode, title="Flutter Developer Intern", work_mode="remote", remote_eligibility="Worldwide", description=text)
+                self.assertEqual(r["section"], "rejected", (mode, text))
+
+    def test_internship_with_unstated_pay_is_never_confirmed(self):
+        r = ev(title="Flutter Developer Intern", work_mode="remote", remote_eligibility="Worldwide", salary_min=None, salary_max=None,
+               salary_currency=None, salary_period=None)
+        self.assertEqual(r["section"], "needs_verification")
+        self.assertTrue(any("confirm it is paid" in x for x in r["reasons"]))
+
+    def test_allowed_internship_has_no_salary_floor(self):
+        r = ev(title="Flutter Developer Intern", work_mode="remote", remote_eligibility="Worldwide", salary_min=1_000_000, salary_max=2_000_000)
+        self.assertEqual((r["section"], r["salary"]["status"]), ("confirmed", "pass"))
+        usd = ev(title="Flutter Developer Intern", work_mode="remote", remote_eligibility="Worldwide", salary_min=100, salary_max=None, salary_currency="USD")
+        self.assertEqual((usd["section"], usd["salary"]["status"]), ("confirmed", "pass"))
+        up_to = ev(title="Flutter Developer Intern", work_mode="remote", remote_eligibility="Worldwide", salary_min=None, salary_max=2_000_000)
+        self.assertEqual(up_to["salary"]["status"], "pass")
+
+    def test_floor_still_applies_to_everything_but_an_allowed_internship(self):
+        low = {"salary_min": 3_000_000, "salary_max": 4_000_000}
+        self.assertEqual(ev(title="Junior Flutter Developer", **low)["section"], "rejected")
+        r = ev(intern="off", title="Flutter Developer Intern", work_mode="remote", remote_eligibility="Worldwide", **low)
+        self.assertEqual(r["section"], "rejected")
+
+    def test_india_remote_internship_keeps_the_floor(self):
+        r = ev(title="Flutter Developer Intern", work_mode="remote", remote_eligibility="Worldwide", location="Remote, India", country="IN",
+               salary_min=1_000_000, salary_max=2_000_000)
+        self.assertEqual(r["section"], "rejected")
+        self.assertTrue(any("salary floor" in x for x in r["reasons"]))
+
+    def test_onsite_pay_is_judged_against_living_cost_not_the_idr_floor(self):
+        for mode in ("onsite", "hybrid"):
+            low = ev(work_mode=mode, salary_min=5_100_000, salary_max=None)
+            self.assertEqual(low["section"], "rejected", mode)
+            self.assertTrue(any("living cost" in x for x in low["reasons"]), low["reasons"])
+            near = ev(work_mode=mode, salary_min=5_800_000, salary_max=None)
+            self.assertEqual((near["salary"]["status"], near["section"]), ("needs_salary_verification", "needs_verification"), mode)
+            self.assertEqual(ev(work_mode=mode, salary_min=7_000_000, salary_max=None)["salary"]["status"], "pass", mode)
+
+    def test_onsite_abroad_uses_the_usd_estimate(self):
+        sg = {"country": "SG", "location": "Singapore", "work_mode": "onsite", "salary_currency": "USD", "salary_max": None,
+              "description": "Build Flutter apps. 1-2 years of experience. We sponsor your visa."}
+        self.assertEqual(ev(salary_min=2_000, **sg)["section"], "rejected")
+        # SGD-area living cost ~USD 3,423 -> net (5% tax) must clear it by 5%.
+        self.assertEqual(ev(salary_min=3_000, **sg)["salary"]["status"], "reject")
+        self.assertEqual(ev(salary_min=3_500, **sg)["salary"]["status"], "needs_salary_verification")
+        self.assertEqual(ev(salary_min=4_500, **sg)["salary"]["status"], "pass")
+
+    def test_onsite_outside_the_relocation_countries_is_rejected(self):
+        r = ev(country="XX", location="Somewhere", work_mode="onsite")
+        self.assertEqual(r["section"], "rejected")
+        self.assertIn("onsite job in XX: not a relocation country", r["reasons"])
+
+    def test_remote_keeps_the_idr_floor(self):
+        remote = {"country": None, "location": "Remote", "work_mode": "remote", "remote_eligibility": "Worldwide", "salary_max": None}
+        self.assertEqual(ev(salary_min=5_800_000, **remote)["salary"]["status"], "pass")
+        self.assertEqual(ev(salary_min=5_700_000, **remote)["section"], "rejected")
+
+    def test_no_stated_arrangement_under_living_cost_is_never_confirmed(self):
+        r = ev(salary_min=5_900_000, salary_max=None)
+        self.assertEqual((r["salary"]["status"], r["section"]), ("pass", "needs_verification"))
+        self.assertEqual(ev(salary_min=8_000_000, salary_max=None)["section"], "confirmed")
+
+    def test_onsite_internship_must_cover_living_cost(self):
+        intern = {"intern": "onsite", "title": "Flutter Developer Intern", "work_mode": "onsite", "salary_max": None}
+        self.assertEqual(ev(salary_min=2_000_000, **intern)["section"], "rejected")
+        self.assertEqual(ev(salary_min=7_000_000, **intern)["section"], "confirmed")
+
+    def test_internship_stating_zero_pay_is_rejected(self):
+        r = ev(title="Flutter Developer Intern", work_mode="remote", remote_eligibility="Worldwide", salary_min=0, salary_max=0)
+        self.assertEqual(r["section"], "rejected")
+        self.assertTrue(any("unpaid" in x for x in r["reasons"]))
+        starts_at_zero = ev(title="Flutter Developer Intern", work_mode="remote", remote_eligibility="Worldwide", salary_min=0, salary_max=2_000_000)
+        self.assertEqual(starts_at_zero["section"], "needs_verification")
+
+    def test_student_only_placements_stay_rejected_in_every_mode(self):
+        for mode in jr.INTERN_MODES:
+            for kw in ({"title": "Working Student Mobile (m/w/d)"}, {"title": "Flutter Co-op"},
+                       {"title": "Flutter Intern", "description": "Flutter. Must be a currently enrolled student."},
+                       {"title": "Magang Flutter", "description": "Flutter. Mahasiswa aktif semester 6."}):
+                r = ev(intern=mode, work_mode="remote", remote_eligibility="Worldwide", **kw)
+                self.assertEqual(r["section"], "rejected", (mode, kw))
+                self.assertTrue(any("student-only" in x for x in r["reasons"]), (mode, kw))
+
+    def test_cli_intern_flag_refuses_an_unknown_mode(self):
+        with self.assertRaises(SystemExit), contextlib.redirect_stderr(io.StringIO()):
+            jr.main(["evaluate", "--in", "x.json", "--intern", "maybe"])
+
+    def test_cli_bare_intern_flag_means_remote(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "jobs.json"
+            path.write_text(json.dumps([job(title="Flutter Developer Intern", work_mode="onsite")]), encoding="utf-8")
+            for flag, section in ((["--intern"], "rejected"), (["--intern", "onsite"], "confirmed")):
+                out = io.StringIO()
+                with contextlib.redirect_stdout(out):
+                    jr.main(["evaluate", "--in", str(path), "--offline", "--fx-cache", str(Path(tmp) / "fx.json"), *flag])
+                self.assertEqual(json.loads(out.getvalue())["counts"][section], 1, flag)
 
     def test_junior_vs_senior(self):
         self.assertEqual(ev(title="Senior Flutter Developer", description="Flutter")["section"], "rejected")
@@ -262,7 +388,7 @@ class SafetyTests(unittest.TestCase):
 
     def test_watchlist_match_rejects_with_source_and_date(self):
         wl = [{"match": "badcorp.example", "source": "https://gov.example/warning", "date": "2026-09-01", "note": "official warning"}]
-        r = jr.evaluate_job(job(url="https://badcorp.example/jobs/1"), FX, TODAY, watchlist=wl, col={})
+        r = jr.evaluate_job(job(url="https://badcorp.example/jobs/1"), FX, TODAY, watchlist=wl)
         self.assertEqual(r["safety_screening"], "rejected_safety_risk")
         self.assertEqual(r["safety_findings"][0]["source"], "https://gov.example/warning")
 
@@ -273,7 +399,7 @@ class SafetyTests(unittest.TestCase):
         self.assertEqual(bad["safety_screening"], "verification_pending")
 
     def test_unverified_high_pay_never_outranks_verified(self):
-        verified = job(id="v", salary_min=6_000_000)
+        verified = job(id="v", salary_min=8_000_000)
         rich = job(id="r", portal="jobsites-search", salary_min=60_000_000, salary_max=None)
         out = jr.evaluate([rich, verified], FX, TODAY)
         self.assertEqual(out["sections"]["confirmed"][0]["id"], "v")

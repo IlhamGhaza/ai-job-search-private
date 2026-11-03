@@ -34,7 +34,7 @@ def gig(**over):
 
 def row(kind="job", section="confirmed", safety="verified_low_concern", idr=10_000_000, fit=70, title="Flutter Dev", **over):
     base = {"type": kind, "title": title, "company": over.pop("company", f"{title} Co"), "url": over.pop("url", f"https://x.test/{title.replace(' ', '-')}"), "section": section, "reasons": [],
-            "safety_screening": safety, "apply_method": "ats_form", "idr_monthly_equiv": idr, "fit_score": fit}
+            "safety_screening": safety, "apply_method": "ats_form", "idr_monthly_equiv": idr, "fit_score": fit, "posted_date": "2026-10-29"}
     if kind == "gig":
         base.update(platform="Upwork", gig_id=title, apply_method="platform_proposal")
     base.update(over)
@@ -55,7 +55,7 @@ class Base(unittest.TestCase):
         self.jobs.write_text("date,company,role,channel,status,notes,source\n", encoding="utf-8")
 
     def select(self, *rows, **kw):
-        return ap.select(combined(*rows), job_tracker=self.jobs, gig_tracker=self.gigs, **kw)
+        return ap.select(combined(*rows), job_tracker=self.jobs, gig_tracker=self.gigs, ledger=self.ledger, queue=self.queue, today=TODAY, **kw)
 
 
 class ScopeTests(unittest.TestCase):
@@ -63,8 +63,10 @@ class ScopeTests(unittest.TestCase):
         self.skills = Path(tempfile.mkdtemp())
         for name, fm in (("jobx-search", "enabled: true"), ("offjob-search", "enabled: false"), ("gigx-search", "category: freelance\nenabled: true"),
                          ("offgig-search", "category: freelance\nenabled: false"), ("nokey-search", "name: x")):
-            (self.skills / name).mkdir()
+            (self.skills / name / "cli").mkdir(parents=True)
             (self.skills / name / "SKILL.md").write_text(f"---\n{fm}\n---\n\nenabled: false in the body means nothing\n", encoding="utf-8")
+        (self.skills / "design-skill").mkdir()  # no cli/: not a portal
+        (self.skills / "design-skill" / "SKILL.md").write_text("---\nname: design-skill\n---\n", encoding="utf-8")
 
     def test_default_runs_both_types(self):
         s = ap.scope(None, self.skills)
@@ -87,6 +89,7 @@ class ScopeTests(unittest.TestCase):
         self.assertIn("upwork-search", s["gig_skills"])
         self.assertIn("remotive-search", s["job_skills"])
         self.assertNotIn("upwork-search", s["job_skills"])
+        self.assertNotIn("frontend-design", s["job_skills"] + s["skipped_disabled"])
 
     def test_gigs_alias_and_scrape_flags_are_documented(self):
         gigs = (ROOT / ".claude" / "commands" / "gigs.md").read_text(encoding="utf-8")
@@ -178,16 +181,54 @@ class SelectTests(Base):
         self.assertEqual([r["title"] for r in out["skipped"]], ["Pending"])
         self.assertEqual({k: len(v) for k, v in out["listed"].items()}, {"needs_verification": 1, "manual_safety_review": 1, "rejected": 1})
 
-    def test_mixed_sort_highest_first_with_fit_breaking_ties(self):
+    def test_fit_sort_puts_the_highest_fit_first_with_pay_breaking_ties(self):
         out = self.select(row(title="Low job", idr=6_000_000), row("gig", title="High gig", idr=30_000_000), row(title="Mid job", idr=15_000_000),
-                          row("gig", title="Tie gig", idr=15_000_000, fit=90))
-        self.assertEqual([i["title"] for i in out["items"]], ["High gig", "Tie gig", "Mid job", "Low job"])
+                          row("gig", title="Top fit gig", idr=7_000_000, fit=90), sort="fit")
+        self.assertEqual([i["title"] for i in out["items"]], ["Top fit gig", "High gig", "Mid job", "Low job"])
         self.assertEqual([i["id"] for i in out["items"]], [1, 2, 3, 4])
+
+    def test_inside_a_fit_band_eligibility_then_freshness_decide(self):
+        out = self.select(row(title="Paid more", idr=30_000_000, fit=74, posted_date="2026-10-20"),
+                          row(title="Newest", idr=8_000_000, fit=71, posted_date="2026-10-30"),
+                          row(title="Needs visa", idr=40_000_000, fit=79, posted_date="2026-10-30", eligibility="visa_evidence"), sort="fit")
+        self.assertEqual([i["title"] for i in out["items"]], ["Newest", "Paid more", "Needs visa"])
+
+    def test_default_sort_puts_disclosed_pay_first_then_estimates_by_median(self):
+        est = {"idr": None, "salary_source": "estimated"}
+        out = self.select(row(title="Disclosed low", idr=6_000_000), row(title="Est A", salary_tier="A", benchmark_median_idr=60_000_000, **est),
+                          row(title="Disclosed high", idr=20_000_000), row(title="Est B", salary_tier="B", benchmark_median_idr=7_000_000, **est),
+                          row("gig", title="Gig", idr=9_000_000))
+        self.assertEqual([i["title"] for i in out["items"]], ["Disclosed high", "Gig", "Disclosed low", "Est A", "Est B"])
+        self.assertEqual([i.get("salary_source") for i in out["items"]][-2:], ["estimated", "estimated"])
+
+    def test_estimated_tier_c_or_unknown_pay_is_never_selected(self):
+        est = {"idr": None, "salary_source": "estimated"}
+        out = self.select(row(title="Tier C", salary_tier="C", benchmark_median_idr=6_000_000, **est), row(title="No pay", idr=None),
+                          row(title="Tier B", salary_tier="B", benchmark_median_idr=7_000_000, **est))
+        self.assertEqual([i["title"] for i in out["items"]], ["Tier B"])
+        self.assertEqual({r["title"] for r in out["skipped"]}, {"Tier C", "No pay"})
+
+    def test_estimated_jobs_count_against_the_same_limit(self):
+        est = {"idr": None, "salary_source": "estimated", "salary_tier": "A", "benchmark_median_idr": 50_000_000}
+        out = self.select(row(title="D1", idr=8_000_000), row(title="E1", **est), row(title="E2", **est), limit=2)
+        self.assertEqual([i["title"] for i in out["items"]], ["D1", "E1"])
+
+    def test_checklist_never_fills_an_expected_salary(self):
+        suggestion = {"amount": 7_000_000, "currency": "IDR", "period": "month", "needs_confirmation": True}
+        c = ap.checklist({"type": "job", "title": "T", "company": "C", "salary_source": "estimated", "expected_salary_suggestion": suggestion})
+        self.assertEqual((c["expected_salary"]["status"], c["expected_salary"]["value_to_use"]), ("needs_user_confirmation", None))
+        self.assertEqual(c["expected_salary"]["amount"], 7_000_000)
+        self.assertEqual(c["salary_source"], "estimated")
+
+    def test_fit_below_the_default_line_is_skipped(self):
+        self.assertEqual(ap.MIN_FIT, 60)
+        out = self.select(row(title="Moderate", fit=59), row(title="Strong", fit=60))
+        self.assertEqual([i["title"] for i in out["items"]], ["Strong"])
 
     def test_different_currencies_sort_on_the_idr_value(self):
         gigs = evaluate([gig(gig_id="usd", url="https://x.test/usd", budget_min=10), gig(gig_id="eur", url="https://x.test/eur", budget_min=10, budget_currency="EUR"),
                          gig(gig_id="idr", url="https://x.test/idr", budget_min=100_000, budget_currency="IDR")], FX, TODAY, tracker=None)
-        out = ap.select(ap.combine(seen=self.dir / "none.json", gigs=gigs), job_tracker=self.jobs, gig_tracker=self.gigs)
+        out = ap.select(ap.combine(seen=self.dir / "none.json", gigs=gigs), job_tracker=self.jobs, gig_tracker=self.gigs, ledger=self.ledger, queue=self.queue, today=TODAY)
         self.assertEqual([i["gig_id"] for i in out["items"]], ["eur", "usd", "idr"])
 
     def test_already_tracked_is_excluded_per_type(self):
@@ -202,13 +243,47 @@ class SelectTests(Base):
         self.assertEqual(out["items"], [])
         self.assertIn("needs budget review", out["skipped"][0]["skip_reason"])
 
-    def test_limit_default_and_max_items(self):
-        rows = [row(title=f"J{i}", idr=10_000_000 + i) for i in range(30)]
-        self.assertEqual(len(self.select(*rows)["items"]), 20)
-        self.assertEqual(self.select(*rows, limit=5)["items"][0]["title"], "J29")
+    def test_default_limit_takes_the_ten_best_paid_and_defers_the_rest(self):
+        rows = [row(title=f"J{i}", idr=10_000_000 + i) for i in range(250)]
+        out = self.select(*rows)
+        self.assertEqual(len(out["items"]), 10)
+        self.assertEqual(out["items"][0]["title"], "J249")
+        self.assertEqual({r["skip_reason"] for r in out["skipped"]}, {"beyond the limit of 10 this run"})
+        self.assertEqual(len(self.select(*rows, limit=100)["items"]), 100)
         self.assertEqual(len(self.select(*rows, limit=25, max_items=3)["items"]), 3)
         with self.assertRaises(sg.Refused):
             self.select(*rows, limit=0)
+
+    def test_posting_age_gate_applies_to_jobs_and_gigs(self):
+        out = self.select(row(title="Edge", posted_date="2026-10-17"), row(title="Old", posted_date="2026-10-16"), row("gig", title="OldGig", posted_date="2026-10-01"),
+                          row("gig", title="NewGig", posted_date="2026-10-30T08:00:00Z"), row(title="Undated", posted_date=None), row(title="Garbled", posted_date="ASAP"))
+        self.assertEqual(sorted(i["title"] for i in out["items"]), ["Edge", "NewGig"])
+        why = {r["title"]: r["skip_reason"] for r in out["skipped"]}
+        self.assertEqual(why["Old"], "posted 15 days ago, older than 14 days")
+        self.assertIn("older than 14 days", why["OldGig"])
+        self.assertIn("date unknown", why["Undated"])
+        self.assertIn("date unknown", why["Garbled"])
+
+    def test_stale_postings_leave_the_not_applied_lists_but_undated_stay(self):
+        out = self.select(row(title="OldNV", section="needs_verification", posted_date="2026-09-01"), row(title="NewNV", section="needs_verification"),
+                          row(title="NoDateNV", section="needs_verification", posted_date=None))
+        self.assertEqual(sorted(r["title"] for r in out["listed"]["needs_verification"]), ["NewNV", "NoDateNV"])
+
+    def test_rows_carry_the_posting_date_from_jobs_and_gigs(self):
+        self.assertEqual(ap.job_row("k", {"posted_date": "2026-10-20"})["posted_date"], "2026-10-20")
+        self.assertEqual(ap.gig_row(gig(posted_at="2026-10-21"))["posted_date"], "2026-10-21")
+
+    def test_sent_with_no_tracker_row_is_never_selected_again(self):
+        self.ledger.write_text(json.dumps({"submissions": [{"company": "Led Co", "role": "Led", "url": "https://x.test/led"}]}), encoding="utf-8")
+        mailed, gig_mailed, unsent = row(title="Mailed"), row("gig", title="GigMailed"), row(title="Unsent")
+        self.queue.write_text(json.dumps({"items": [
+            {"id": es.item_id(mailed), "status": "sent", "url": "https://other.test/1"},
+            {"id": "x", "status": "sending", "url": gig_mailed["url"] + "/?utm_source=a"},
+            {"id": es.item_id(unsent), "status": "not_sent", "url": unsent["url"]},
+        ]}), encoding="utf-8")
+        out = self.select(row(title="Led", company="Led Co"), mailed, gig_mailed, unsent, row(title="New"))
+        self.assertEqual(sorted(i["title"] for i in out["items"]), ["New", "Unsent"])
+        self.assertEqual({r["skip_reason"] for r in out["skipped"]}, {"already sent"})
 
     def test_weak_fit_stays_out_unless_lowered(self):
         self.assertEqual(self.select(row(fit=30))["items"], [])
