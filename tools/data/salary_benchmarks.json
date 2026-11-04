@@ -1,6 +1,6 @@
 {
  "_readme": "Every pay rule's numbers live here; tools/job_rules.py reads this file and the prose only describes it. Salaries are monthly, in local currency. Cost of living is for one person including rent. Refresh with /benchmarks refresh; /rank warns when `updated` is older than `stale_after_days`.",
- "updated": "2026-11-02",
+ "updated": "2026-11-04",
  "stale_after_days": 90,
  "salary_floor_idr_monthly": {
   "value": 5729876,
@@ -36,7 +36,9 @@
   "TH",
   "VN",
   "BN",
-  "TL"
+  "TL",
+  "PL",
+  "IT"
  ],
  "unknown_tax_rate": 0.3,
  "tier_a_multiple": 2.0,
@@ -1860,7 +1862,17 @@
      }
     ]
    },
-   "tax": null,
+   "tax": {
+    "rate": 0.065,
+    "sources": [
+     {
+      "name": "NettoFlow Hong Kong salary calculator",
+      "url": "https://nettoflow.com/en-hk",
+      "note": "income tax 1.72% + employee MPF 4.76% at HK$23,310 gross/month",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
    "cities": {}
   },
   "PK": {
@@ -2532,6 +2544,5469 @@
      }
     }
    }
+  },
+  "PL": {
+   "name": "Poland",
+   "city": "Warsaw",
+   "salary": {
+    "currency": "PLN",
+    "period": "month",
+    "low": 8000,
+    "median": 9500,
+    "high": 11000,
+    "basis": "junior range: low = lowest junior low end across sources",
+    "sources": [
+     {
+      "name": "ZaróbTo Mobile Developer Poland",
+      "url": "https://www.zarobto.pl/en/salary-in-poland/mobile-developer",
+      "note": "junior PLN 8,000-11,000 gross/month",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "Levels.fyi entry-level Software Engineer Warsaw",
+      "url": "https://www.levels.fyi/t/software-engineer/levels/entry-level/locations/warsaw-pol",
+      "note": "median PLN 13,921/month total comp (all SWE, upper bound only)",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "cost_of_living": {
+    "monthly": 1979,
+    "currency": "USD",
+    "basis": "single person incl. rent, higher of the two sources",
+    "sources": [
+     {
+      "name": "Numbeo",
+      "url": "https://www.numbeo.com/cost-of-living/in/Warsaw",
+      "note": "873.7 + ~920 (rent PLN 3,626.60 at 3.943 PLN/USD)",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "livingcost.org",
+      "url": "https://livingcost.org/cost/poland/warsaw",
+      "note": "1,979 incl. rent",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "tax": {
+    "rate": 0.28,
+    "sources": [
+     {
+      "name": "Finorum Poland net salary calculator 2026 (12% PIT, employee ZUS, 9% health)",
+      "url": "https://finorum.com/poland-net-salary-calculator/",
+      "note": "computed for PLN 9,500 gross: ZUS 13.71% + health 9% + PIT 12% less allowance = ~28%",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "cities": {}
+  },
+  "IT": {
+   "name": "Italy",
+   "city": "Milan",
+   "salary": {
+    "currency": "EUR",
+    "period": "month",
+    "low": 1667,
+    "median": 2225,
+    "high": 2917,
+    "basis": "junior range: low = lowest junior low end across sources",
+    "sources": [
+     {
+      "name": "Glassdoor Italy junior software developer",
+      "url": "https://www.glassdoor.com/Salaries/italy-junior-software-developer-salary-SRCH_IL.0,5_IN120_KO6,31.htm",
+      "note": "avg EUR 26,700/yr",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "Reddit r/cscareerquestionsEU Italy software developers",
+      "url": "https://www.reddit.com/r/cscareerquestionsEU/comments/qeqnin/what_are_the_average_salaries_in_italy_for/",
+      "note": "junior 20-35k EUR/yr (anecdotal, sets the low end)",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "cost_of_living": {
+    "monthly": 2328,
+    "currency": "USD",
+    "basis": "single person incl. rent, higher of the two sources",
+    "sources": [
+     {
+      "name": "Numbeo",
+      "url": "https://www.numbeo.com/cost-of-living/in/Milan",
+      "note": "1,156.6 + ~1,146 (rent EUR 1,024.19)",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "livingcost.org",
+      "url": "https://livingcost.org/cost/italy/lo/milan",
+      "note": "2,328 incl. rent",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "tax": {
+    "rate": 0.25,
+    "sources": [
+     {
+      "name": "Expatica Italy salary calculator 2026 (INPS 9.19%)",
+      "url": "https://www.expatica.com/it/salary-tax-calculator/",
+      "note": "computed for EUR 30,000 gross: INPS 9.19% + IRPEF 23% less employee deduction + local surtax = ~25%",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "cities": {}
+  },
+  "CN": {
+   "name": "China",
+   "city": "Shanghai",
+   "salary": {
+    "currency": "CNY",
+    "period": "month",
+    "low": 8000,
+    "median": 12000,
+    "high": 20000,
+    "basis": "junior range: low = lowest junior low end across sources",
+    "sources": [
+     {
+      "name": "Reddit r/shanghai junior software engineer",
+      "url": "https://www.reddit.com/r/shanghai/comments/s5uc3l/junior_software_engineer_salary_in_shanghai/",
+      "note": "non-985/211 graduate 8-12k CNY/month, up to ~20k (anecdotal, sets the low end)",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "Talent JDI app developer salary by country",
+      "url": "https://talentjdi.com/blog/app-developer-salary-by-country",
+      "note": "junior ~USD 2,800/month",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "cost_of_living": {
+    "monthly": 1190,
+    "currency": "USD",
+    "basis": "single person incl. rent, higher of the two sources",
+    "sources": [
+     {
+      "name": "Numbeo",
+      "url": "https://www.numbeo.com/cost-of-living/in/Shanghai",
+      "note": "615.5 + ~575 (rent CNY 3,829.41)",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "livingcost.org",
+      "url": "https://livingcost.org/cost/china/shanghai",
+      "note": "1,147 incl. rent",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "tax": {
+    "rate": 0.2,
+    "sources": [
+     {
+      "name": "Teamed China payroll guide (social security 10.5%)",
+      "url": "https://www.teamed.global/country-hiring-guides/china/tax-and-payroll",
+      "note": "Shanghai employee social security 10.5%",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "China Briefing IIT brackets",
+      "url": "https://www.china-briefing.com/doing-business-guide/china/taxation-and-accounting/individual-income-tax",
+      "note": "computed for CNY 12,000 gross: 10.5% + 7% housing fund + ~280 IIT = ~20%",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "cities": {}
+  },
+  "FR": {
+   "name": "France",
+   "city": "Paris",
+   "salary": {
+    "currency": "EUR",
+    "period": "month",
+    "low": 2208,
+    "median": 3500,
+    "high": 4375,
+    "basis": "junior range: low = lowest junior low end across sources",
+    "sources": [
+     {
+      "name": "DevITJobs junior mobile Paris",
+      "url": "https://devitjobs.fr/en/salaries/Mobile/Paris/Junior",
+      "note": "avg EUR 42,000/yr, range 26,500-52,500",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "Licorne Society developer salaries France",
+      "url": "https://www.licornesociety.com/en/salaries/developers",
+      "note": "junior Android avg EUR 45k/yr",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "cost_of_living": {
+    "monthly": 2460,
+    "currency": "USD",
+    "basis": "single person incl. rent, higher of the two sources",
+    "sources": [
+     {
+      "name": "Numbeo",
+      "url": "https://www.numbeo.com/cost-of-living/in/Paris",
+      "note": "1,169.3 + ~1,284 (rent EUR 1,148.55)",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "livingcost.org",
+      "url": "https://livingcost.org/cost/france/idf/paris",
+      "note": "2,460 incl. rent",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "tax": {
+    "rate": 0.27,
+    "sources": [
+     {
+      "name": "PwC Worldwide Tax Summaries France, other taxes",
+      "url": "https://taxsummaries.pwc.com/france/individual/other-taxes",
+      "note": "employee social security ~22-25%; income tax added by computation for a single EUR 42k earner (~EUR 2k) = ~27%",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "cities": {}
+  },
+  "ES": {
+   "name": "Spain",
+   "city": "Madrid",
+   "salary": {
+    "currency": "EUR",
+    "period": "month",
+    "low": 1500,
+    "median": 2000,
+    "high": 2083,
+    "basis": "junior range: low = lowest junior low end across sources",
+    "sources": [
+     {
+      "name": "Glassdoor junior software developer Madrid",
+      "url": "https://www.glassdoor.com/Salaries/madrid-spain-junior-software-developer-salary-SRCH_IL.0,12_IM1030_KO13,38.htm",
+      "note": "avg EUR 24,000/yr",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "Medium: junior developer salary in Spain",
+      "url": "https://medium.com/@jesuslagares/how-much-money-can-you-earn-working-as-a-junior-developer-in-spain-82d74e83f310",
+      "note": "EUR 18,000-25,000/yr",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "cost_of_living": {
+    "monthly": 2134,
+    "currency": "USD",
+    "basis": "single person incl. rent, higher of the two sources",
+    "sources": [
+     {
+      "name": "Numbeo",
+      "url": "https://www.numbeo.com/cost-of-living/in/Madrid",
+      "note": "912.2 + ~1,222 (rent EUR 1,093.04)",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "livingcost.org",
+      "url": "https://livingcost.org/cost/spain/madrid",
+      "note": "2,109 incl. rent",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "tax": null,
+   "cities": {}
+  },
+  "EE": {
+   "name": "Estonia",
+   "city": "Tallinn",
+   "salary": {
+    "currency": "EUR",
+    "period": "month",
+    "low": 1850,
+    "median": 2750,
+    "high": 3000,
+    "basis": "junior range: low = lowest junior low end across sources",
+    "sources": [
+     {
+      "name": "Palgad.ee Software Engineer Estonia",
+      "url": "https://www.palgad.ee/en/salaryinfo/information-technology/software-engineer",
+      "note": "EUR 1,850-7,059 gross/month, all levels (low end only)",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "Medium: living in Estonia as a software engineer",
+      "url": "https://lala-rustamli.medium.com/retrospective-living-in-estonia-as-software-engineer-c83d4247919a",
+      "note": "junior gross EUR 2,500-3,000/month",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "cost_of_living": {
+    "monthly": 1666,
+    "currency": "USD",
+    "basis": "single person incl. rent, higher of the two sources",
+    "sources": [
+     {
+      "name": "Numbeo",
+      "url": "https://www.numbeo.com/cost-of-living/in/Tallinn",
+      "note": "1,091.3 + ~574 (rent EUR 514.87)",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "livingcost.org",
+      "url": "https://livingcost.org/cost/estonia/tallinn",
+      "note": "1,594 incl. rent",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "tax": null,
+   "cities": {}
+  },
+  "AE": {
+   "name": "United Arab Emirates",
+   "city": "Dubai",
+   "salary": {
+    "currency": "AED",
+    "period": "month",
+    "low": 2000,
+    "median": 3000,
+    "high": 4000,
+    "basis": "junior range: low = lowest junior low end across sources",
+    "sources": [
+     {
+      "name": "Reddit r/dubai junior frontend developers",
+      "url": "https://www.reddit.com/r/dubai/comments/jnpqvr/what_is_the_salary_range_for_junior_frontend/",
+      "note": "disclosed AED 2-4k/month (anecdotal, sets the low end)",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "Indeed UAE mobile developer",
+      "url": "https://ae.indeed.com/career/mobile-developer/salaries",
+      "note": "all levels AED 2,715-13,377/month",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "cost_of_living": {
+    "monthly": 2641,
+    "currency": "USD",
+    "basis": "single person incl. rent, higher of the two sources",
+    "sources": [
+     {
+      "name": "Numbeo",
+      "url": "https://www.numbeo.com/cost-of-living/in/Dubai",
+      "note": "1,152.8 + ~1,488 (rent AED 5,463.88)",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "livingcost.org (country level)",
+      "url": "https://livingcost.org/cost/united-arab-emirates",
+      "note": "2,124 incl. rent",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "tax": {
+    "rate": 0.0,
+    "sources": [
+     {
+      "name": "PwC Worldwide Tax Summaries UAE",
+      "url": "https://taxsummaries.pwc.com/united-arab-emirates/individual/taxes-on-personal-income",
+      "note": "no personal income tax on employment income",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "cities": {}
+  },
+  "AF": {
+   "name": "Afghanistan",
+   "city": "Kabul",
+   "salary": {
+    "currency": "AFN",
+    "period": "month",
+    "low": 19100,
+    "median": 21811,
+    "high": 106700,
+    "basis": "wide spread: low = Levels.fyi L1, median = Glassdoor all-level proxy, high = recruiter estimate",
+    "sources": [
+     {
+      "name": "Levels.fyi Kabul tech",
+      "url": "https://www.levels.fyi/industry/tech/locations/kabul-afg",
+      "note": "Software Engineer L1, 1 yr: USD 3,588/yr = ~USD 299/mo, at ~64 AFN/USD (rate implied by Numbeo)",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "Glassdoor Kabul software developer",
+      "url": "https://www.glassdoor.com/Salaries/kabul-afghanistan-software-developer-salary-SRCH_IL.0,17_IM961_KO18,36.htm",
+      "note": "avg AFN 261,728/yr = 21,811/mo (proxy: all-level software developer)",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "HeroHunt Afghanistan developers",
+      "url": "https://www.herohunt.ai/find-developers/afghanistan/",
+      "note": "junior developer avg USD 20,000/yr = ~USD 1,667/mo (recruiter estimate, likely high)",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "cost_of_living": {
+    "monthly": 494,
+    "currency": "USD",
+    "basis": "single person incl. rent, higher of the two sources",
+    "sources": [
+     {
+      "name": "Numbeo",
+      "url": "https://www.numbeo.com/cost-of-living/in/Kabul",
+      "note": "335.2 without rent + 7,072 AFN rent (~110.5 USD) = ~446",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "livingcost.org",
+      "url": "https://livingcost.org/cost/afghanistan",
+      "note": "494 incl. rent (country-level figure)",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "tax": null,
+   "cities": {}
+  },
+  "AL": {
+   "name": "Albania",
+   "city": "Tirana",
+   "salary": {
+    "currency": "ALL",
+    "period": "month",
+    "low": 97700,
+    "median": 156900,
+    "high": 291300,
+    "basis": "low = junior figure; median/high = all-level proxy",
+    "sources": [
+     {
+      "name": "HeroHunt Albania developers",
+      "url": "https://www.herohunt.ai/find-developers/albania/",
+      "note": "junior developer ~USD 1,200/mo = ~97,700 ALL at 81.4 ALL/USD",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "Mobilunity Western Balkans",
+      "url": "https://mobilunity.com/blog/it-outsourcing-balkans/",
+      "note": "Tirana software developer (all levels) USD 1,927-3,578/mo = 156,900-291,300 ALL; proxy",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "Levels.fyi Albania software engineer",
+      "url": "https://www.levels.fyi/t/software-engineer/locations/albania",
+      "note": "median ALL 2,167,403/yr total comp (all levels), not used for the range",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "cost_of_living": {
+    "monthly": 1260,
+    "currency": "USD",
+    "basis": "single person incl. rent, higher of the two sources",
+    "sources": [
+     {
+      "name": "Numbeo",
+      "url": "https://www.numbeo.com/cost-of-living/in/Tirana",
+      "note": "754.0 without rent + 41,193.75 ALL rent (~506 USD) = ~1,260",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "livingcost.org",
+      "url": "https://livingcost.org/cost/albania",
+      "note": "1037 incl. rent (country-level figure)",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "tax": null,
+   "cities": {}
+  },
+  "DZ": {
+   "name": "Algeria",
+   "city": "Algiers",
+   "salary": {
+    "currency": "DZD",
+    "period": "month",
+    "low": 50000,
+    "median": 60000,
+    "high": 90000,
+    "basis": "junior range: low = lowest junior low end across sources",
+    "sources": [
+     {
+      "name": "State of Software Engineering in Algeria",
+      "url": "https://state-of-algeria.dev/docs/insights/remuneration/",
+      "note": "junior 50K-70K DZD",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "AlgeriaTech (LinkedIn)",
+      "url": "https://www.linkedin.com/posts/algeriatech_en-algeria-raised-its-minimum-wage-20-activity-7441777564588711936-iGJw",
+      "note": "junior in Algiers ~60,000 DZD",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "Reddit r/Algeriawork fullstack salaries",
+      "url": "https://www.reddit.com/r/Algeriawork/comments/1tsczxo/fullstack_devs_what_is_your_salary_in/",
+      "note": "starts ~80-90K DZD",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "cost_of_living": {
+    "monthly": 577,
+    "currency": "USD",
+    "basis": "single person incl. rent, higher of the two sources",
+    "sources": [
+     {
+      "name": "Numbeo",
+      "url": "https://www.numbeo.com/cost-of-living/in/Algiers",
+      "note": "447.6 without rent + EUR 115.81 rent (~129.5 USD) = ~577",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "livingcost.org",
+      "url": "https://livingcost.org/cost/algeria",
+      "note": "441 incl. rent (country-level figure)",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "tax": null,
+   "cities": {}
+  },
+  "AD": {
+   "name": "Andorra",
+   "city": "Andorra la Vella",
+   "salary": {
+    "currency": "EUR",
+    "period": "month",
+    "low": 1833,
+    "median": 2000,
+    "high": 2167,
+    "basis": "junior range: low = lowest junior low end across sources",
+    "sources": [
+     {
+      "name": "AndorraWork tech guide",
+      "url": "https://andorrawork.com/en/guias-trabajo/tecnologia-e-informatica",
+      "note": "junior with degree/bootcamp EUR 22,000-26,000 gross/yr = 1,833-2,167/mo",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "Glassdoor Andorra la Vella software developer",
+      "url": "https://www.glassdoor.com/Salaries/andorra-la-vella-software-developer-salary-SRCH_IL.0,16_IS3629_KO17,35.htm",
+      "note": "EUR 37K-41K/yr all-level (proxy, not used for junior range)",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "cost_of_living": {
+    "monthly": 1835,
+    "currency": "USD",
+    "basis": "single person incl. rent, higher of the two sources",
+    "sources": [
+     {
+      "name": "livingcost.org",
+      "url": "https://livingcost.org/cost/andorra",
+      "note": "1835 incl. rent (country-level figure); Numbeo has no Andorra city page",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "tax": null,
+   "cities": {}
+  },
+  "AO": {
+   "name": "Angola",
+   "city": "Luanda",
+   "salary": {
+    "currency": "AOA",
+    "period": "month",
+    "low": 237000,
+    "median": 429000,
+    "high": 879126,
+    "basis": "low = Levels.fyi, high = WageIndicator net upper, median = mean of the two source midpoints",
+    "sources": [
+     {
+      "name": "WageIndicator Angola software developers",
+      "url": "https://wageindicator.org/pt-ao/trabalho-em-angola/trabalho-e-salario/desenvolventes-de-software/",
+      "note": "career start 277,837-879,126 AOA net/month",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "Levels.fyi NG Consultoria & Sistemas",
+      "url": "https://www.levels.fyi/companies/ng-consultoria-and-sistemas/salaries/software-engineer",
+      "note": "USD 3.1K-4.2K/yr = ~237k-321k AOA/mo at ~916 AOA/USD",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "cost_of_living": {
+    "monthly": 831,
+    "currency": "USD",
+    "basis": "single person incl. rent, higher of the two sources",
+    "sources": [
+     {
+      "name": "Numbeo",
+      "url": "https://www.numbeo.com/cost-of-living/in/Luanda",
+      "note": "630.8 without rent + 182,972 AOA rent (~200 USD) = ~831",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "livingcost.org",
+      "url": "https://livingcost.org/cost/angola",
+      "note": "755 incl. rent (country-level figure)",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "tax": null,
+   "cities": {}
+  },
+  "AR": {
+   "name": "Argentina",
+   "city": "Buenos Aires",
+   "salary": {
+    "currency": "USD",
+    "period": "month",
+    "low": 800,
+    "median": 1200,
+    "high": 1366,
+    "basis": "USD used because ARS pay is volatile and USD-linked in the sources",
+    "sources": [
+     {
+      "name": "Salancy IT salary survey Argentina",
+      "url": "https://salarios.gonzalopozzo.com/",
+      "note": "junior Android USD 800, iOS USD 1,200 (ARS 2.25M), fullstack USD 1,604",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "Coderhouse app developer salary",
+      "url": "https://www.coderhouse.com/sueldos/sueldo-desarrollador-aplicaciones-argentina-2025",
+      "note": "junior (0-2 yrs) USD 1,000-1,300/mo",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "Talently Argentina developer salary",
+      "url": "https://talently.tech/herramientas/argentina/salario",
+      "note": "junior avg USD 1,366/mo",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "cost_of_living": {
+    "monthly": 1386,
+    "currency": "USD",
+    "basis": "single person incl. rent, higher of the two sources",
+    "sources": [
+     {
+      "name": "Numbeo",
+      "url": "https://www.numbeo.com/cost-of-living/in/Buenos-Aires",
+      "note": "878.7 without rent + 507.52 rent = ~1,386",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "livingcost.org",
+      "url": "https://livingcost.org/cost/argentina",
+      "note": "894 incl. rent (country-level figure)",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "tax": null,
+   "cities": {}
+  },
+  "AM": {
+   "name": "Armenia",
+   "city": "Yerevan",
+   "salary": {
+    "currency": "AMD",
+    "period": "month",
+    "low": 209000,
+    "median": 300000,
+    "high": 500000,
+    "basis": "low-confidence: undated/stale junior figures; median/high are proxies",
+    "sources": [
+     {
+      "name": "ITis.am developer salary",
+      "url": "http://itis.am/developer-salary-in-armenia",
+      "note": "junior USD 580 = ~209,000 AMD at 360 AMD/USD (undated)",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "Reddit r/armenia SWE salaries",
+      "url": "https://www.reddit.com/r/armenia/comments/bw0k9b/software_engineer_salaries_in_armenia/",
+      "note": "junior 100K-300K AMD (2019 post, stale)",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "Truss 2026 Armenia tech salary guide",
+      "url": "https://hiretruss.com/2026-tech-salary-guide-for-armenia/",
+      "note": "tech avg 500K-1.2M AMD/mo (all-level; lower bound used as high)",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "cost_of_living": {
+    "monthly": 1487,
+    "currency": "USD",
+    "basis": "single person incl. rent, higher of the two sources",
+    "sources": [
+     {
+      "name": "Numbeo",
+      "url": "https://www.numbeo.com/cost-of-living/in/Yerevan",
+      "note": "772.9 without rent + 257,003.76 AMD rent (~714 USD) = ~1,487",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "livingcost.org",
+      "url": "https://livingcost.org/cost/armenia",
+      "note": "1120 incl. rent (country-level figure)",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "tax": {
+    "rate": 0.26,
+    "sources": [
+     {
+      "name": "TaxRavens Armenia 2026",
+      "url": "https://taxravens.com/en/armenia",
+      "note": "total tax burden 26.45% at AMD 4,800,000/yr (above the median, so conservative)",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "cities": {}
+  },
+  "AZ": {
+   "name": "Azerbaijan",
+   "city": "Baku",
+   "salary": {
+    "currency": "AZN",
+    "period": "month",
+    "low": 700,
+    "median": 1000,
+    "high": 1500,
+    "basis": "junior range: low = lowest junior low end across sources",
+    "sources": [
+     {
+      "name": "Glassdoor Baku junior software developer",
+      "url": "https://www.glassdoor.com/Salaries/baku-azerbaijan-junior-software-developer-salary-SRCH_IL.0,15_IM1230_KO16,41.htm",
+      "note": "AZN 700-1,000/mo, median 880",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "ABB Tech backend salaries",
+      "url": "https://abbtech.az/en/backend-is-imkanlari-maaslar",
+      "note": "junior backend AZN 800-1,500/mo (proxy)",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "cost_of_living": {
+    "monthly": 902,
+    "currency": "USD",
+    "basis": "single person incl. rent, higher of the two sources",
+    "sources": [
+     {
+      "name": "Numbeo",
+      "url": "https://www.numbeo.com/cost-of-living/in/Baku",
+      "note": "586.2 without rent + 536.15 AZN rent (~315 USD) = ~902",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "livingcost.org",
+      "url": "https://livingcost.org/cost/azerbaijan",
+      "note": "788 incl. rent (country-level figure)",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "tax": {
+    "rate": 0.145,
+    "sources": [
+     {
+      "name": "TaxRavens Azerbaijan 2026",
+      "url": "https://taxravens.com/en/azerbaijan",
+      "note": "total tax burden 14.5% at AZN 24,000/yr (above the median, so conservative)",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "cities": {}
+  },
+  "BS": {
+   "name": "Bahamas",
+   "city": "Nassau",
+   "salary": {
+    "currency": "BSD",
+    "period": "month",
+    "low": 6722,
+    "median": 7184,
+    "high": 7498,
+    "basis": "proxy: all-level software developer averages; no junior data found, so these overstate junior pay",
+    "sources": [
+     {
+      "name": "SalaryExpert Grand Bahama software developer",
+      "url": "https://www.salaryexpert.com/salary/job/software-developer/bahamas/grand-bahama-island",
+      "note": "avg BSD 80,670/yr = 6,722/mo (all-level proxy)",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "SalaryExpert Nassau software application developer",
+      "url": "https://www.salaryexpert.com/salary/job/software-application-developer/bahamas/nassau",
+      "note": "avg BSD 86,206/yr = 7,184/mo (all-level proxy)",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "SalaryExpert Nassau software developer designer",
+      "url": "https://www.salaryexpert.com/salary/job/software-developer-designer/bahamas/nassau",
+      "note": "avg BSD 89,971/yr = 7,498/mo (all-level proxy)",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "cost_of_living": {
+    "monthly": 2747,
+    "currency": "USD",
+    "basis": "single person incl. rent, higher of the two sources",
+    "sources": [
+     {
+      "name": "livingcost.org",
+      "url": "https://livingcost.org/cost/bahamas",
+      "note": "2747 incl. rent (country-level figure)",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "Numbeo",
+      "url": "https://www.numbeo.com/cost-of-living/in/Nassau",
+      "note": "only 1BR outside-centre rent USD 2,000 available; without-rent figure not extracted, so livingcost 2,747 used",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "tax": null,
+   "cities": {}
+  },
+  "BH": {
+   "name": "Bahrain",
+   "city": "Manama",
+   "salary": {
+    "currency": "BHD",
+    "period": "month",
+    "low": 320,
+    "median": 575,
+    "high": 900,
+    "basis": "low = Naukrigulf low, median = mean of source midpoints (~400 and 750), high = TrueScho upper",
+    "sources": [
+     {
+      "name": "Naukrigulf junior software developer Bahrain",
+      "url": "https://www.naukrigulf.com/salaries/junior-software-developer-salary-in-bahrain",
+      "note": "BHD 320-480, avg 360-439/mo",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "TrueScho IT jobs Bahrain",
+      "url": "https://truescho.com/en/blog/it-jobs-bahrain",
+      "note": "junior software engineer BHD 600-900/mo",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "cost_of_living": {
+    "monthly": 1434,
+    "currency": "USD",
+    "basis": "single person incl. rent, higher of the two sources",
+    "sources": [
+     {
+      "name": "Numbeo",
+      "url": "https://www.numbeo.com/cost-of-living/in/Manama",
+      "note": "779.6 without rent + BHD 247 rent (~654 USD) = ~1,434",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "livingcost.org",
+      "url": "https://livingcost.org/cost/bahrain",
+      "note": "1256 incl. rent (country-level figure)",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "tax": null,
+   "cities": {}
+  },
+  "BD": {
+   "name": "Bangladesh",
+   "city": "Dhaka",
+   "salary": {
+    "currency": "BDT",
+    "period": "month",
+    "low": 20000,
+    "median": 33000,
+    "high": 50000,
+    "basis": "junior range: low = lowest junior low end across sources",
+    "sources": [
+     {
+      "name": "Glassdoor Dhaka junior software engineer (quoted by Reddit r/BDDevs and LinkedIn)",
+      "url": "https://www.reddit.com/r/BDDevs/comments/1w5eqsh/tech_salary/",
+      "note": "24k-50k BDT/mo, median ~33k (proxy: junior software engineer)",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "Junior web developer job ad Dhaka (Facebook)",
+      "url": "https://www.facebook.com/100063885558266/posts/job-title-web-developer-junior-entry-levellocation-dhanmondi-dhakasalary-bdt-200/1505430594929778/",
+      "note": "BDT 20,000-25,000/mo",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "cost_of_living": {
+    "monthly": 466,
+    "currency": "USD",
+    "basis": "single person incl. rent, higher of the two sources",
+    "sources": [
+     {
+      "name": "Numbeo",
+      "url": "https://www.numbeo.com/cost-of-living/in/Dhaka",
+      "note": "395.3 without rent + 8,812.5 BDT rent (~71 USD) = ~466",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "livingcost.org",
+      "url": "https://livingcost.org/cost/bangladesh",
+      "note": "429 incl. rent (country-level figure)",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "tax": null,
+   "cities": {}
+  },
+  "BY": {
+   "name": "Belarus",
+   "city": "Minsk",
+   "salary": {
+    "currency": "BYN",
+    "period": "month",
+    "low": 1486,
+    "median": 1783,
+    "high": 2080,
+    "basis": "low-confidence: one undated junior source",
+    "sources": [
+     {
+      "name": "Quora IT worker salary Minsk",
+      "url": "https://www.quora.com/What-is-the-average-salary-for-an-IT-worker-in-Minsk-Belarus",
+      "note": "0-1 yr experience USD 500-700/mo = 1,486-2,080 BYN at 2.97 BYN/USD (undated)",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "Reddit r/belarus SWE salary Minsk",
+      "url": "https://www.reddit.com/r/belarus/comments/8e4ewt/what_is_a_good_salary_for_a_software_engineer_in/",
+      "note": "IT sector avg ~USD 1.6k all levels (2018; context only)",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "cost_of_living": {
+    "monthly": 1004,
+    "currency": "USD",
+    "basis": "single person incl. rent, higher of the two sources",
+    "sources": [
+     {
+      "name": "Numbeo",
+      "url": "https://www.numbeo.com/cost-of-living/in/Minsk",
+      "note": "580.0 without rent + 1,258.91 BYN rent (~424 USD) = ~1,004",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "livingcost.org",
+      "url": "https://livingcost.org/cost/belarus",
+      "note": "715 incl. rent (country-level figure)",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "tax": null,
+   "cities": {}
+  },
+  "BJ": {
+   "name": "Benin",
+   "city": "Cotonou",
+   "salary": {
+    "currency": "XOF",
+    "period": "month",
+    "low": 200000,
+    "median": 293000,
+    "high": 380000,
+    "basis": "junior range: low = lowest junior low end across sources",
+    "sources": [
+     {
+      "name": "MaxisHR Benin salary guide",
+      "url": "https://maxishr.com/en/benin/salary-benchmarking",
+      "note": "software engineers junior XOF 200,000-380,000/mo",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "Africa-Salary Android mobile developer Benin",
+      "url": "https://www.africa-salary.com/en/salary/android-mobile-developer/benin",
+      "note": "junior gross XOF 293,000/mo",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "cost_of_living": {
+    "monthly": 794,
+    "currency": "USD",
+    "basis": "single person incl. rent, higher of the two sources",
+    "sources": [
+     {
+      "name": "livingcost.org",
+      "url": "https://livingcost.org/cost/benin",
+      "note": "794 incl. rent (country-level figure); Numbeo has no Cotonou page",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "tax": null,
+   "cities": {}
+  },
+  "BT": {
+   "name": "Bhutan",
+   "city": "Thimphu",
+   "salary": {
+    "currency": "BTN",
+    "period": "month",
+    "low": 38500,
+    "median": 44250,
+    "high": 50000,
+    "basis": "single employer; low-confidence",
+    "sources": [
+     {
+      "name": "Developer Tools Bhutan junior software developer ad (Facebook)",
+      "url": "https://www.facebook.com/dziseldra/posts/1864703757921893/",
+      "note": "junior starting salary BTN 38,500-50,000/mo",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "Developer Tools Bhutan software developer ad (LinkedIn)",
+      "url": "https://bt.linkedin.com/jobs/view/software-developer-at-developer-tools-bhutan-4214139236",
+      "note": "BTN 60-120k, non-junior, not used for range",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "cost_of_living": {
+    "monthly": 412,
+    "currency": "USD",
+    "basis": "single person incl. rent, higher of the two sources",
+    "sources": [
+     {
+      "name": "livingcost.org",
+      "url": "https://livingcost.org/cost/bhutan",
+      "note": "412 incl. rent (country-level figure); Numbeo has no Thimphu page",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "tax": null,
+   "cities": {}
+  },
+  "BO": {
+   "name": "Bolivia",
+   "city": "La Paz",
+   "salary": {
+    "currency": "BOB",
+    "period": "month",
+    "low": 4000,
+    "median": 5000,
+    "high": 6000,
+    "basis": "median is the midpoint of one junior source",
+    "sources": [
+     {
+      "name": "TrabajoYa startup programmer salaries Bolivia",
+      "url": "https://trabajoya.info/salario-de-programadores-en-startups-bolivianas/",
+      "note": "junior (1-2 yrs) 4,000-6,000 Bs/mo",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "Levels.fyi La Paz software engineer",
+      "url": "https://www.levels.fyi/t/software-engineer/locations/la-paz-bol",
+      "note": "median USD 27.6K/yr all-level; sanity check only",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "cost_of_living": {
+    "monthly": 723,
+    "currency": "USD",
+    "basis": "single person incl. rent, higher of the two sources",
+    "sources": [
+     {
+      "name": "Numbeo",
+      "url": "https://www.numbeo.com/cost-of-living/in/La-Paz",
+      "note": "321.0 without rent + Bs 2,000 rent (~181 USD) = ~502",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "livingcost.org",
+      "url": "https://livingcost.org/cost/bolivia",
+      "note": "723 incl. rent (country-level figure)",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "tax": null,
+   "cities": {}
+  },
+  "BA": {
+   "name": "Bosnia and Herzegovina",
+   "city": "Sarajevo",
+   "salary": {
+    "currency": "BAM",
+    "period": "month",
+    "low": 1200,
+    "median": 1385,
+    "high": 4000,
+    "basis": "proxy: all-level IT ranges; low = Reddit lower bound, median = Plata.ba minimum, high = Reddit upper bound",
+    "sources": [
+     {
+      "name": "Reddit r/bih IT salaries",
+      "url": "https://www.reddit.com/r/bih/comments/1n3grq7/kakve_su_realne_it_plate_u_bih_ovih_dana/?tl=en",
+      "note": "IT roles 1,200 KM up to 4,000+ KM (all levels)",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "Plata.ba IT salaries",
+      "url": "https://www.plata.ba/en/salaryinfo/information-technology",
+      "note": "IT category minimum 1,385 BAM, up to 4,020 BAM (all levels)",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "Jooble BA junior software developer",
+      "url": "https://ba.jooble.org/posao-junior-software-developer",
+      "note": "one listing from 1,100 KM + bonuses (support-type role, context only)",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "cost_of_living": {
+    "monthly": 1038,
+    "currency": "USD",
+    "basis": "single person incl. rent, higher of the two sources",
+    "sources": [
+     {
+      "name": "Numbeo",
+      "url": "https://www.numbeo.com/cost-of-living/in/Sarajevo",
+      "note": "717.7 without rent + 560.06 KM rent (~320 USD) = ~1,038",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "livingcost.org",
+      "url": "https://livingcost.org/cost/bosnia-and-herzegovina",
+      "note": "806 incl. rent (country-level figure)",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "tax": null,
+   "cities": {}
+  },
+  "BW": {
+   "name": "Botswana",
+   "city": "Gaborone",
+   "salary": {
+    "currency": "BWP",
+    "period": "month",
+    "low": 2910,
+    "median": 8250,
+    "high": 8750,
+    "basis": "low-confidence: proxy software engineer data, snippets only",
+    "sources": [
+     {
+      "name": "Glassdoor Gaborone software engineer",
+      "url": "https://www.glassdoor.com/Salaries/gaborone-botswana-software-engineer-salary-SRCH_IL.0,17_IM1273_KO18,35.htm",
+      "note": "lowest BWP 2,910/mo",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "PayScale Botswana software engineer",
+      "url": "https://www.payscale.com/research/BW/Job=Software_Engineer/Salary",
+      "note": "avg P 8,750; also P 8,250 based on 6 salaries (all-level snippet, not verified as entry-level)",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "cost_of_living": {
+    "monthly": 729,
+    "currency": "USD",
+    "basis": "single person incl. rent, higher of the two sources",
+    "sources": [
+     {
+      "name": "Numbeo",
+      "url": "https://www.numbeo.com/cost-of-living/in/Gaborone",
+      "note": "522.8 without rent + P 2,852.5 rent (~206 USD) = ~729",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "livingcost.org",
+      "url": "https://livingcost.org/cost/botswana",
+      "note": "669 incl. rent (country-level figure)",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "tax": null,
+   "cities": {}
+  },
+  "BR": {
+   "name": "Brazil",
+   "city": "Sao Paulo",
+   "salary": {
+    "currency": "BRL",
+    "period": "month",
+    "low": 3000,
+    "median": 3450,
+    "high": 4400,
+    "basis": "junior range: low = lowest junior low end across sources",
+    "sources": [
+     {
+      "name": "Coodesh Flutter career guide",
+      "url": "https://coodesh.com/blog/carreiras/mobile-flutter/",
+      "note": "junior Flutter R$3,000-4,400/month",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "Trybe citing Glassdoor",
+      "url": "https://www.betrybe.com/guia-salarios-profissoes/desenvolvedor-mobile",
+      "note": "junior mobile developer median R$3,215/month",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "PayScale Mobile Applications Developer Brazil",
+      "url": "https://www.payscale.com/research/BR/Job=Mobile_Applications_Developer/Salary",
+      "note": "proxy: all-level avg R$25,800/yr (~R$2,150/month), range R$12k-85k/yr",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "cost_of_living": {
+    "monthly": 1051,
+    "currency": "USD",
+    "basis": "single person incl. rent, higher of the two sources",
+    "sources": [
+     {
+      "name": "Numbeo",
+      "url": "https://www.numbeo.com/cost-of-living/in/Sao-Paulo",
+      "note": "661.2 USD without rent + 390.17 USD 1BR outside centre (displayCurrency=USD)",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "livingcost.org (country level)",
+      "url": "https://livingcost.org/cost/brazil",
+      "note": "787 incl. rent, country-level figure",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "tax": {
+    "rate": 0.25,
+    "sources": [
+     {
+      "name": "Wageberg Brazil",
+      "url": "https://wageberg.com/brazil",
+      "note": "effective tax 25.2% at R$24,000, 25.9% at R$35,000 (INSS + IRRF)",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "cities": {}
+  },
+  "BG": {
+   "name": "Bulgaria",
+   "city": "Sofia",
+   "salary": {
+    "currency": "BGN",
+    "period": "month",
+    "low": 2000,
+    "median": 2600,
+    "high": 3600,
+    "basis": "junior range: low = lowest junior low end across sources",
+    "sources": [
+     {
+      "name": "Quora: developers in Bulgaria",
+      "url": "https://www.quora.com/How-much-do-software-developers-in-Bulgaria-really-earn",
+      "note": "juniors typically BGN 2,000-3,000/month (anecdotal)",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "NextJob.bg Bulgarian IT salaries",
+      "url": "https://www.nextjob.bg/bulgarian-it-developer-salaries/",
+      "note": "junior EUR 1,000-2,000 net/month (~BGN 2,000-3,900 net)",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "PayScale Mobile Applications Developer Bulgaria",
+      "url": "https://www.payscale.com/research/BG/Job=Mobile_Applications_Developer/Salary",
+      "note": "proxy: all-level avg BGN 43,200/yr (BGN 3,600/month)",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "cost_of_living": {
+    "monthly": 1443,
+    "currency": "USD",
+    "basis": "single person incl. rent, higher of the two sources",
+    "sources": [
+     {
+      "name": "Numbeo",
+      "url": "https://www.numbeo.com/cost-of-living/in/Sofia",
+      "note": "855.7 USD without rent + 586.74 USD 1BR outside centre",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "livingcost.org (country level)",
+      "url": "https://livingcost.org/cost/bulgaria",
+      "note": "1048 incl. rent, country-level figure",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "tax": {
+    "rate": 0.22,
+    "sources": [
+     {
+      "name": "TaxRavens Bulgaria 2026",
+      "url": "https://taxravens.com/en/bulgaria",
+      "note": "total tax burden 22.4% at EUR 24,000/yr (above the median, so slightly conservative)",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "cities": {}
+  },
+  "CL": {
+   "name": "Chile",
+   "city": "Santiago",
+   "salary": {
+    "currency": "CLP",
+    "period": "month",
+    "low": 800000,
+    "median": 1100000,
+    "high": 1350000,
+    "basis": "junior range: low = lowest junior low end across sources",
+    "sources": [
+     {
+      "name": "Indeed Chile junior developer",
+      "url": "https://cl.indeed.com/career/desarrollador-junior/salaries",
+      "note": "avg CLP 945,941/month, range 597,570-1,497,404 (proxy: junior developer)",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "Coderhouse app developer Chile",
+      "url": "https://www.coderhouse.com/sueldos/sueldo-desarrollador-aplicaciones-chile-2025",
+      "note": "junior CLP 1,100,000-1,350,000/month",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "IT Workers Guia Salarial Tech Chile 2026",
+      "url": "https://www.itworkers.cl/guia-salarial-tech-chile-2026.html",
+      "note": "junior full stack CLP 800,000-1,200,000/month; mobile developer all levels 1.3-4.2M",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "cost_of_living": {
+    "monthly": 1033,
+    "currency": "USD",
+    "basis": "single person incl. rent, higher of the two sources",
+    "sources": [
+     {
+      "name": "Numbeo",
+      "url": "https://www.numbeo.com/cost-of-living/in/Santiago",
+      "note": "694.2 USD without rent + 338.51 USD 1BR outside centre",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "livingcost.org (country level)",
+      "url": "https://livingcost.org/cost/chile",
+      "note": "1028 incl. rent, country-level figure",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "tax": null,
+   "cities": {}
+  },
+  "CO": {
+   "name": "Colombia",
+   "city": "Bogota",
+   "salary": {
+    "currency": "COP",
+    "period": "month",
+    "low": 3800000,
+    "median": 4300000,
+    "high": 4800000,
+    "basis": "junior range: low = lowest junior low end across sources",
+    "sources": [
+     {
+      "name": "Coderhouse app developer Colombia",
+      "url": "https://www.coderhouse.com/sueldos/sueldo-desarrollador-aplicaciones-colombia-2025",
+      "note": "junior COP 3,800,000-4,800,000/month",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "Talently developer salaries Colombia",
+      "url": "https://talently.tech/herramientas/colombia/salario",
+      "note": "junior USD 1,155-1,533/month (~COP 4.4-5.8M at ~3,800 COP/USD; USD-denominated)",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "cost_of_living": {
+    "monthly": 1232,
+    "currency": "USD",
+    "basis": "single person incl. rent, higher of the two sources",
+    "sources": [
+     {
+      "name": "Numbeo",
+      "url": "https://www.numbeo.com/cost-of-living/in/Bogota",
+      "note": "719.8 USD without rent + 511.58 USD 1BR outside centre",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "livingcost.org (country level)",
+      "url": "https://livingcost.org/cost/colombia",
+      "note": "928 incl. rent, country-level figure",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "tax": null,
+   "cities": {}
+  },
+  "CR": {
+   "name": "Costa Rica",
+   "city": "San Jose",
+   "salary": {
+    "currency": "CRC",
+    "period": "month",
+    "low": 820000,
+    "median": 1000000,
+    "high": 1460000,
+    "basis": "junior range: low = lowest junior low end across sources",
+    "sources": [
+     {
+      "name": "TECLA software developer salary Costa Rica",
+      "url": "https://www.tecla.io/salaries/software-developer-salary-costa-rica",
+      "note": "junior USD 21,676-38,514/yr = USD 1,806-3,210/month; converted at ~454 CRC/USD (Numbeo implied)",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "Mobilunity hire developers Costa Rica",
+      "url": "https://mobilunity.com/blog/hire-software-developers-in-costa-rica/",
+      "note": "junior ~USD 2,000/month; converted at ~454 CRC/USD",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "cost_of_living": {
+    "monthly": 1945,
+    "currency": "USD",
+    "basis": "single person incl. rent, higher of the two sources",
+    "sources": [
+     {
+      "name": "Numbeo",
+      "url": "https://www.numbeo.com/cost-of-living/in/San-Jose-Costa-Rica",
+      "note": "1005.1 USD without rent + 940.33 USD 1BR outside centre",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "livingcost.org (country level)",
+      "url": "https://livingcost.org/cost/costa-rica",
+      "note": "1402 incl. rent, country-level figure",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "tax": null,
+   "cities": {}
+  },
+  "HR": {
+   "name": "Croatia",
+   "city": "Zagreb",
+   "salary": {
+    "currency": "EUR",
+    "period": "month",
+    "low": 1342,
+    "median": 1342,
+    "high": 2000,
+    "basis": "single net-based source: low=median = junior avg net incl. allowances; high from SmartNinja gross listing; likely understates gross",
+    "sources": [
+     {
+      "name": "Tabu.hr developer salaries 2025",
+      "url": "https://www.tabu.hr/blog-place-developera-vs-place-dizajnera-stanje-hrvatskog-it-a-u-2025",
+      "note": "junior avg EUR 1,342, median EUR 1,331, NET with allowances (proxy: junior developer)",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "SmartNinja Zagreb programming jobs",
+      "url": "https://smartninja.hr/blog/programerski-poslovi-ozujak/",
+      "note": "listings gross EUR 2,000-4,000 for developer roles (ambiguous, used for high end only)",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "cost_of_living": {
+    "monthly": 1584,
+    "currency": "USD",
+    "basis": "single person incl. rent, higher of the two sources",
+    "sources": [
+     {
+      "name": "Numbeo",
+      "url": "https://www.numbeo.com/cost-of-living/in/Zagreb",
+      "note": "912.0 USD without rent + 671.62 USD 1BR outside centre",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "livingcost.org (country level)",
+      "url": "https://livingcost.org/cost/croatia",
+      "note": "1410 incl. rent, country-level figure",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "tax": null,
+   "cities": {}
+  },
+  "CY": {
+   "name": "Cyprus",
+   "city": "Limassol",
+   "salary": {
+    "currency": "EUR",
+    "period": "month",
+    "low": 1000,
+    "median": 1700,
+    "high": 1875,
+    "basis": "junior range: low = lowest junior low end across sources",
+    "sources": [
+     {
+      "name": "SaviorHire software developer salaries Cyprus",
+      "url": "https://www.saviorhire.com/post/software-developer-salaries-in-cyprus",
+      "note": "junior (1-2 yrs) EUR 12,000-18,000/yr = EUR 1,000-1,500/month",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "PayScale Software Developer Cyprus",
+      "url": "https://www.payscale.com/research/CY/Job=Software_Developer/Salary",
+      "note": "entry <1yr EUR 17,690/yr, 1-4 yrs EUR 21,685/yr (proxy: software developer)",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "Glassdoor Limassol junior software developer",
+      "url": "https://www.glassdoor.com/Salaries/limassol-cyprus-junior-software-developer-salary-SRCH_IL.0,15_IM1340_KO16,41.htm",
+      "note": "avg EUR 22,497/yr = EUR 1,875/month",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "cost_of_living": {
+    "monthly": 2538,
+    "currency": "USD",
+    "basis": "single person incl. rent, higher of the two sources",
+    "sources": [
+     {
+      "name": "Numbeo",
+      "url": "https://www.numbeo.com/cost-of-living/in/Limassol",
+      "note": "1078.3 USD without rent + 1460.01 USD 1BR outside centre (Limassol rents high; Nicosia likely lower)",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "livingcost.org (country level)",
+      "url": "https://livingcost.org/cost/cyprus",
+      "note": "1631 incl. rent, country-level figure",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "tax": null,
+   "cities": {}
+  },
+  "CZ": {
+   "name": "Czech Republic",
+   "city": "Prague",
+   "salary": {
+    "currency": "CZK",
+    "period": "month",
+    "low": 40000,
+    "median": 56000,
+    "high": 67000,
+    "basis": "junior range: low = lowest junior low end across sources",
+    "sources": [
+     {
+      "name": "Levels.fyi entry level software engineer Prague",
+      "url": "https://www.levels.fyi/t/software-engineer/levels/entry-level/locations/prague-metropolitan-area",
+      "note": "median CZK 56,255/month total comp",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "Indeed Junior developer Czechia",
+      "url": "https://cz.indeed.com/career/junior-developer/salaries",
+      "note": "Prague CZK 66,864/month",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "Quora junior dev Prague",
+      "url": "https://www.quora.com/What-salary-should-I-expect-as-a-junior-software-developer-at-a-multinational-in-Prague-Czech-Republic",
+      "note": "CZK 35,000-40,000 brutto/month (older, anecdotal) used for low",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "cost_of_living": {
+    "monthly": 1862,
+    "currency": "USD",
+    "basis": "single person incl. rent, higher of the two sources",
+    "sources": [
+     {
+      "name": "Numbeo",
+      "url": "https://www.numbeo.com/cost-of-living/in/Prague",
+      "note": "888.3 USD without rent + 973.64 USD 1BR outside centre",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "livingcost.org (country level)",
+      "url": "https://livingcost.org/cost/czech-republic",
+      "note": "1478 incl. rent, country-level figure",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "tax": {
+    "rate": 0.22,
+    "sources": [
+     {
+      "name": "TaxRavens Czechia 2026",
+      "url": "https://taxravens.com/en/czechia",
+      "note": "income tax 10.7% + social 11.6% at ~CZK 720,000/yr",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "cities": {}
+  },
+  "KH": {
+   "name": "Cambodia",
+   "city": "Phnom Penh",
+   "salary": {
+    "currency": "USD",
+    "period": "month",
+    "low": 450,
+    "median": 700,
+    "high": 1000,
+    "basis": "junior range: low = lowest junior low end across sources",
+    "sources": [
+     {
+      "name": "Bongthom job listing",
+      "url": "https://bongthom.com/job_detail/junior_software_developer_assistant_mana_30621.html",
+      "note": "software developer range USD 450-1,000/month",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "SecondTalent Cambodia developer rate card",
+      "url": "https://www.secondtalent.com/developer-rate-card/cambodia/",
+      "note": "Phnom Penh software developer USD 800-3,500/month (all levels; sanity check only)",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "cost_of_living": {
+    "monthly": 1044,
+    "currency": "USD",
+    "basis": "single person incl. rent, higher of the two sources",
+    "sources": [
+     {
+      "name": "Numbeo",
+      "url": "https://www.numbeo.com/cost-of-living/in/Phnom-Penh",
+      "note": "631.8 USD without rent + 411.71 USD 1BR outside centre",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "livingcost.org (country level)",
+      "url": "https://livingcost.org/cost/cambodia",
+      "note": "832 incl. rent, country-level figure",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "tax": null,
+   "cities": {}
+  },
+  "DO": {
+   "name": "Dominican Republic",
+   "city": "Santo Domingo",
+   "salary": {
+    "currency": "DOP",
+    "period": "month",
+    "low": 42000,
+    "median": 56000,
+    "high": 70000,
+    "basis": "junior range: Glassdoor junior software developer range, median = midpoint",
+    "sources": [
+     {
+      "name": "Glassdoor junior software developer Santo Domingo",
+      "url": "https://www.glassdoor.com/Salaries/santo-domingo-dominican-republic-junior-software-developer-salary-SRCH_IL.0,32_IM1357_KO33,58.htm",
+      "note": "DOP 42K-70K/mo",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "Revelo Dominican Republic developer salary",
+      "url": "https://www.revelo.com/blog/outsourcing-software-development-to-dominican-republic",
+      "note": "proxy: all-level avg ~USD 2,700/mo (context only)",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "cost_of_living": {
+    "monthly": 996,
+    "currency": "USD",
+    "basis": "single person incl. rent, higher of the two sources",
+    "sources": [
+     {
+      "name": "Numbeo",
+      "url": "https://www.numbeo.com/cost-of-living/in/Santo-Domingo",
+      "note": "646.3 without rent + 349.43 1BR outside centre (USD display)",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "livingcost.org",
+      "url": "https://livingcost.org/cost/dominican-republic",
+      "note": "901 incl. rent (country-level figure)",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "tax": {
+    "rate": 0.12,
+    "sources": [
+     {
+      "name": "PwC Worldwide Tax Summaries Dominican Republic",
+      "url": "https://taxsummaries.pwc.com/dominican-republic/individual/taxes-on-personal-income",
+      "note": "progressive 0/15/20% above DOP ~416k exemption (~6%) + employee AFP/SFS ~5.9%",
+      "retrieved": "2026-11-04"
+     }
+    ],
+    "note": "effective income tax + employee social security, single, at median pay; computed from statutory rates, not re-verified on page"
+   },
+   "cities": {}
+  },
+  "EC": {
+   "name": "Ecuador",
+   "city": "Quito",
+   "salary": {
+    "currency": "USD",
+    "period": "month",
+    "low": 646,
+    "median": 1230,
+    "high": 1840,
+    "basis": "junior range: low = Glassdoor junior developer Quito avg, high = Glassdoor 90th pct, median = midpoint of Glassdoor and Salary Expert",
+    "sources": [
+     {
+      "name": "Glassdoor junior developer Quito",
+      "url": "https://www.glassdoor.com/Salaries/quito-equador-junior-developer-salary-SRCH_IL.0,13_IM1362_KO14,30.htm",
+      "note": "USD 646/mo avg, up to 1,840 (90th pct)",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "Revelo citing Salary Expert junior software developer Ecuador",
+      "url": "https://www.revelo.com/blog/outsourcing-software-development-to-ecuador",
+      "note": "USD 21,768/yr = 1,814/mo",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "cost_of_living": {
+    "monthly": 934,
+    "currency": "USD",
+    "basis": "single person incl. rent, higher of the two sources",
+    "sources": [
+     {
+      "name": "Numbeo",
+      "url": "https://www.numbeo.com/cost-of-living/in/Quito",
+      "note": "577.8 without rent + 356.08 1BR outside centre (USD display)",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "livingcost.org",
+      "url": "https://livingcost.org/cost/ecuador",
+      "note": "817 incl. rent (country-level figure)",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "tax": {
+    "rate": 0.105,
+    "sources": [
+     {
+      "name": "PwC Worldwide Tax Summaries Ecuador",
+      "url": "https://taxsummaries.pwc.com/ecuador/individual/taxes-on-personal-income",
+      "note": "IESS 9.45% + ~1% income tax at ~USD 14.8k/yr",
+      "retrieved": "2026-11-04"
+     }
+    ],
+    "note": "effective income tax + employee social security, single, at median pay; computed from statutory rates, not re-verified on page"
+   },
+   "cities": {}
+  },
+  "SV": {
+   "name": "El Salvador",
+   "city": "San Salvador",
+   "salary": {
+    "currency": "USD",
+    "period": "month",
+    "low": 800,
+    "median": 1150,
+    "high": 1500,
+    "basis": "junior range from nearshore hiring guide, median = midpoint",
+    "sources": [
+     {
+      "name": "Nearshore Business Solutions El Salvador hiring guide",
+      "url": "https://nearshorebusinesssolutions.com/hire-in-el-salvador/",
+      "note": "junior software developer USD 800-1,500/mo",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "Levels.fyi El Salvador software engineer",
+      "url": "https://www.levels.fyi/t/software-engineer/locations/el-salvador",
+      "note": "proxy: all-level median USD 32,532/yr (~2,700/mo), context only",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "cost_of_living": {
+    "monthly": 1501,
+    "currency": "USD",
+    "basis": "single person incl. rent, higher of the two sources",
+    "sources": [
+     {
+      "name": "Numbeo",
+      "url": "https://www.numbeo.com/cost-of-living/in/San-Salvador",
+      "note": "731.0 without rent + 770.00 1BR outside centre (USD display)",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "livingcost.org",
+      "url": "https://livingcost.org/cost/el-salvador",
+      "note": "1164 incl. rent (country-level figure)",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "tax": {
+    "rate": 0.18,
+    "sources": [
+     {
+      "name": "PwC Worldwide Tax Summaries El Salvador",
+      "url": "https://taxsummaries.pwc.com/el-salvador/individual/taxes-on-personal-income",
+      "note": "AFP 7.25% + ISSS 3% (capped) + ~8% income tax",
+      "retrieved": "2026-11-04"
+     }
+    ],
+    "note": "effective income tax + employee social security, single, at median pay; computed from statutory rates, not re-verified on page"
+   },
+   "cities": {}
+  },
+  "GE": {
+   "name": "Georgia",
+   "city": "Tbilisi",
+   "salary": {
+    "currency": "GEL",
+    "period": "month",
+    "low": 925,
+    "median": 1960,
+    "high": 3000,
+    "basis": "junior range: Glassdoor junior software engineer Tbilisi, median = midpoint",
+    "sources": [
+     {
+      "name": "Glassdoor junior software engineer Tbilisi",
+      "url": "https://www.glassdoor.com/Salaries/tbilisi-georgia-junior-software-engineer-salary-SRCH_IL.0,15_IM1416_KO16,40.htm",
+      "note": "GEL 925-3K/mo",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "TalentUp mobile developer Tbilisi",
+      "url": "https://talentup.io/salary/mobile-developer/tbilisi",
+      "note": "proxy: all-level base GEL 79,300/yr (~6,600/mo), context only",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "cost_of_living": {
+    "monthly": 1126,
+    "currency": "USD",
+    "basis": "single person incl. rent, higher of the two sources",
+    "sources": [
+     {
+      "name": "Numbeo",
+      "url": "https://www.numbeo.com/cost-of-living/in/Tbilisi",
+      "note": "663.0 without rent + 463.26 1BR outside centre (USD display)",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "livingcost.org",
+      "url": "https://livingcost.org/cost/georgia",
+      "note": "946 incl. rent (country-level figure)",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "tax": {
+    "rate": 0.22,
+    "sources": [
+     {
+      "name": "PwC Worldwide Tax Summaries Georgia",
+      "url": "https://taxsummaries.pwc.com/georgia/individual/taxes-on-personal-income",
+      "note": "flat 20% income tax + 2% employee pension",
+      "retrieved": "2026-11-04"
+     }
+    ],
+    "note": "effective income tax + employee social security, single, at median pay; computed from statutory rates, not re-verified on page"
+   },
+   "cities": {}
+  },
+  "GR": {
+   "name": "Greece",
+   "city": "Athens",
+   "salary": {
+    "currency": "EUR",
+    "period": "month",
+    "low": 900,
+    "median": 1200,
+    "high": 1400,
+    "basis": "junior range: forum-reported starting pay (low), Levels.fyi entry-level converted USD->EUR (median/high)",
+    "sources": [
+     {
+      "name": "Reddit r/cscareerquestionsEU junior developer Greece",
+      "url": "https://www.reddit.com/r/cscareerquestionsEU/comments/rz4pp2/junior_software_developer_in_greece/",
+      "note": "EUR 850-1,000/mo reported starting pay",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "Levels.fyi entry level software engineer Athens",
+      "url": "https://www.levels.fyi/t/software-engineer/levels/entry-level/locations/athens-grc",
+      "note": "median USD 16.7k/yr, 25th-75th ~13.9k-19.4k; converted ~0.86 EUR/USD",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "PayScale software developer Greece",
+      "url": "https://www.payscale.com/research/GR/Job=Software_Developer/Salary",
+      "note": "proxy: avg USD 17,071/yr",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "cost_of_living": {
+    "monthly": 1580,
+    "currency": "USD",
+    "basis": "single person incl. rent, higher of the two sources",
+    "sources": [
+     {
+      "name": "Numbeo",
+      "url": "https://www.numbeo.com/cost-of-living/in/Athens",
+      "note": "936.2 without rent + 643.48 1BR outside centre (USD display)",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "livingcost.org",
+      "url": "https://livingcost.org/cost/greece",
+      "note": "1253 incl. rent (country-level figure)",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "tax": {
+    "rate": 0.2,
+    "sources": [
+     {
+      "name": "PwC Worldwide Tax Summaries Greece",
+      "url": "https://taxsummaries.pwc.com/greece/individual/taxes-on-personal-income",
+      "note": "employee social security 13.37% + ~6% income tax after credit at ~EUR 16.8k/yr",
+      "retrieved": "2026-11-04"
+     }
+    ],
+    "note": "effective income tax + employee social security, single, at median pay; computed from statutory rates, not re-verified on page"
+   },
+   "cities": {}
+  },
+  "GH": {
+   "name": "Ghana",
+   "city": "Accra",
+   "salary": {
+    "currency": "GHS",
+    "period": "month",
+    "low": 2500,
+    "median": 3250,
+    "high": 5000,
+    "basis": "junior range: mctaba junior range, median = Glassdoor junior max",
+    "sources": [
+     {
+      "name": "mctaba tech jobs Ghana",
+      "url": "https://mctaba.com/learn/africa/tech-jobs-ghana",
+      "note": "junior developer GHS 2,500-5,000/mo",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "Glassdoor junior software developer Accra",
+      "url": "https://www.glassdoor.com/Salaries/accra-ghana-junior-software-developer-salary-SRCH_IL.0,11_IM1421_KO12,37.htm",
+      "note": "highest GHS 3,250/mo",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "cost_of_living": {
+    "monthly": 1045,
+    "currency": "USD",
+    "basis": "single person incl. rent, higher of the two sources",
+    "sources": [
+     {
+      "name": "Numbeo",
+      "url": "https://www.numbeo.com/cost-of-living/in/Accra",
+      "note": "765.7 without rent + 279.77 1BR outside centre (USD display)",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "livingcost.org",
+      "url": "https://livingcost.org/cost/ghana",
+      "note": "700 incl. rent (country-level figure)",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "tax": {
+    "rate": 0.19,
+    "sources": [
+     {
+      "name": "PwC Worldwide Tax Summaries Ghana",
+      "url": "https://taxsummaries.pwc.com/ghana/individual/taxes-on-personal-income",
+      "note": "PAYE graduated rates ~13% + SSNIT 5.5% at GHS 3,250/mo",
+      "retrieved": "2026-11-04"
+     }
+    ],
+    "note": "effective income tax + employee social security, single, at median pay; computed from statutory rates, not re-verified on page"
+   },
+   "cities": {}
+  },
+  "GT": {
+   "name": "Guatemala",
+   "city": "Guatemala City",
+   "salary": {
+    "currency": "GTQ",
+    "period": "month",
+    "low": 19270,
+    "median": 28000,
+    "high": 34200,
+    "basis": "proxy: Erieri IT software engineer Guatemala City entry/average/senior (annual/12)",
+    "sources": [
+     {
+      "name": "Erieri IT software engineer Guatemala City",
+      "url": "https://www.erieri.com/salary/job/it-software-engineer/guatemala/guatemala-city",
+      "note": "entry GTQ 231,237; avg 336K; senior 410,378 per year",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "Levels.fyi Guatemala software engineer",
+      "url": "https://www.levels.fyi/t/software-engineer/locations/guatemala",
+      "note": "proxy: all-level median USD 37,567/yr, context only",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "cost_of_living": {
+    "monthly": 1033,
+    "currency": "USD",
+    "basis": "single person incl. rent, single source",
+    "sources": [
+     {
+      "name": "livingcost.org",
+      "url": "https://livingcost.org/cost/guatemala",
+      "note": "1033 incl. rent (country-level figure)",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "tax": {
+    "rate": 0.09,
+    "sources": [
+     {
+      "name": "PwC Worldwide Tax Summaries Guatemala",
+      "url": "https://taxsummaries.pwc.com/guatemala/individual/taxes-on-personal-income",
+      "note": "IGSS 4.83% + ISR 5% regime ~4%",
+      "retrieved": "2026-11-04"
+     }
+    ],
+    "note": "effective income tax + employee social security, single, at median pay; computed from statutory rates, not re-verified on page"
+   },
+   "cities": {}
+  },
+  "ET": {
+   "name": "Ethiopia",
+   "city": "Addis Ababa",
+   "salary": {
+    "currency": "ETB",
+    "period": "month",
+    "low": 15000,
+    "median": 20000,
+    "high": 25000,
+    "basis": "junior range from Reddit r/Ethiopia (frontend 15-20k, backend 20-25k)",
+    "sources": [
+     {
+      "name": "Reddit r/Ethiopia software engineers employment",
+      "url": "https://www.reddit.com/r/Ethiopia/comments/1ju8q7o/how_is_employment_in_ethoipia_for_software/",
+      "note": "junior frontend 15-20k, backend 20-25k ETB/mo",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "Levels.fyi Ethiopia software engineer",
+      "url": "https://www.levels.fyi/t/software-engineer/locations/ethiopia",
+      "note": "proxy: all-level median ETB 72,257/mo, context only",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "cost_of_living": {
+    "monthly": 1156,
+    "currency": "USD",
+    "basis": "single person incl. rent, higher of the two sources",
+    "sources": [
+     {
+      "name": "Numbeo",
+      "url": "https://www.numbeo.com/cost-of-living/in/Addis-Ababa",
+      "note": "761.1 without rent + 394.55 1BR outside centre (USD display)",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "livingcost.org",
+      "url": "https://livingcost.org/cost/ethiopia",
+      "note": "1081 incl. rent (country-level figure)",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "tax": {
+    "rate": 0.29,
+    "sources": [
+     {
+      "name": "PwC Worldwide Tax Summaries Ethiopia",
+      "url": "https://taxsummaries.pwc.com/ethiopia/individual/taxes-on-personal-income",
+      "note": "graduated rates up to 35% (~22% effective) + 7% employee pension at ETB 20k/mo",
+      "retrieved": "2026-11-04"
+     }
+    ],
+    "note": "effective income tax + employee social security, single, at median pay; computed from statutory rates, not re-verified on page"
+   },
+   "cities": {}
+  },
+  "FJ": {
+   "name": "Fiji",
+   "city": "Suva",
+   "salary": {
+    "currency": "FJD",
+    "period": "month",
+    "low": 2917,
+    "median": 3167,
+    "high": 4600,
+    "basis": "proxy: software developer (all-level) Glassdoor lowest, PayScale avg, Levels.fyi median",
+    "sources": [
+     {
+      "name": "Glassdoor software developer Suva",
+      "url": "https://www.glassdoor.com.au/Salaries/suva-fiji-software-developer-salary-SRCH_IL.0,9_IM1398_KO10,28.htm",
+      "note": "lowest FJD 35,000/yr = 2,917/mo",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "PayScale software developer Fiji",
+      "url": "https://www.payscale.com/research/FJ/Job=Software_Developer/Salary",
+      "note": "avg FJD 38,000/yr",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "Levels.fyi Suva software engineer",
+      "url": "https://www.levels.fyi/t/software-engineer/locations/suva-fji",
+      "note": "median FJD 55,204/yr total comp (high)",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "cost_of_living": {
+    "monthly": 913,
+    "currency": "USD",
+    "basis": "single person incl. rent, higher of the two sources",
+    "sources": [
+     {
+      "name": "Numbeo",
+      "url": "https://www.numbeo.com/cost-of-living/in/Suva",
+      "note": "587.8 without rent + 325.59 1BR outside centre (USD display)",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "livingcost.org",
+      "url": "https://livingcost.org/cost/fiji",
+      "note": "908 incl. rent (country-level figure)",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "tax": {
+    "rate": 0.12,
+    "sources": [
+     {
+      "name": "PwC Worldwide Tax Summaries Fiji",
+      "url": "https://taxsummaries.pwc.com/fiji/individual/taxes-on-personal-income",
+      "note": "18% above FJD 30k (~4%) + FNPF 8%",
+      "retrieved": "2026-11-04"
+     }
+    ],
+    "note": "effective income tax + employee social security, single, at median pay; computed from statutory rates, not re-verified on page"
+   },
+   "cities": {}
+  },
+  "GA": {
+   "name": "Gabon",
+   "city": "Libreville",
+   "salary": {
+    "currency": "XAF",
+    "period": "month",
+    "low": 500000,
+    "median": 532000,
+    "high": 1200000,
+    "basis": "junior low from Edomatch range, median = Multiplier developer, high = GX mid-level software engineer",
+    "sources": [
+     {
+      "name": "Edomatch Gabon developer",
+      "url": "https://business.edomatch.com/en/recruitment/gabon/roles/developpeur",
+      "note": "XAF 500k-2.5M/mo junior to tech lead",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "Multiplier Gabon",
+      "url": "https://www.usemultiplier.com/gabon",
+      "note": "developer/programmer XAF 532,000/mo",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "Global Expansion Gabon",
+      "url": "https://www.globalexpansion.com/countrypedia/gabon",
+      "note": "mid-level software engineer XAF 1,200,000/mo gross",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "cost_of_living": {
+    "monthly": 736,
+    "currency": "USD",
+    "basis": "single person incl. rent, single source",
+    "sources": [
+     {
+      "name": "livingcost.org",
+      "url": "https://livingcost.org/cost/gabon",
+      "note": "736 incl. rent (country-level figure)",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "tax": null,
+   "cities": {}
+  },
+  "GM": {
+   "name": "Gambia",
+   "city": "Banjul",
+   "salary": {
+    "currency": "GMD",
+    "period": "month",
+    "low": 12000,
+    "median": 19500,
+    "high": 27000,
+    "basis": "proxy: software developer (all-level) Glassdoor range, median = midpoint",
+    "sources": [
+     {
+      "name": "Glassdoor software developer Banjul",
+      "url": "https://www.glassdoor.com/Salaries/banjul-gambia-software-developer-salary-SRCH_IL.0,13_IM1409_KO14,32.htm",
+      "note": "GMD 12K-27K/mo total pay",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "Paylab Gambia software engineer",
+      "url": "https://www.paylab.com/gm/salaryinfo/information-technology/software-engineer",
+      "note": "proxy: GMD 10,000-80,348/mo all-level",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "cost_of_living": {
+    "monthly": 578,
+    "currency": "USD",
+    "basis": "single person incl. rent, single source",
+    "sources": [
+     {
+      "name": "livingcost.org",
+      "url": "https://livingcost.org/cost/gambia",
+      "note": "578 incl. rent (country-level figure)",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "tax": null,
+   "cities": {}
+  },
+  "GN": {
+   "name": "Guinea",
+   "city": "Conakry",
+   "salary": {
+    "currency": "GNF",
+    "period": "month",
+    "low": 3000000,
+    "median": 4250000,
+    "high": 5500000,
+    "basis": "junior range from MaxisHR, median = midpoint",
+    "sources": [
+     {
+      "name": "MaxisHR Guinea salary guide",
+      "url": "https://maxishr.com/en/guinea/salary-benchmarking",
+      "note": "software engineer junior GNF 3.0M-5.5M/mo",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "Glassdoor software developer Conakry",
+      "url": "https://www.glassdoor.com/Salaries/conakry-guinea-software-developer-salary-SRCH_IL.0,14_IM1448_KO15,33.htm",
+      "note": "conflicting: highest GNF 500,000/mo",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "cost_of_living": {
+    "monthly": 1028,
+    "currency": "USD",
+    "basis": "single person incl. rent, single source",
+    "sources": [
+     {
+      "name": "livingcost.org",
+      "url": "https://livingcost.org/cost/guinea",
+      "note": "1028 incl. rent (country-level figure)",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "tax": null,
+   "cities": {}
+  },
+  "HU": {
+   "name": "Hungary",
+   "city": "Budapest",
+   "salary": {
+    "currency": "HUF",
+    "period": "month",
+    "low": 350000,
+    "median": 450000,
+    "high": 700000,
+    "basis": "junior range: low/median from junior developer reports, high = frontend dev max",
+    "sources": [
+     {
+      "name": "Reddit r/cscareerquestionsEU junior software developer Hungary",
+      "url": "https://www.reddit.com/r/cscareerquestionsEU/comments/nnveso/what_is_the_average_junior_software_developer/",
+      "note": "350-450k HUF junior; frontend 450-700k",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "DreamJobs NIX Junior Flutter Developer Budapest",
+      "url": "https://dreamjobs.hu/en/job/nix/junior-flutter-developer",
+      "note": "gross monthly salary from 400,000 HUF",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "Bridge software developer salary Hungary",
+      "url": "https://bridgeteams.com/blog/find-out-software-developer-salary-in-hungary/",
+      "note": "proxy: all-level avg 702,746 HUF",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "cost_of_living": {
+    "monthly": 1484,
+    "currency": "USD",
+    "basis": "single person incl. rent, higher of the two sources",
+    "sources": [
+     {
+      "name": "Numbeo",
+      "url": "https://www.numbeo.com/cost-of-living/in/Budapest",
+      "note": "838.7 + 210,421.50 HUF rent (~645 at 326 HUF/USD)",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "livingcost.org",
+      "url": "https://livingcost.org/cost/hungary",
+      "note": "1,277 incl. rent (country level)",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "tax": {
+    "rate": 0.307,
+    "sources": [
+     {
+      "name": "PwC Worldwide Tax Summaries Hungary",
+      "url": "https://taxsummaries.pwc.com/hungary/individual/taxes-on-personal-income",
+      "note": "15% flat PIT on gross less 18.5% employee SSC = 30.7%",
+      "retrieved": "2026-11-04"
+     }
+    ],
+    "note": "effective income tax + employee social security, single junior earner at median pay; computed from statutory rates"
+   },
+   "cities": {}
+  },
+  "IL": {
+   "name": "Israel",
+   "city": "Tel Aviv",
+   "salary": {
+    "currency": "ILS",
+    "period": "month",
+    "low": 12000,
+    "median": 17000,
+    "high": 21000,
+    "basis": "junior range from forum reports (gross monthly)",
+    "sources": [
+     {
+      "name": "Reddit r/Israel junior software engineer salary",
+      "url": "https://www.reddit.com/r/Israel/comments/r5hu9h/what_is_the_average_junior_software_engineer/",
+      "note": "junior Python backend 17-21k NIS gross monthly",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "Quora junior full stack Tel Aviv",
+      "url": "https://www.quora.com/Whats-a-salary-range-for-junior-full-stack-developers-in-Tel-aviv",
+      "note": "junior ~12k, beginner up to ~16k NIS monthly (proxy: junior full stack)",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "cost_of_living": {
+    "monthly": 2990,
+    "currency": "USD",
+    "basis": "single person incl. rent, higher of the two sources",
+    "sources": [
+     {
+      "name": "Numbeo",
+      "url": "https://www.numbeo.com/cost-of-living/in/Tel-Aviv-Yafo",
+      "note": "$1,529.1 + rent NIS 5,256.88 (~1,460 USD at ~3.6 NIS/USD)",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "livingcost.org",
+      "url": "https://livingcost.org/cost/israel",
+      "note": "2,360 incl. rent (country level)",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "tax": {
+    "rate": 0.2,
+    "sources": [
+     {
+      "name": "PwC Worldwide Tax Summaries Israel",
+      "url": "https://taxsummaries.pwc.com/israel/individual/taxes-on-personal-income",
+      "note": "brackets 10/14/20/31% less credit points, plus NI+health 3.5%/12%; ~20% at NIS 17k",
+      "retrieved": "2026-11-04"
+     }
+    ],
+    "note": "effective income tax + employee social security, single junior earner at median pay; computed from statutory rates"
+   },
+   "cities": {}
+  },
+  "LV": {
+   "name": "Latvia",
+   "city": "Riga",
+   "salary": {
+    "currency": "EUR",
+    "period": "month",
+    "low": 907,
+    "median": 1800,
+    "high": 2300,
+    "basis": "junior range: low = Glassdoor 25th pct, median/high from HeroHunt junior range",
+    "sources": [
+     {
+      "name": "HeroHunt developers Latvia",
+      "url": "https://www.herohunt.ai/find-developers/latvia/",
+      "note": "junior avg ~1,800 EUR/month, range 1,500-2,300 (proxy: junior developer)",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "Glassdoor Junior Software Developer Riga",
+      "url": "https://www.glassdoor.com/Salaries/riga-junior-software-developer-salary-SRCH_IL.0,4_IC2904022_KO5,30.htm",
+      "note": "25th-75th pct EUR 907-1,774 (period assumed monthly)",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "cost_of_living": {
+    "monthly": 1387,
+    "currency": "USD",
+    "basis": "single person incl. rent, higher of the two sources",
+    "sources": [
+     {
+      "name": "Numbeo",
+      "url": "https://www.numbeo.com/cost-of-living/in/Riga",
+      "note": "972.6 USD + rent EUR 370.31 (~414 USD)",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "livingcost.org",
+      "url": "https://livingcost.org/cost/latvia",
+      "note": "1,157 incl. rent (country level)",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "tax": {
+    "rate": 0.23,
+    "sources": [
+     {
+      "name": "PwC Worldwide Tax Summaries Latvia",
+      "url": "https://taxsummaries.pwc.com/latvia/individual/taxes-on-personal-income",
+      "note": "employee SSC 10.5% + 20% PIT after monthly allowance; ~23% at EUR 1,800",
+      "retrieved": "2026-11-04"
+     }
+    ],
+    "note": "effective income tax + employee social security, single junior earner at median pay; computed from statutory rates"
+   },
+   "cities": {}
+  },
+  "KE": {
+   "name": "Kenya",
+   "city": "Nairobi",
+   "salary": {
+    "currency": "KES",
+    "period": "month",
+    "low": 40000,
+    "median": 105000,
+    "high": 150000,
+    "basis": "junior range: low = mctaba low, median = careerbuddy midpoint, high = mctaba high",
+    "sources": [
+     {
+      "name": "mctaba Software Developer Salaries Kenya",
+      "url": "https://mctaba.com/learn/careers/software-developer-salaries-kenya",
+      "note": "junior KES 40,000-150,000 monthly",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "careerbuddy Software Engineer Salary Kenya",
+      "url": "https://careerbuddy.blog/article/software-engineer-salary-kenya",
+      "note": "junior KES 80,000-130,000 monthly",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "Africa-salary Android mobile developer Kenya",
+      "url": "https://www.africa-salary.com/en/salary/android-mobile-developer/kenya",
+      "note": "junior gross KES 131,000/month",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "cost_of_living": {
+    "monthly": 819,
+    "currency": "USD",
+    "basis": "single person incl. rent, higher of the two sources",
+    "sources": [
+     {
+      "name": "Numbeo",
+      "url": "https://www.numbeo.com/cost-of-living/in/Nairobi",
+      "note": "584.0 + rent KSh 30,555.56 (~235 USD)",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "livingcost.org",
+      "url": "https://livingcost.org/cost/kenya",
+      "note": "721 incl. rent (country level)",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "tax": {
+    "rate": 0.3,
+    "sources": [
+     {
+      "name": "PwC Worldwide Tax Summaries Kenya",
+      "url": "https://taxsummaries.pwc.com/kenya/individual/taxes-on-personal-income",
+      "note": "PAYE bands 10/25/30% less relief, NSSF 6%, SHIF 2.75%, housing levy 1.5%; ~30% at KES 105k",
+      "retrieved": "2026-11-04"
+     }
+    ],
+    "note": "effective income tax + employee social security, single junior earner at median pay; computed from statutory rates"
+   },
+   "cities": {}
+  },
+  "KZ": {
+   "name": "Kazakhstan",
+   "city": "Almaty",
+   "salary": {
+    "currency": "KZT",
+    "period": "month",
+    "low": 250000,
+    "median": 498000,
+    "high": 570000,
+    "basis": "low-confidence: median from HeroHunt junior ~$1,100 at 452.7 KZT/USD",
+    "sources": [
+     {
+      "name": "HeroHunt developers Kazakhstan",
+      "url": "https://www.herohunt.ai/find-developers/kazakhstan/",
+      "note": "junior developer ~USD 1,100/month",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "Reddit r/Kazakhstan software developer salary Almaty",
+      "url": "https://www.reddit.com/r/Kazakhstan/comments/11yieb9/average_software_developer_salary_in_almaty_and/",
+      "note": "anecdote: ~USD 552/month (low end)",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "cost_of_living": {
+    "monthly": 1210,
+    "currency": "USD",
+    "basis": "single person incl. rent, higher of the two sources",
+    "sources": [
+     {
+      "name": "Numbeo",
+      "url": "https://www.numbeo.com/cost-of-living/in/Almaty",
+      "note": "706.7 + rent KZT 227,764.71 (~503 USD)",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "livingcost.org",
+      "url": "https://livingcost.org/cost/kazakhstan",
+      "note": "721 incl. rent (country level)",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "tax": {
+    "rate": 0.18,
+    "sources": [
+     {
+      "name": "PwC Worldwide Tax Summaries Kazakhstan",
+      "url": "https://taxsummaries.pwc.com/kazakhstan/individual/taxes-on-personal-income",
+      "note": "approx: OPV 10% + VOSMS 2% + IPN 10% after deductions; ~18%",
+      "retrieved": "2026-11-04"
+     }
+    ],
+    "note": "effective income tax + employee social security, single junior earner at median pay; computed from statutory rates"
+   },
+   "cities": {}
+  },
+  "JO": {
+   "name": "Jordan",
+   "city": "Amman",
+   "salary": {
+    "currency": "JOD",
+    "period": "month",
+    "low": 500,
+    "median": 700,
+    "high": 900,
+    "basis": "junior range: low = Reddit fresh grad low, median/high from Talents-OS junior band",
+    "sources": [
+     {
+      "name": "Talents-OS Mobile Developer Salary Jordan",
+      "url": "https://www.talents-os.com/salaries/jordan/mobile",
+      "note": "junior (0-2 yrs) 600-900 JOD monthly",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "Reddit r/jordan programmer salary",
+      "url": "https://www.reddit.com/r/jordan/comments/16rz79u/how_much_can_programmers_make_a_monthyear/",
+      "note": "fresh graduates 500-2000 JOD",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "Facebook JoDevelopersGuild jr Android posting",
+      "url": "https://www.facebook.com/groups/JoDevelopersGuild/posts/10155315364464837/",
+      "note": "Jr Android 600-700 JOD",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "cost_of_living": {
+    "monthly": 1052,
+    "currency": "USD",
+    "basis": "single person incl. rent, higher of the two sources",
+    "sources": [
+     {
+      "name": "Numbeo",
+      "url": "https://www.numbeo.com/cost-of-living/in/Amman",
+      "note": "778.9 + rent JD 193.73 (~273 USD)",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "livingcost.org",
+      "url": "https://livingcost.org/cost/jordan",
+      "note": "933 incl. rent (country level)",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "tax": {
+    "rate": 0.075,
+    "sources": [
+     {
+      "name": "PwC Worldwide Tax Summaries Jordan",
+      "url": "https://taxsummaries.pwc.com/jordan/individual/taxes-on-personal-income",
+      "note": "annual pay under the 10,000 JOD exemption so income tax 0; employee social security 7.5%",
+      "retrieved": "2026-11-04"
+     }
+    ],
+    "note": "effective income tax + employee social security, single junior earner at median pay; computed from statutory rates"
+   },
+   "cities": {}
+  },
+  "KW": {
+   "name": "Kuwait",
+   "city": "Kuwait City",
+   "salary": {
+    "currency": "KWD",
+    "period": "month",
+    "low": 340,
+    "median": 604,
+    "high": 800,
+    "basis": "proxy: fresher engineer minimum, all-level software engineer median, Reddit threshold; no junior mobile data",
+    "sources": [
+     {
+      "name": "Quora minimum salary fresher engineer Kuwait",
+      "url": "https://www.quora.com/What-is-the-minimum-salary-of-fresher-engineer-in-kuwait",
+      "note": "minimum average 340 KWD/month (proxy: fresher engineer)",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "Levels.fyi Software Engineer Kuwait",
+      "url": "https://www.levels.fyi/t/software-engineer/locations/kuwait",
+      "note": "median KWD 604/month total comp, all levels (proxy)",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "Reddit r/Kuwait starting salary software engineers",
+      "url": "https://www.reddit.com/r/Kuwait/comments/16gkug4/starting_salary_for_software_engineers_in_it/",
+      "note": "anything less than 800 KWD seems awfully low",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "cost_of_living": {
+    "monthly": 1441,
+    "currency": "USD",
+    "basis": "single person incl. rent, higher of the two sources",
+    "sources": [
+     {
+      "name": "Numbeo",
+      "url": "https://www.numbeo.com/cost-of-living/in/Kuwait-City",
+      "note": "807.8 + rent KD 197.25 (~633 USD)",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "livingcost.org",
+      "url": "https://livingcost.org/cost/kuwait",
+      "note": "1,437 incl. rent (country level)",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "tax": {
+    "rate": 0.0,
+    "sources": [
+     {
+      "name": "PwC Worldwide Tax Summaries Kuwait",
+      "url": "https://taxsummaries.pwc.com/kuwait/individual/taxes-on-personal-income",
+      "note": "no personal income tax; social security applies only to Kuwaiti nationals (expat rate 0)",
+      "retrieved": "2026-11-04"
+     }
+    ],
+    "note": "effective income tax + employee social security, single junior earner at median pay; computed from statutory rates"
+   },
+   "cities": {}
+  },
+  "LB": {
+   "name": "Lebanon",
+   "city": "Beirut",
+   "salary": {
+    "currency": "USD",
+    "period": "month",
+    "low": 1000,
+    "median": 1300,
+    "high": 2000,
+    "basis": "junior range from forum and Glassdoor (USD-denominated)",
+    "sources": [
+     {
+      "name": "Reddit r/lebanon devs how much are you making",
+      "url": "https://www.reddit.com/r/lebanon/comments/184awc1/devs_in_leb_how_much_are_you_making/",
+      "note": "junior ~1.3k-1.5k USD/month",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "Glassdoor Software Developer Beirut",
+      "url": "https://www.glassdoor.com/Salaries/beirut-lebanon-software-developer-salary-SRCH_IL.0,14_IM1534_KO15,33.htm",
+      "note": "$1K-$2K/month base (proxy: software developer)",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "cost_of_living": {
+    "monthly": 1565,
+    "currency": "USD",
+    "basis": "single person incl. rent, higher of the two sources",
+    "sources": [
+     {
+      "name": "Numbeo",
+      "url": "https://www.numbeo.com/cost-of-living/in/Beirut",
+      "note": "1,045.8 + rent 519.64",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "livingcost.org",
+      "url": "https://livingcost.org/cost/lebanon",
+      "note": "1,315 incl. rent (country level)",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "tax": null,
+   "cities": {}
+  },
+  "JM": {
+   "name": "Jamaica",
+   "city": "Kingston",
+   "salary": {
+    "currency": "JMD",
+    "period": "month",
+    "low": 130000,
+    "median": 191000,
+    "high": 252000,
+    "basis": "junior range: Reddit entry offers and ERI entry level",
+    "sources": [
+     {
+      "name": "Reddit r/Jamaica entry level web developer",
+      "url": "https://www.reddit.com/r/Jamaica/comments/1sr7emk/starting_salary_for_entry_level_web_developer/",
+      "note": "entry devs ~130k JMD/month (proxy: web developer)",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "ERI Computer Software Developer Kingston",
+      "url": "https://www.erieri.com/salary/job/computer-software-developer/jamaica/kingston",
+      "note": "entry level JMD 3,028K/yr = ~252k/month (proxy: software developer)",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "cost_of_living": {
+    "monthly": 1601,
+    "currency": "USD",
+    "basis": "single person incl. rent, higher of the two sources",
+    "sources": [
+     {
+      "name": "Numbeo",
+      "url": "https://www.numbeo.com/cost-of-living/in/Kingston-Jamaica",
+      "note": "1,035.9 + rent J$90,416.67 (~565 USD at ~160 JMD/USD)",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "livingcost.org",
+      "url": "https://livingcost.org/cost/jamaica",
+      "note": "1,330 incl. rent (country level)",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "tax": {
+    "rate": 0.11,
+    "sources": [
+     {
+      "name": "PwC Worldwide Tax Summaries Jamaica",
+      "url": "https://taxsummaries.pwc.com/jamaica/individual/taxes-on-personal-income",
+      "note": "25% PAYE above threshold ~JMD 1.9M/yr plus NIS 3%, NHT 2%, education tax 2.25%; ~11%",
+      "retrieved": "2026-11-04"
+     }
+    ],
+    "note": "effective income tax + employee social security, single junior earner at median pay; computed from statutory rates"
+   },
+   "cities": {}
+  },
+  "KG": {
+   "name": "Kyrgyzstan",
+   "city": "Bishkek",
+   "salary": {
+    "currency": "KGS",
+    "period": "month",
+    "low": 39000,
+    "median": 63000,
+    "high": 124000,
+    "basis": "junior range converted at 87.45 KGS/USD: low = HTP mobile junior, high = Truss junior mobile upper",
+    "sources": [
+     {
+      "name": "HTP Kyrgyzstan IT salaries research",
+      "url": "https://www.linkedin.com/posts/htpkyrgyzstan_how-much-do-it-specialists-earn-in-kyrgyzstan-activity-7349303811192061953-15Wa",
+      "note": "Mobile Developer junior USD 450/month",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "Truss tech salaries Kyrgyzstan",
+      "url": "https://hiretruss.com/average-tech-salaries-in-kyrgyzstan-what-to-expect-when-hiring-remote-employees/",
+      "note": "mobile (Flutter etc.) junior USD 12-17k/yr = 1,000-1,417/month (remote hiring rates)",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "cost_of_living": {
+    "monthly": 899,
+    "currency": "USD",
+    "basis": "single person incl. rent, higher of the two sources",
+    "sources": [
+     {
+      "name": "Numbeo",
+      "url": "https://www.numbeo.com/cost-of-living/in/Bishkek",
+      "note": "490.2 + rent 35,748.33 som (~409 USD)",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "livingcost.org",
+      "url": "https://livingcost.org/cost/kyrgyzstan",
+      "note": "717 incl. rent (country level)",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "tax": {
+    "rate": 0.19,
+    "sources": [
+     {
+      "name": "PwC Worldwide Tax Summaries Kyrgyzstan",
+      "url": "https://taxsummaries.pwc.com/kyrgyzstan/individual/taxes-on-personal-income",
+      "note": "10% flat PIT after 10% employee pension contribution = 19%",
+      "retrieved": "2026-11-04"
+     }
+    ],
+    "note": "effective income tax + employee social security, single junior earner at median pay; computed from statutory rates"
+   },
+   "cities": {}
+  },
+  "CI": {
+   "name": "Ivory Coast",
+   "city": "Abidjan",
+   "salary": {
+    "currency": "XOF",
+    "period": "month",
+    "low": 280000,
+    "median": 400000,
+    "high": 500000,
+    "basis": "junior range from salary guides",
+    "sources": [
+     {
+      "name": "MaxisHR Cote d'Ivoire salary guide 2026",
+      "url": "https://maxishr.com/fr/cote-divoire/salary-benchmarking",
+      "note": "Junior software engineer XOF 280,000-500,000",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "Africa-salary Frontend developer Ivory Coast",
+      "url": "https://www.africa-salary.com/en/salary/frontend-developer/ivory-coast",
+      "note": "junior gross 452,000 XOF/month (proxy: frontend)",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "Edomatch developer Ivory Coast",
+      "url": "https://business.edomatch.com/en/recruitment/cote-divoire/roles/developpeur",
+      "note": "range 400k-2.5M XOF junior to tech lead",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "cost_of_living": {
+    "monthly": 1149,
+    "currency": "USD",
+    "basis": "single person incl. rent, higher of the two sources",
+    "sources": [
+     {
+      "name": "Numbeo",
+      "url": "https://www.numbeo.com/cost-of-living/in/Abidjan",
+      "note": "804.2 + rent 202,125 CFA (~345 USD)",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "livingcost.org",
+      "url": "https://livingcost.org/cost/ivory-coast",
+      "note": "1,148 incl. rent (country level)",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "tax": null,
+   "cities": {}
+  },
+  "LR": {
+   "name": "Liberia",
+   "city": "Monrovia",
+   "salary": {
+    "currency": "USD",
+    "period": "month",
+    "low": 1000,
+    "median": 1500,
+    "high": 3000,
+    "basis": "proxy: junior range from one aggregator; high = Levels all-level tech",
+    "sources": [
+     {
+      "name": "HeroHunt Liberia junior developer",
+      "url": "https://www.herohunt.ai/find-developers/liberia/",
+      "note": "USD 1,000-2,000/month; avg junior ~USD 25,000/yr",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "Levels.fyi Monrovia tech",
+      "url": "https://www.levels.fyi/industry/tech/locations/monrovia-lbr",
+      "note": "software engineer ~USD 36,000/yr (all-level, used as high)",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "cost_of_living": {
+    "monthly": 515,
+    "currency": "USD",
+    "basis": "single person incl. rent, higher of the two sources",
+    "sources": [
+     {
+      "name": "livingcost.org",
+      "url": "https://livingcost.org/cost/liberia",
+      "note": "515 incl. rent (country-level figure)",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "tax": null,
+   "cities": {}
+  },
+  "LY": {
+   "name": "Libya",
+   "city": "Tripoli",
+   "salary": {
+    "currency": "LYD",
+    "period": "month",
+    "low": 450,
+    "median": 500,
+    "high": 5000,
+    "basis": "proxy: junior 450-500 LYD; high = Glassdoor all-level max",
+    "sources": [
+     {
+      "name": "HeroHunt Libya junior developer",
+      "url": "https://www.herohunt.ai/find-developers/libya/",
+      "note": "junior ~LYD 450-500/month (~USD 330-375)",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "Glassdoor Software Engineer Tripoli",
+      "url": "https://www.glassdoor.com/Salaries/tripoli-libya-software-engineer-salary-SRCH_IL.0,13_IM1546_KO14,31.htm",
+      "note": "highest LYD 5,000/month (all-level)",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "cost_of_living": {
+    "monthly": 401,
+    "currency": "USD",
+    "basis": "single person incl. rent, higher of the two sources",
+    "sources": [
+     {
+      "name": "livingcost.org",
+      "url": "https://livingcost.org/cost/libya",
+      "note": "401 incl. rent (country-level figure)",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "Numbeo",
+      "url": "https://www.numbeo.com/cost-of-living/in/Tripoli",
+      "note": "no without-rent figure; 1-BR outside centre LD926.67 only, not usable as total",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "tax": null,
+   "cities": {}
+  },
+  "LI": {
+   "name": "Liechtenstein",
+   "city": "Vaduz",
+   "salary": {
+    "currency": "CHF",
+    "period": "month",
+    "low": 3333,
+    "median": 6550,
+    "high": 8750,
+    "basis": "proxy: Swiss junior software developer (Zurich); Liechtenstein uses the Swiss market",
+    "sources": [
+     {
+      "name": "SwissDevJobs Junior Zurich",
+      "url": "https://swissdevjobs.ch/salaries/all/Zurich/Junior",
+      "note": "bottom 10% CHF 40,000, avg 78,600, top 10% 105,000 per year",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "SwissDevJobs Liechtenstein all-level",
+      "url": "https://swissdevjobs.ch/salaries/all/Liechtenstein/all",
+      "note": "avg CHF 93,800/yr, median 97,500 (all-level, context only)",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "cost_of_living": {
+    "monthly": 2507,
+    "currency": "USD",
+    "basis": "single person incl. rent, higher of the two sources",
+    "sources": [
+     {
+      "name": "livingcost.org",
+      "url": "https://livingcost.org/cost/liechtenstein",
+      "note": "2507 incl. rent (country-level figure)",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "tax": null,
+   "cities": {}
+  },
+  "LT": {
+   "name": "Lithuania",
+   "city": "Vilnius",
+   "salary": {
+    "currency": "EUR",
+    "period": "month",
+    "low": 1246,
+    "median": 2041,
+    "high": 2408,
+    "basis": "junior range: low = Glassdoor avg, median = Levels entry-level median, high = Glassdoor 90th pct",
+    "sources": [
+     {
+      "name": "Glassdoor Junior Software Developer Vilnius",
+      "url": "https://www.glassdoor.com/Salaries/vilnius-lithuania-junior-software-developer-salary-SRCH_IL.0,17_IM1551_KO18,43.htm",
+      "note": "avg EUR 1,246 (page says per year, read as month; 90th pct EUR 2,408)",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "Levels.fyi Entry Level SWE Vilnius",
+      "url": "https://www.levels.fyi/t/software-engineer/levels/entry-level/locations/vilnius-ltu",
+      "note": "median USD 27,398/yr = ~EUR 2,041/month at 1.119",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "cost_of_living": {
+    "monthly": 1531,
+    "currency": "USD",
+    "basis": "single person incl. rent, higher of the two sources",
+    "sources": [
+     {
+      "name": "Numbeo",
+      "url": "https://www.numbeo.com/cost-of-living/in/Vilnius",
+      "note": "879.6 + 651.5 (EUR 582.35 rent outside centre)",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "livingcost.org",
+      "url": "https://livingcost.org/cost/lithuania",
+      "note": "1227 incl. rent (country-level figure)",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "tax": null,
+   "cities": {}
+  },
+  "MG": {
+   "name": "Madagascar",
+   "city": "Antananarivo",
+   "salary": {
+    "currency": "MGA",
+    "period": "month",
+    "low": 900000,
+    "median": 1350000,
+    "high": 2400000,
+    "basis": "junior developer range; high = HeroHunt avg junior",
+    "sources": [
+     {
+      "name": "Nogae Academy junior web developer",
+      "url": "https://www.nogaeacademy.com/salaire-developpeur-web-a-madagascar/",
+      "note": "900,000-1,800,000 Ar/month",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "Code-Talent junior developer",
+      "url": "https://www.code-talent.fr/blog/externalisation-developpeur-madagascar",
+      "note": "EUR 300-500/month",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "HeroHunt Madagascar junior",
+      "url": "https://www.herohunt.ai/find-developers/madagascar/",
+      "note": "~2,400,000 Ar/month",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "cost_of_living": {
+    "monthly": 574,
+    "currency": "USD",
+    "basis": "single person incl. rent, higher of the two sources",
+    "sources": [
+     {
+      "name": "Numbeo",
+      "url": "https://www.numbeo.com/cost-of-living/in/Antananarivo",
+      "note": "402.1 + 145.6 (665,705 Ar rent outside centre at 4,574 Ar/USD)",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "livingcost.org",
+      "url": "https://livingcost.org/cost/madagascar",
+      "note": "574 incl. rent (country-level figure)",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "tax": null,
+   "cities": {}
+  },
+  "MV": {
+   "name": "Maldives",
+   "city": "Male",
+   "salary": {
+    "currency": "MVR",
+    "period": "month",
+    "low": 10000,
+    "median": 15000,
+    "high": 20000,
+    "basis": "entry 10-12k, mid-range 15-19k, 20k = all-level median",
+    "sources": [
+     {
+      "name": "Reddit r/maldives IT salaries Male",
+      "url": "https://www.reddit.com/r/maldives/comments/1i757gd/job_market_and_salary_in_it_field_in_mal%C3%A9/",
+      "note": "starts 10-12k MVR, mid-range 15-19k",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "Arushad blog software engineers Maldives",
+      "url": "https://arushad.com/how-much-do-software-engineers-in-maldives-make/",
+      "note": "median MVR 20,000/month (all-level)",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "cost_of_living": {
+    "monthly": 1503,
+    "currency": "USD",
+    "basis": "single person incl. rent, higher of the two sources",
+    "sources": [
+     {
+      "name": "Numbeo",
+      "url": "https://www.numbeo.com/cost-of-living/in/Male",
+      "note": "804.9 + 697.9 (Rf10,785.71 rent outside centre at 15.455)",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "livingcost.org",
+      "url": "https://livingcost.org/cost/maldives",
+      "note": "1342 incl. rent (country-level figure)",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "tax": null,
+   "cities": {}
+  },
+  "MT": {
+   "name": "Malta",
+   "city": "Valletta",
+   "salary": {
+    "currency": "EUR",
+    "period": "month",
+    "low": 1500,
+    "median": 2208,
+    "high": 2917,
+    "basis": "junior range across sources",
+    "sources": [
+     {
+      "name": "Glassdoor Junior Software Developer Valletta",
+      "url": "https://www.glassdoor.com/Salaries/valletta-malta-junior-software-developer-salary-SRCH_IL.0,14_IM1563_KO15,40.htm",
+      "note": "EUR 26,500/yr avg",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "Reddit r/malta software developer salary",
+      "url": "https://www.reddit.com/r/malta/comments/1bhs60x/what_is_the_average_salary_of_a_software/",
+      "note": "entry 0-2 yrs EUR 18-25k/yr; Facebook thread 25-35k/yr",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "cost_of_living": {
+    "monthly": 2090,
+    "currency": "USD",
+    "basis": "single person incl. rent, higher of the two sources",
+    "sources": [
+     {
+      "name": "Numbeo",
+      "url": "https://www.numbeo.com/cost-of-living/in/Valletta",
+      "note": "978.7 + 1,111.3 (EUR 993.33 rent outside centre)",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "livingcost.org",
+      "url": "https://livingcost.org/cost/malta",
+      "note": "1725 incl. rent (country-level figure)",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "tax": null,
+   "cities": {}
+  },
+  "MR": {
+   "name": "Mauritania",
+   "city": "Nouakchott",
+   "salary": {
+    "currency": "MRU",
+    "period": "month",
+    "low": 70000,
+    "median": 97500,
+    "high": 125000,
+    "basis": "junior range from one benchmark guide; median = midpoint",
+    "sources": [
+     {
+      "name": "MaxisHR Mauritania salary guide",
+      "url": "https://maxishr.com/pt/mauritania/salary-benchmarking",
+      "note": "software engineers MRU 70,000-125,000 at junior level",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "Glassdoor Software Engineer Nouakchott",
+      "url": "https://www.glassdoor.sg/Salaries/nouakchott-mauritania-software-engineer-salary-SRCH_IL.0,21_IM1585_KO22,39.htm",
+      "note": "avg MRU 275,000/yr = ~22,900/month (all-level, far lower, thin data)",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "cost_of_living": {
+    "monthly": 652,
+    "currency": "USD",
+    "basis": "single person incl. rent, higher of the two sources",
+    "sources": [
+     {
+      "name": "livingcost.org",
+      "url": "https://livingcost.org/cost/mauritania",
+      "note": "652 incl. rent (country-level figure)",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "tax": null,
+   "cities": {}
+  },
+  "MU": {
+   "name": "Mauritius",
+   "city": "Port Louis",
+   "salary": {
+    "currency": "MUR",
+    "period": "month",
+    "low": 25000,
+    "median": 31528,
+    "high": 50000,
+    "basis": "proxy: median = PayScale all-level software engineer avg",
+    "sources": [
+     {
+      "name": "Reddit r/mauritius software engineer salary",
+      "url": "https://www.reddit.com/r/mauritius/comments/11q56zo/how_much_can_a_software_engineer_with_5_years_of/",
+      "note": "starting ~Rs 25k; junior up to ~Rs 50k",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "PayScale Software Engineer Mauritius",
+      "url": "https://www.payscale.com/research/MU/Job=Software_Engineer/Salary",
+      "note": "avg Rs 378,341/yr = 31,528/month (all-level)",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "cost_of_living": {
+    "monthly": 830,
+    "currency": "USD",
+    "basis": "single person incl. rent, higher of the two sources",
+    "sources": [
+     {
+      "name": "Numbeo",
+      "url": "https://www.numbeo.com/cost-of-living/in/Port-Louis",
+      "note": "554.8 + 274.9 (Rs13,000 rent outside centre at 47.29)",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "livingcost.org",
+      "url": "https://livingcost.org/cost/mauritius",
+      "note": "787 incl. rent (country-level figure)",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "tax": null,
+   "cities": {}
+  },
+  "MX": {
+   "name": "Mexico",
+   "city": "Mexico City",
+   "salary": {
+    "currency": "MXN",
+    "period": "month",
+    "low": 15000,
+    "median": 30000,
+    "high": 45000,
+    "basis": "junior range; median = midpoint of the two sources",
+    "sources": [
+     {
+      "name": "PayrollMexico software engineer salary 2026",
+      "url": "https://www.payrollmexico.com/insights/software-engineer-salary-mexico",
+      "note": "CDMX junior MXN 30,000-45,000/month",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "Glassdoor Junior Developer Mexico City",
+      "url": "https://www.glassdoor.com/Salaries/mexico-city-mexico-junior-developer-salary-SRCH_IL.0,18_IM1176_KO19,35.htm",
+      "note": "total pay MX$15K-30K/month",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "cost_of_living": {
+    "monthly": 1540,
+    "currency": "USD",
+    "basis": "single person incl. rent, higher of the two sources",
+    "sources": [
+     {
+      "name": "Numbeo",
+      "url": "https://www.numbeo.com/cost-of-living/in/Mexico-City",
+      "note": "770.3 + 770.0 (Mex$14,491.56 rent outside centre)",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "livingcost.org",
+      "url": "https://livingcost.org/cost/mexico",
+      "note": "1075 incl. rent (country-level figure)",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "tax": null,
+   "cities": {}
+  },
+  "MD": {
+   "name": "Moldova",
+   "city": "Chisinau",
+   "salary": {
+    "currency": "MDL",
+    "period": "month",
+    "low": 5600,
+    "median": 12604,
+    "high": 20000,
+    "basis": "entry-level range; median = Levels entry median converted",
+    "sources": [
+     {
+      "name": "TechDoor IT salaries Moldova",
+      "url": "https://techdoor.md/en/how-much-it-specialists-earn-in-moldova/",
+      "note": "entry-level 5,600-17,800 lei/month",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "Levels.fyi Entry Level SWE Chisinau",
+      "url": "https://www.levels.fyi/t/software-engineer/levels/entry-level/locations/chisinau-mda",
+      "note": "median USD 8,400/yr = ~12,604 MDL/month at 18.0; range 6,554-10,800",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "LinkedIn Junior Android Developer Moldova",
+      "url": "https://md.linkedin.com/jobs/view/junior-android-developer-at-wherewework-jobs-4483859922",
+      "note": "14,000-20,000 MDL gross/month",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "cost_of_living": {
+    "monthly": 1159,
+    "currency": "USD",
+    "basis": "single person incl. rent, higher of the two sources",
+    "sources": [
+     {
+      "name": "Numbeo",
+      "url": "https://www.numbeo.com/cost-of-living/in/Chisinau",
+      "note": "692.1 + 467.3 (8,414.57 L rent outside centre at 18.0)",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "livingcost.org",
+      "url": "https://livingcost.org/cost/moldova",
+      "note": "858 incl. rent (country-level figure)",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "tax": null,
+   "cities": {}
+  },
+  "MN": {
+   "name": "Mongolia",
+   "city": "Ulaanbaatar",
+   "salary": {
+    "currency": "MNT",
+    "period": "month",
+    "low": 1870000,
+    "median": 3997078,
+    "high": 8000000,
+    "basis": "proxy all-level: low = avg software engineer, median = Levels all-level, high = Reddit experienced Java/C#; junior likely near low",
+    "sources": [
+     {
+      "name": "Multiplier Mongolia",
+      "url": "https://www.usemultiplier.com/mongolia",
+      "note": "software engineer 1,870,000 MNT/month",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "Levels.fyi Mongolia",
+      "url": "https://www.levels.fyi/t/software-engineer/locations/mongolia",
+      "note": "median MNT 3,997,078/month total comp (all-level)",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "Reddit r/mongolia high earning career",
+      "url": "https://www.reddit.com/r/mongolia/comments/1iok2ib/high_earning_potential_career_or_job_in_mongolia/",
+      "note": "8-10 million for strong Java/C# engineers",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "cost_of_living": {
+    "monthly": 1084,
+    "currency": "USD",
+    "basis": "single person incl. rent, higher of the two sources",
+    "sources": [
+     {
+      "name": "Numbeo",
+      "url": "https://www.numbeo.com/cost-of-living/in/Ulaanbaatar",
+      "note": "614.8 + 469.3 (MNT1,688,911 rent outside centre at 3,599)",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "livingcost.org",
+      "url": "https://livingcost.org/cost/mongolia",
+      "note": "935 incl. rent (country-level figure)",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "tax": null,
+   "cities": {}
+  },
+  "MA": {
+   "name": "Morocco",
+   "city": "Rabat",
+   "salary": {
+    "currency": "MAD",
+    "period": "month",
+    "low": 8000,
+    "median": 10000,
+    "high": 12000,
+    "basis": "junior (0-2 yrs) range; median = midpoint",
+    "sources": [
+     {
+      "name": "Y Strategie developer salary Morocco 2026",
+      "url": "https://ystrategie.com/en/blog/developer-salary-morocco-vs-france-complete-benchmark-2026",
+      "note": "junior MAD 96,000-144,000/yr = 8,000-12,000/month",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "Xpertize Africa Morocco software developer salary",
+      "url": "https://xpertize.africa/en/articles/2026-07-10-morocco-software-developer-salary",
+      "note": "8,000-55,000 MAD gross/month across seniorities",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "Levels.fyi Morocco",
+      "url": "https://www.levels.fyi/t/software-engineer/locations/morocco",
+      "note": "median MAD 14,478/month (all-level, context)",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "cost_of_living": {
+    "monthly": 863,
+    "currency": "USD",
+    "basis": "single person incl. rent, higher of the two sources",
+    "sources": [
+     {
+      "name": "Numbeo",
+      "url": "https://www.numbeo.com/cost-of-living/in/Rabat",
+      "note": "524.9 + 338.4 (3,326 MAD rent outside centre at 9.83)",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "livingcost.org",
+      "url": "https://livingcost.org/cost/morocco",
+      "note": "736 incl. rent (country-level figure)",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "tax": null,
+   "cities": {}
+  },
+  "MM": {
+   "name": "Myanmar",
+   "city": "Yangon",
+   "salary": {
+    "currency": "MMK",
+    "period": "month",
+    "low": 500000,
+    "median": 700000,
+    "high": 1500000,
+    "basis": "junior local 500-900k, foreign-invested 900k-1.5M; median = midpoint of local range",
+    "sources": [
+     {
+      "name": "QHRM Yangon software engineer salary",
+      "url": "https://qhrm.io/answers/average-software-engineer-salary-yangon",
+      "note": "junior 0-2 yrs 500,000-900,000 local; 900,000-1,500,000 foreign (illustrative)",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "Reddit r/myanmar IT salary range",
+      "url": "https://www.reddit.com/r/myanmar/comments/1r7azq6/salary_range_in_it_sector/",
+      "note": "good local-remote juniors up to 10 lakh (1,000,000) MMK/month",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "Paylab Myanmar software engineer",
+      "url": "https://www.paylab.com/mm/salaryinfo/information-technology/software-engineer",
+      "note": "total gross 424,872-6,744,730 MMK/month (all-level)",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "cost_of_living": {
+    "monthly": 697,
+    "currency": "USD",
+    "basis": "single person incl. rent, higher of the two sources",
+    "sources": [
+     {
+      "name": "Numbeo",
+      "url": "https://www.numbeo.com/cost-of-living/in/Yangon",
+      "note": "500.6 + 196.13 (USD rent outside centre)",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "livingcost.org",
+      "url": "https://livingcost.org/cost/myanmar",
+      "note": "630 incl. rent (country-level figure)",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "tax": null,
+   "cities": {}
+  },
+  "NP": {
+   "name": "Nepal",
+   "city": "Kathmandu",
+   "salary": {
+    "currency": "NPR",
+    "period": "month",
+    "low": 25000,
+    "median": 36250,
+    "high": 50000,
+    "basis": "junior range: low = lowest junior low end across sources; median = mean of source midpoints",
+    "sources": [
+     {
+      "name": "LetsLearn junior app developers Nepal",
+      "url": "https://letslearn.asia/web-developer-salary-in-nepal/",
+      "note": "junior app developer NPR 25,000-40,000/mo",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "GyanStation software engineer salary Nepal 2026",
+      "url": "https://gyanstation.com/blogs/software-engineer-salary-in-nepal",
+      "note": "junior software engineer NPR 30,000-50,000/mo (proxy: junior software engineer)",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "cost_of_living": {
+    "monthly": 459,
+    "currency": "USD",
+    "basis": "single person incl. rent, higher of the two sources",
+    "sources": [
+     {
+      "name": "Numbeo",
+      "url": "https://www.numbeo.com/cost-of-living/in/Kathmandu",
+      "note": "350.7 + 108.5 (NPR 16,460 rent at 151.7 NPR/USD)",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "livingcost.org",
+      "url": "https://livingcost.org/cost/nepal",
+      "note": "361 country level, city page not checked",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "tax": null,
+   "cities": {}
+  },
+  "NG": {
+   "name": "Nigeria",
+   "city": "Lagos",
+   "salary": {
+    "currency": "NGN",
+    "period": "month",
+    "low": 150000,
+    "median": 262500,
+    "high": 350000,
+    "basis": "junior range: low = lowest junior low end across sources; median = mean of source midpoints",
+    "sources": [
+     {
+      "name": "Profolio mobile app developer salary Nigeria",
+      "url": "https://www.profolio.ng/mobile-app-developer/salary-guide",
+      "note": "junior Flutter NGN 200,000-350,000/mo",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "Sellevo mobile app developer salary Nigeria 2026",
+      "url": "https://sellevo.ng/blog/mobile-app-developer-salary-in-nigeria-2026-full-breakdown",
+      "note": "junior mobile (0-2 yrs) NGN 150,000-350,000/mo",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "cost_of_living": {
+    "monthly": 937,
+    "currency": "USD",
+    "basis": "single person incl. rent, higher of the two sources",
+    "sources": [
+     {
+      "name": "Numbeo",
+      "url": "https://www.numbeo.com/cost-of-living/in/Lagos",
+      "note": "521.0 + 416.4 (NGN 559,327 rent at 1,343 NGN/USD)",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "livingcost.org",
+      "url": "https://livingcost.org/cost/nigeria",
+      "note": "761 country level",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "tax": null,
+   "cities": {}
+  },
+  "NI": {
+   "name": "Nicaragua",
+   "city": "Managua",
+   "salary": {
+    "currency": "USD",
+    "period": "month",
+    "low": 400,
+    "median": 1000,
+    "high": 3167,
+    "basis": "junior range: low = local anecdotal average (Reddit), median = low end of mobile developer range, high = top of range; sources disagree widely",
+    "sources": [
+     {
+      "name": "Reddit r/Nicaragua average salary Managua",
+      "url": "https://www.reddit.com/r/Nicaragua/comments/1p00dkc/what_is_the_average_salary_in_managua/",
+      "note": "average ~USD 400/mo incl. software development (anecdotal)",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "HireTalent.lat mobile app developer Nicaragua",
+      "url": "https://hiretalent.lat/salaries/mobile-app-developer-in-nicaragua",
+      "note": "USD 17K-38K/yr, remote-oriented, not junior-specific (proxy)",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "cost_of_living": {
+    "monthly": 858,
+    "currency": "USD",
+    "basis": "single person incl. rent, higher of the two sources",
+    "sources": [
+     {
+      "name": "Numbeo",
+      "url": "https://www.numbeo.com/cost-of-living/in/Managua",
+      "note": "677.4 + 181.00",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "livingcost.org",
+      "url": "https://livingcost.org/cost/nicaragua",
+      "note": "756 country level",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "tax": null,
+   "cities": {}
+  },
+  "MK": {
+   "name": "North Macedonia",
+   "city": "Skopje",
+   "salary": {
+    "currency": "MKD",
+    "period": "month",
+    "low": 45000,
+    "median": 60000,
+    "high": 75000,
+    "basis": "junior range: low = lowest junior low end across sources",
+    "sources": [
+     {
+      "name": "Outsorcy hiring developers North Macedonia 2026",
+      "url": "https://outsorcy.com/hiring-developers-in-north-macedonia-2026-guide/",
+      "note": "junior (0-2 yrs) MKD 45,000-75,000 gross",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "Joberty IT Labs North Macedonia",
+      "url": "https://www.joberty.com/it-company/14160/it-labs-north-macedonia/salary-and-benefits",
+      "note": "junior software developer 53,100 den net/mo (about 72,700 gross, est. at 73% net ratio)",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "cost_of_living": {
+    "monthly": 934,
+    "currency": "USD",
+    "basis": "single person incl. rent, higher of the two sources",
+    "sources": [
+     {
+      "name": "Numbeo",
+      "url": "https://www.numbeo.com/cost-of-living/in/Skopje",
+      "note": "630.0 + 303.7 (16,702.53 den rent at 55.0 den/USD)",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "livingcost.org",
+      "url": "https://livingcost.org/cost/north-macedonia",
+      "note": "769 country level",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "tax": {
+    "rate": 0.27,
+    "sources": [
+     {
+      "name": "PwC Worldwide Tax Summaries North Macedonia",
+      "url": "https://taxsummaries.pwc.com/north-macedonia/individual/taxes-on-personal-income",
+      "note": "10% flat PIT; employee social contributions",
+      "retrieved": "2026-11-04"
+     }
+    ],
+    "note": "computed from statutory rates: about 18.8% employee contributions plus 10% flat PIT on remainder; page not re-fetched"
+   },
+   "cities": {}
+  },
+  "OM": {
+   "name": "Oman",
+   "city": "Muscat",
+   "salary": {
+    "currency": "OMR",
+    "period": "month",
+    "low": 307,
+    "median": 384,
+    "high": 461,
+    "basis": "junior range: Naukrigulf junior software developer",
+    "sources": [
+     {
+      "name": "Naukrigulf junior software developer Oman",
+      "url": "https://www.naukrigulf.com/salaries/junior-software-developer-salary-in-oman",
+      "note": "OMR 307-461/mo, average 384",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "Facebook Android Developer job ad Muscat",
+      "url": "https://www.facebook.com/groups/698651691863017/posts/840856627642522/",
+      "note": "OMR 500 for 4-7 yrs experience (corroborates scale; not junior)",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "cost_of_living": {
+    "monthly": 1329,
+    "currency": "USD",
+    "basis": "single person incl. rent, higher of the two sources",
+    "sources": [
+     {
+      "name": "Numbeo",
+      "url": "https://www.numbeo.com/cost-of-living/in/Muscat",
+      "note": "886.2 + 443.2 (OMR 170.46 rent at 0.385 OMR/USD)",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "livingcost.org",
+      "url": "https://livingcost.org/cost/oman",
+      "note": "1,102 country level",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "tax": {
+    "rate": 0.0,
+    "sources": [
+     {
+      "name": "PwC Worldwide Tax Summaries Oman",
+      "url": "https://taxsummaries.pwc.com/oman/individual/taxes-on-personal-income",
+      "note": "no personal income tax",
+      "retrieved": "2026-11-04"
+     }
+    ],
+    "note": "no personal income tax in Oman; expatriates pay no employee social security; Omani nationals pay about 8%; page not re-fetched"
+   },
+   "cities": {}
+  },
+  "PS": {
+   "name": "Palestine",
+   "city": "Ramallah",
+   "salary": {
+    "currency": "ILS",
+    "period": "month",
+    "low": 4360,
+    "median": 7633,
+    "high": 9160,
+    "basis": "proxy: all-level software engineer (Levels.fyi 25th pct / median / 75th pct); median overstates junior",
+    "sources": [
+     {
+      "name": "Levels.fyi software engineer Ramallah",
+      "url": "https://www.levels.fyi/t/software-engineer/locations/ramallah-pse",
+      "note": "25th pct ILS ~4,360, median ILS 7,633, 75th pct ~9,160 per month total comp, 11 submissions, all levels",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "cost_of_living": {
+    "monthly": 1170,
+    "currency": "USD",
+    "basis": "single person incl. rent, livingcost.org country figure only",
+    "sources": [
+     {
+      "name": "livingcost.org",
+      "url": "https://livingcost.org/cost/palestine",
+      "note": "1,170 country level; Numbeo Ramallah page has no data",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "tax": null,
+   "cities": {}
+  },
+  "PA": {
+   "name": "Panama",
+   "city": "Panama City",
+   "salary": {
+    "currency": "USD",
+    "period": "month",
+    "low": 800,
+    "median": 1500,
+    "high": 3435,
+    "basis": "junior range: low = starting salary (Reddit), median = junior (Reddit/Quora), high = Levels.fyi all-level median",
+    "sources": [
+     {
+      "name": "Reddit r/Panama junior web developer",
+      "url": "https://www.reddit.com/r/Panama/comments/1l8zr77/salario_m%C3%ADnimo_de_un_desarrollador_web_jr_en/",
+      "note": "starting about USD 800, junior about USD 1,500/mo",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "Quora software engineer Panama City",
+      "url": "https://www.quora.com/How-much-does-a-software-engineer-in-Panama-City-Panama-usually-earn",
+      "note": "junior about USD 1,500/mo",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "Levels.fyi software engineer Panama City",
+      "url": "https://www.levels.fyi/t/software-engineer/locations/panama-city-pan",
+      "note": "median PAB 3,435/mo total comp, all levels",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "cost_of_living": {
+    "monthly": 1862,
+    "currency": "USD",
+    "basis": "single person incl. rent, higher of the two sources",
+    "sources": [
+     {
+      "name": "Numbeo",
+      "url": "https://www.numbeo.com/cost-of-living/in/Panama-City",
+      "note": "855.0 + 1,007.17",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "livingcost.org",
+      "url": "https://livingcost.org/cost/panama",
+      "note": "1,456 country level",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "tax": {
+    "rate": 0.168,
+    "sources": [
+     {
+      "name": "PwC Worldwide Tax Summaries Panama",
+      "url": "https://taxsummaries.pwc.com/panama/individual/taxes-on-personal-income",
+      "note": "0% to 11,000, 15% to 50,000; employee social security 9.75%",
+      "retrieved": "2026-11-04"
+     }
+    ],
+    "note": "computed from statutory rates at USD 1,500/mo: 9.75% CSS + 1.25% education levy + 15% PIT above USD 11,000/yr; page not re-fetched"
+   },
+   "cities": {}
+  },
+  "PY": {
+   "name": "Paraguay",
+   "city": "Asuncion",
+   "salary": {
+    "currency": "PYG",
+    "period": "month",
+    "low": 2630000,
+    "median": 2895000,
+    "high": 6000000,
+    "basis": "junior range: low = Levels.fyi entry level (0-1 yr), median = Levels.fyi 25th pct, high = low end of all-level IT range",
+    "sources": [
+     {
+      "name": "Levels.fyi software engineer Asuncion",
+      "url": "https://www.levels.fyi/t/software-engineer/locations/asuncion-pry",
+      "note": "entry level USD 5,180/yr (~PYG 2.63M/mo), 25th pct USD 5.7K/yr (~PYG 2.9M/mo) at ~6,096 PYG/USD",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "Employsome average salary Paraguay 2026",
+      "url": "https://employsome.com/hire/paraguay/average-salary-paraguay/",
+      "note": "software/IT professionals PYG 6M-14M gross/mo (all-level)",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "cost_of_living": {
+    "monthly": 956,
+    "currency": "USD",
+    "basis": "single person incl. rent, higher of the two sources",
+    "sources": [
+     {
+      "name": "Numbeo",
+      "url": "https://www.numbeo.com/cost-of-living/in/Asuncion",
+      "note": "586.6 + 369.34",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "livingcost.org",
+      "url": "https://livingcost.org/cost/paraguay",
+      "note": "751 country level",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "tax": null,
+   "cities": {}
+  },
+  "PE": {
+   "name": "Peru",
+   "city": "Lima",
+   "salary": {
+    "currency": "PEN",
+    "period": "month",
+    "low": 2943,
+    "median": 3982,
+    "high": 6690,
+    "basis": "junior range: low = lowest junior figure across sources; USD converted at 3.463 PEN/USD",
+    "sources": [
+     {
+      "name": "Talently developer salaries Peru",
+      "url": "https://talently.tech/en/tools/peru/salary",
+      "note": "junior average USD 1,150/mo = PEN 3,982",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "Tecla software developer salary Peru",
+      "url": "https://www.tecla.io/salaries/software-developer-salary-peru",
+      "note": "junior USD 23,184-41,655/yr = PEN 6,690-12,020/mo (lower bound used as high)",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "Facebook Peru software developer salary",
+      "url": "https://www.facebook.com/fb-answers/peru-software-developer-salary/",
+      "note": "junior full-stack USD 850-1,000/mo = PEN 2,943-3,463",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "cost_of_living": {
+    "monthly": 963,
+    "currency": "USD",
+    "basis": "single person incl. rent, higher of the two sources",
+    "sources": [
+     {
+      "name": "Numbeo",
+      "url": "https://www.numbeo.com/cost-of-living/in/Lima",
+      "note": "583.4 + 379.2 (PEN 1,313.18 rent at 3.463 PEN/USD)",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "livingcost.org",
+      "url": "https://livingcost.org/cost/peru",
+      "note": "862 country level",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "tax": null,
+   "cities": {}
+  },
+  "PT": {
+   "name": "Portugal",
+   "city": "Lisbon",
+   "salary": {
+    "currency": "EUR",
+    "period": "month",
+    "low": 1073,
+    "median": 1870,
+    "high": 2917,
+    "basis": "junior range: low = junior figure (Bridgeteams); median derived as midpoint of low and national all-level median low end; high = Lisbon all-level median low end",
+    "sources": [
+     {
+      "name": "Bridgeteams software developers salary Portugal",
+      "url": "https://bridgeteams.com/blog/software-developers-salary-in-portugal-the-cost-to-build-a-remote-tech-team/",
+      "note": "junior USD 1,200/mo = EUR 1,073",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "NextLevelJobs software engineer salary Portugal",
+      "url": "https://nextleveljobs.eu/blog/software-engineer-salary/portugal",
+      "note": "national median EUR 32-40k/yr, Lisbon EUR 35-45k/yr (all-level proxy)",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "cost_of_living": {
+    "monthly": 2046,
+    "currency": "USD",
+    "basis": "single person incl. rent, higher of the two sources",
+    "sources": [
+     {
+      "name": "Numbeo",
+      "url": "https://www.numbeo.com/cost-of-living/in/Lisbon",
+      "note": "845.8 + 1,199.7 (EUR 1,072.31 rent at 1.119 USD/EUR)",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "livingcost.org",
+      "url": "https://livingcost.org/cost/portugal",
+      "note": "1,452 country level",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "tax": null,
+   "cities": {}
+  },
+  "QA": {
+   "name": "Qatar",
+   "city": "Doha",
+   "salary": {
+    "currency": "QAR",
+    "period": "month",
+    "low": 5383,
+    "median": 8197,
+    "high": 14100,
+    "basis": "proxy: mobile developer all-level (Indeed) and software developer average (Reddit)",
+    "sources": [
+     {
+      "name": "Indeed Qatar mobile developer",
+      "url": "https://qa.indeed.com/career/mobile-developer/salaries",
+      "note": "average QAR 8,197/mo, low QAR 5,383",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "Reddit r/qatar software developer salaries",
+      "url": "https://www.reddit.com/r/qatar/comments/y12qln/software_developers_in_qatar_are_making_14100_qar/",
+      "note": "average QAR 14,100/mo (anecdotal, all-level)",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "cost_of_living": {
+    "monthly": 2220,
+    "currency": "USD",
+    "basis": "single person incl. rent, higher of the two sources",
+    "sources": [
+     {
+      "name": "Numbeo",
+      "url": "https://www.numbeo.com/cost-of-living/in/Doha",
+      "note": "992.4 + 1,227.7 (QAR 4,476.25 rent at 3.646 QAR/USD)",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "livingcost.org",
+      "url": "https://livingcost.org/cost/qatar",
+      "note": "2,098 country level",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "tax": {
+    "rate": 0.0,
+    "sources": [
+     {
+      "name": "PwC Worldwide Tax Summaries Qatar",
+      "url": "https://taxsummaries.pwc.com/qatar/individual/taxes-on-personal-income",
+      "note": "no personal income tax on employment income",
+      "retrieved": "2026-11-04"
+     }
+    ],
+    "note": "no personal income tax and no employee social security for expatriates in Qatar; page not re-fetched"
+   },
+   "cities": {}
+  },
+  "RO": {
+   "name": "Romania",
+   "city": "Bucharest",
+   "salary": {
+    "currency": "RON",
+    "period": "month",
+    "low": 2500,
+    "median": 4000,
+    "high": 6500,
+    "basis": "junior range: Reddit entry-level thread (worst / average midpoint / best); gross vs net ambiguous",
+    "sources": [
+     {
+      "name": "Reddit r/programare entry level SWE salaries",
+      "url": "https://www.reddit.com/r/programare/comments/16ram8l/how_common_are_25k35k_gross_salaries_for_entry/",
+      "note": "entry level worst 2.5k, average 3.5-4.5k, best 6.5k RON/mo (2023, possibly net)",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "Levels.fyi software engineer Romania",
+      "url": "https://www.levels.fyi/t/software-engineer/locations/romania",
+      "note": "median RON 16,825/mo total comp, all levels (context only)",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "cost_of_living": {
+    "monthly": 1226,
+    "currency": "USD",
+    "basis": "single person incl. rent, higher of the two sources",
+    "sources": [
+     {
+      "name": "Numbeo",
+      "url": "https://www.numbeo.com/cost-of-living/in/Bucharest",
+      "note": "755.9 + 470.3 (RON 2,246.03 rent at 4.776 RON/USD)",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "livingcost.org",
+      "url": "https://livingcost.org/cost/romania",
+      "note": "958 country level",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "tax": {
+    "rate": 0.415,
+    "sources": [
+     {
+      "name": "PwC Worldwide Tax Summaries Romania",
+      "url": "https://taxsummaries.pwc.com/romania/individual/taxes-on-personal-income",
+      "note": "10% income tax, CAS 25%, CASS 10%",
+      "retrieved": "2026-11-04"
+     }
+    ],
+    "note": "computed from statutory rates: 25% CAS + 10% CASS employee, then 10% income tax on remainder; page not re-fetched"
+   },
+   "cities": {}
+  },
+  "RW": {
+   "name": "Rwanda",
+   "city": "Kigali",
+   "salary": {
+    "currency": "RWF",
+    "period": "month",
+    "low": 150000,
+    "median": 350000,
+    "high": 600000,
+    "basis": "junior range: McTaba entry/junior/specialised junior",
+    "sources": [
+     {
+      "name": "McTaba junior developer salary Rwanda",
+      "url": "https://www.mctaba.com/learn/rwanda/junior-developer-salary-rwanda",
+      "note": "entry RWF 150-350k, junior 250-500k, specialised 350-600k per month",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "Glassdoor junior software engineer Kigali",
+      "url": "https://www.glassdoor.com/Salaries/kigali-kigali-junior-software-engineer-salary-SRCH_IL.0,13_IC3972329_KO14,38.htm",
+      "note": "highest RWF 145,833/mo (low sample)",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "cost_of_living": {
+    "monthly": 845,
+    "currency": "USD",
+    "basis": "single person incl. rent, higher of the two sources",
+    "sources": [
+     {
+      "name": "Numbeo",
+      "url": "https://www.numbeo.com/cost-of-living/in/Kigali",
+      "note": "431.4 + 413.7 (RWF 610,942 rent at 1,477 RWF/USD)",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "livingcost.org",
+      "url": "https://livingcost.org/cost/rwanda",
+      "note": "819 country level",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "tax": null,
+   "cities": {}
+  },
+  "SA": {
+   "name": "Saudi Arabia",
+   "city": "Riyadh",
+   "salary": {
+    "currency": "SAR",
+    "period": "month",
+    "low": 5500,
+    "median": 8000,
+    "high": 12000,
+    "basis": "junior range: low = CV Pro Maker local-company low end; median = midpoint of the 5,500-10,500 and 8,000-12,000 junior ranges",
+    "sources": [
+     {
+      "name": "CV Pro Maker mobile developer salaries Saudi Arabia",
+      "url": "https://www.cvpromaker.com/salaries/saudi-arabia/mobile-developer",
+      "note": "junior 0-2 yrs 5,500-10,500 SAR local companies; 9,500-15,000 banks/Vision-2030",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "askksa.qa Facebook group junior software engineer KSA",
+      "url": "https://www.facebook.com/groups/askksa.qa/posts/1382924577005485/",
+      "note": "recruiter junior IT roles Riyadh SAR 8,000-12,000 (forum, weak)",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "cost_of_living": {
+    "monthly": 1719,
+    "currency": "USD",
+    "basis": "single person incl. rent, higher of the two sources",
+    "sources": [
+     {
+      "name": "livingcost.org",
+      "url": "https://livingcost.org/cost/saudi-arabia",
+      "note": "1259 incl. rent",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "Numbeo",
+      "url": "https://www.numbeo.com/cost-of-living/in/Riyadh",
+      "note": "891.2 + 827.79 (without rent + 1BR outside centre, USD)",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "tax": {
+    "rate": 0.0,
+    "sources": [
+     {
+      "name": "PwC Worldwide Tax Summaries Saudi Arabia",
+      "url": "https://taxsummaries.pwc.com/saudi-arabia/individual/taxes-on-personal-income",
+      "note": "Saudi Arabia",
+      "retrieved": "2026-11-04"
+     }
+    ],
+    "note": "no individual income tax on employment income (PwC); GOSI not included (expatriate junior assumed 0)"
+   },
+   "cities": {}
+  },
+  "RS": {
+   "name": "Serbia",
+   "city": "Belgrade",
+   "salary": {
+    "currency": "RSD",
+    "period": "month",
+    "low": 229104,
+    "median": 327291,
+    "high": 397986,
+    "basis": "mobile applications developer: low = ERI entry level, median = ERI all-level average, high = ERI range high (yearly/12)",
+    "sources": [
+     {
+      "name": "ERI Mobile Applications Developer Belgrade",
+      "url": "https://www.erieri.com/salary/job/mobile-applications-developer/serbia/belgrade",
+      "note": "avg RSD 3,927,497/yr, range 2,749,248-4,775,836; entry 2,749,248",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "r/AskSerbia software engineer salaries",
+      "url": "https://www.reddit.com/r/AskSerbia/comments/1hdpgj2/software_engineer_salaries_in_serbia/",
+      "note": "junior frontend net EUR 1,400-1,850/month (forum, corroboration only)",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "cost_of_living": {
+    "monthly": 1336,
+    "currency": "USD",
+    "basis": "single person incl. rent, higher of the two sources",
+    "sources": [
+     {
+      "name": "livingcost.org",
+      "url": "https://livingcost.org/cost/serbia",
+      "note": "1112 incl. rent",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "Numbeo",
+      "url": "https://www.numbeo.com/cost-of-living/in/Belgrade",
+      "note": "786.1 + 549.66 (without rent + 1BR outside centre, USD)",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "tax": {
+    "rate": 0.29,
+    "sources": [
+     {
+      "name": "PwC Worldwide Tax Summaries Serbia",
+      "url": "https://taxsummaries.pwc.com/serbia/individual/taxes-on-personal-income",
+      "note": "Serbia",
+      "retrieved": "2026-11-04"
+     }
+    ],
+    "note": "computed: employee contributions 19.9% + 10% salary tax on gross less ~34k RSD non-taxable amount, at ~RSD 270-330k gross; rates from general knowledge (PwC page lacks them)"
+   },
+   "cities": {}
+  },
+  "SK": {
+   "name": "Slovakia",
+   "city": "Bratislava",
+   "salary": {
+    "currency": "EUR",
+    "period": "month",
+    "low": 1720,
+    "median": 2200,
+    "high": 2727,
+    "basis": "junior range: low = Alcor junior average (USD 24k/yr), median = midpoint of junior estimates, high = SalaryExpert entry-level",
+    "sources": [
+     {
+      "name": "SalaryExpert Mobile Applications Developer Bratislava",
+      "url": "https://www.salaryexpert.com/salary/job/mobile-applications-developer/slovakia/bratislava",
+      "note": "entry (1-3 yrs) EUR 32,718/yr; avg 45,385; range 32,718-52,065",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "Alcor Slovak developers rates",
+      "url": "https://alcor.com/slovak-developers-benefits-rates-it-market-overview/",
+      "note": "junior avg USD 24K/yr, converted at ~0.86 EUR/USD",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "r/cscareerquestionsEU Bratislava",
+      "url": "https://www.reddit.com/r/cscareerquestionsEU/comments/15rjrwl/software_developer_job_in_bratislava/",
+      "note": "junior EUR 1,200-2,500 (forum)",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "cost_of_living": {
+    "monthly": 1734,
+    "currency": "USD",
+    "basis": "single person incl. rent, higher of the two sources",
+    "sources": [
+     {
+      "name": "livingcost.org",
+      "url": "https://livingcost.org/cost/slovakia",
+      "note": "1348 incl. rent",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "Numbeo",
+      "url": "https://www.numbeo.com/cost-of-living/in/Bratislava",
+      "note": "954.9 + 778.97 (without rent + 1BR outside centre, USD)",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "tax": {
+    "rate": 0.26,
+    "sources": [
+     {
+      "name": "PwC Worldwide Tax Summaries Slovak Republic",
+      "url": "https://taxsummaries.pwc.com/slovak-republic/individual/taxes-on-personal-income",
+      "note": "Slovak Republic",
+      "retrieved": "2026-11-04"
+     }
+    ],
+    "note": "computed: 19% income tax (PwC) after ~EUR 5.8k non-taxable amount + employee contributions 13.4%, at ~EUR 2,200 gross; allowance and 13.4% from general knowledge, approximate"
+   },
+   "cities": {}
+  },
+  "SI": {
+   "name": "Slovenia",
+   "city": "Ljubljana",
+   "salary": {
+    "currency": "EUR",
+    "period": "month",
+    "low": 2200,
+    "median": 3158,
+    "high": 4116,
+    "basis": "mobile/software developer: low = JobFlick entry-level, high = SalaryExpert entry (1-3 yrs), median = midpoint",
+    "sources": [
+     {
+      "name": "SalaryExpert Mobile Applications Developer Ljubljana",
+      "url": "https://www.salaryexpert.com/salary/job/mobile-applications-developer/slovenia/ljubljana",
+      "note": "entry EUR 49,394/yr; avg 68,931; range 49,394-79,529",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "JobFlick software developer Slovenia",
+      "url": "https://jobflick.com/en/salary/software-developer-in-slovenia",
+      "note": "entry starts near EUR 2,200 gross/month; median 3,300 (proxy: software developer)",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "cost_of_living": {
+    "monthly": 1891,
+    "currency": "USD",
+    "basis": "single person incl. rent, higher of the two sources",
+    "sources": [
+     {
+      "name": "livingcost.org",
+      "url": "https://livingcost.org/cost/slovenia",
+      "note": "1513 incl. rent",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "Numbeo",
+      "url": "https://www.numbeo.com/cost-of-living/in/Ljubljana",
+      "note": "966.6 + 924.67 (without rent + 1BR outside centre, USD)",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "tax": {
+    "rate": 0.36,
+    "sources": [
+     {
+      "name": "PwC Worldwide Tax Summaries Slovenia",
+      "url": "https://taxsummaries.pwc.com/slovenia/individual/taxes-on-personal-income",
+      "note": "Slovenia",
+      "retrieved": "2026-11-04"
+     }
+    ],
+    "note": "computed: 2026 brackets 16%/26% (PwC) after ~EUR 5.5k general allowance + employee contributions 22.1%, at ~EUR 3,150 gross; allowance and 22.1% from general knowledge, approximate"
+   },
+   "cities": {}
+  },
+  "ZA": {
+   "name": "South Africa",
+   "city": "Cape Town",
+   "salary": {
+    "currency": "ZAR",
+    "period": "month",
+    "low": 15000,
+    "median": 22181,
+    "high": 25000,
+    "basis": "junior software developer: low/high = ShiftMate junior range, median = OfferZen average (proxy: all developers)",
+    "sources": [
+     {
+      "name": "ShiftMate junior software developer",
+      "url": "https://shiftmate.co.za/resources/roles/junior-software-developer",
+      "note": "R15,000-R25,000/month",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "OfferZen software developer salary South Africa",
+      "url": "https://www.offerzen.com/blog/software-developer-salary-south-africa",
+      "note": "average monthly R22,181 (proxy: all developers)",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "Glassdoor junior software engineer Cape Town",
+      "url": "https://www.glassdoor.com/Salaries/cape-town-south-africa-junior-software-engineer-salary-SRCH_IL.0,22_IM1026_KO23,47.htm",
+      "note": "lowest ZAR 1,958/month (outlier, ignored)",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "cost_of_living": {
+    "monthly": 1394,
+    "currency": "USD",
+    "basis": "single person incl. rent, higher of the two sources",
+    "sources": [
+     {
+      "name": "livingcost.org",
+      "url": "https://livingcost.org/cost/south-africa",
+      "note": "1116 incl. rent",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "Numbeo",
+      "url": "https://www.numbeo.com/cost-of-living/in/Cape-Town",
+      "note": "717.7 + 676.15 (without rent + 1BR outside centre, USD)",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "tax": {
+    "rate": 0.123,
+    "sources": [
+     {
+      "name": "PwC Worldwide Tax Summaries South Africa",
+      "url": "https://taxsummaries.pwc.com/south-africa/individual/taxes-on-personal-income",
+      "note": "South Africa",
+      "retrieved": "2026-11-04"
+     }
+    ],
+    "note": "computed: 2026/27 brackets (PwC) 18% on R266k less primary rebate R17,235 + UIF 1% (capped); rebate and UIF from SARS general knowledge"
+   },
+   "cities": {}
+  },
+  "LK": {
+   "name": "Sri Lanka",
+   "city": "Colombo",
+   "salary": {
+    "currency": "LKR",
+    "period": "month",
+    "low": 60000,
+    "median": 115000,
+    "high": 180000,
+    "basis": "junior mobile/software: low = Paths.lk entry, median = mean of midpoints of three sources, high = ITPro.lk junior software",
+    "sources": [
+     {
+      "name": "Paths.lk mobile app developer",
+      "url": "https://www.paths.lk/career-paths/mobile-app-developer",
+      "note": "entry LKR 60k-100k/month",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "Ceylon Open Campus mobile app developer salary",
+      "url": "https://www.coccampus.lk/mobile-app-developer-salary-in-sri-lanka",
+      "note": "freshers LKR 90k-150k/month",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "ITPro.lk IT salaries 2026",
+      "url": "https://itpro.lk/salary-sri-lanka-it-jobs/",
+      "note": "junior software engineering LKR 120k-180k (proxy)",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "cost_of_living": {
+    "monthly": 789,
+    "currency": "USD",
+    "basis": "single person incl. rent, higher of the two sources",
+    "sources": [
+     {
+      "name": "livingcost.org",
+      "url": "https://livingcost.org/cost/sri-lanka",
+      "note": "563 incl. rent",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "Numbeo",
+      "url": "https://www.numbeo.com/cost-of-living/in/Colombo",
+      "note": "516.6 + 272.06 (without rent + 1BR outside centre, USD)",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "tax": null,
+   "cities": {}
+  },
+  "SN": {
+   "name": "Senegal",
+   "city": "Dakar",
+   "salary": {
+    "currency": "XOF",
+    "period": "month",
+    "low": 333000,
+    "median": 367000,
+    "high": 838000,
+    "basis": "low = junior frontend, median = junior Android mobile, high = mid-level Android median (proxy)",
+    "sources": [
+     {
+      "name": "Africa Salary Hub Android mobile developer Senegal",
+      "url": "https://www.africa-salary.com/en/salary/android-mobile-developer/senegal",
+      "note": "junior 367,000 XOF gross/month; mid-level median 838,000",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "Africa Salary Hub frontend developer Senegal",
+      "url": "https://www.africa-salary.com/en/salary/frontend-developer/senegal",
+      "note": "junior 333,000 XOF gross/month",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "Levels.fyi software engineer Senegal",
+      "url": "https://www.levels.fyi/t/software-engineer/locations/senegal",
+      "note": "median total comp F CFA 858,932/month all levels (context)",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "cost_of_living": {
+    "monthly": 1256,
+    "currency": "USD",
+    "basis": "single person incl. rent, higher of the two sources",
+    "sources": [
+     {
+      "name": "livingcost.org",
+      "url": "https://livingcost.org/cost/senegal",
+      "note": "1223 incl. rent",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "Numbeo",
+      "url": "https://www.numbeo.com/cost-of-living/in/Dakar",
+      "note": "825.4 + 430.83 (without rent + 1BR outside centre, USD)",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "tax": null,
+   "cities": {}
+  },
+  "SC": {
+   "name": "Seychelles",
+   "city": "Victoria",
+   "salary": {
+    "currency": "SCR",
+    "period": "month",
+    "low": 9500,
+    "median": 10333,
+    "high": 11333,
+    "basis": "proxy: full-stack and entry-level developer; low/median from Glassdoor yearly range /12, high = Nucamp entry-level 136,000/yr /12",
+    "sources": [
+     {
+      "name": "Glassdoor full stack developer Victoria Seychelles",
+      "url": "https://www.glassdoor.com/Salaries/victoria-seychelles-full-stack-developer-salary-SRCH_IL.0,19_IM1656_KO20,40.htm",
+      "note": "SCR 114K-124K/yr (proxy)",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "Nucamp tech salaries Seychelles",
+      "url": "https://www.nucamp.co/blog/coding-bootcamp-seychelles-syc-top-10-best-paid-tech-job-in-seychelles-in-2025",
+      "note": "entry-level developers ~136,000 SCR/yr (proxy)",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "cost_of_living": {
+    "monthly": 1637,
+    "currency": "USD",
+    "basis": "single person incl. rent, single source",
+    "sources": [
+     {
+      "name": "livingcost.org",
+      "url": "https://livingcost.org/cost/seychelles",
+      "note": "1637 incl. rent",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "tax": null,
+   "cities": {}
+  },
+  "SR": {
+   "name": "Suriname",
+   "city": "Paramaribo",
+   "salary": {
+    "currency": "SRD",
+    "period": "month",
+    "low": 5987,
+    "median": 7450,
+    "high": 8916,
+    "basis": "proxy: software engineer all levels, Paylab 80% range, median = midpoint",
+    "sources": [
+     {
+      "name": "Paylab software engineer Suriname",
+      "url": "https://www.paylab.com/sr/salaryinfo/information-technology/software-engineer",
+      "note": "80% earn 5,987-8,916 SRD gross/month (all levels)",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "r/Suriname salaries",
+      "url": "https://www.reddit.com/r/Suriname/comments/14v9jsq/what_is_suriname_minimum_wage_whats_the_average/",
+      "note": "software engineer ~USD 300/month (forum anecdote)",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "cost_of_living": {
+    "monthly": 913,
+    "currency": "USD",
+    "basis": "single person incl. rent, single source",
+    "sources": [
+     {
+      "name": "livingcost.org",
+      "url": "https://livingcost.org/cost/suriname",
+      "note": "913 incl. rent",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "tax": null,
+   "cities": {}
+  },
+  "LC": {
+   "name": "Saint Lucia",
+   "city": "Castries",
+   "salary": {
+    "currency": "XCD",
+    "period": "month",
+    "low": 2540,
+    "median": 4000,
+    "high": 5000,
+    "basis": "proxy: software developer all levels; low = Multiplier average, median/high from local range 3,000-5,000",
+    "sources": [
+     {
+      "name": "Multiplier Saint Lucia",
+      "url": "https://www.usemultiplier.com/saint-lucia",
+      "note": "software developer 2,540 XCD/month",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "Saint Lucia Studio salary guide 2026",
+      "url": "https://talent.stlucia.studio/blog/salary-guide-2026",
+      "note": "developer EC$3,000-5,000/month",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "Paylab software engineer Saint Lucia",
+      "url": "https://www.paylab.com/lc/salaryinfo/information-technology/software-engineer",
+      "note": "range 728-5,189 XCD/month all levels (context)",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "cost_of_living": {
+    "monthly": 1194,
+    "currency": "USD",
+    "basis": "single person incl. rent, single source",
+    "sources": [
+     {
+      "name": "livingcost.org",
+      "url": "https://livingcost.org/cost/saint-lucia",
+      "note": "1194 incl. rent",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "tax": null,
+   "cities": {}
+  },
+  "TR": {
+   "name": "Turkey",
+   "city": "Istanbul",
+   "salary": {
+    "currency": "TRY",
+    "period": "month",
+    "low": 44182,
+    "median": 53400,
+    "high": 85000,
+    "basis": "junior software developer proxy: low = lowest source low end, median = Kariyer.net average, high = MyPrax Android junior top",
+    "sources": [
+     {
+      "name": "isbul.net Junior Yazilim Gelistirme Uzmani",
+      "url": "https://www.isbul.net/pozisyonlar/junior-yazilim-gelistirme-uzmani/maas",
+      "note": "TRY 44,182-141,400/mo (proxy: junior software dev)",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "Kariyer.net Junior Yazilim Gelistirme Uzmani",
+      "url": "https://www.kariyer.net/pozisyonlar/junior+yazilim+gelistirme+uzmani/maas",
+      "note": "avg TRY 53,400/mo (proxy)",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "MyPrax Android Developer",
+      "url": "https://www.myprax.com/maas/android-developer-maas-2026",
+      "note": "junior 0-2y TRY 65,000-85,000/mo",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "cost_of_living": {
+    "monthly": 1417,
+    "currency": "USD",
+    "basis": "single person incl. rent, higher of the two sources",
+    "sources": [
+     {
+      "name": "Numbeo",
+      "url": "https://www.numbeo.com/cost-of-living/in/Istanbul",
+      "note": "790.4 (without rent) + 626.7 (1BR outside centre TRY 31,370 at implied 50.0 TRY/USD)",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "livingcost.org",
+      "url": "https://livingcost.org/cost/turkey",
+      "note": "891 (country-level figure, incl. rent)",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "tax": null,
+   "cities": {}
+  },
+  "UA": {
+   "name": "Ukraine",
+   "city": "Kyiv",
+   "salary": {
+    "currency": "USD",
+    "period": "month",
+    "low": 583,
+    "median": 611,
+    "high": 638,
+    "basis": "junior Android/iOS proxy, thin data: nCube (~USD 7k/yr) and Quora (junior iOS USD 638)",
+    "sources": [
+     {
+      "name": "nCube Ukrainian developer salaries",
+      "url": "https://ncube.com/salaries-of-ukrainian-developers-guide-advice-on-protecting-your-budget",
+      "note": "junior Android ~USD 7,000/yr = 583/mo",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "Quora developer earnings Ukraine/Kyiv",
+      "url": "https://www.quora.com/How-much-does-a-developer-earns-in-Ukraine-Kiev",
+      "note": "junior iOS USD 638/mo (older, ~2022)",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "cost_of_living": {
+    "monthly": 873,
+    "currency": "USD",
+    "basis": "single person incl. rent, higher of the two sources",
+    "sources": [
+     {
+      "name": "Numbeo",
+      "url": "https://www.numbeo.com/cost-of-living/in/Kiev",
+      "note": "541.9 (without rent) + 331.1 (1BR outside centre UAH 15,120 at implied 45.7 UAH/USD)",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "livingcost.org",
+      "url": "https://livingcost.org/cost/ukraine",
+      "note": "619 (country-level figure, incl. rent)",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "tax": null,
+   "cities": {}
+  },
+  "UY": {
+   "name": "Uruguay",
+   "city": "Montevideo",
+   "salary": {
+    "currency": "UYU",
+    "period": "month",
+    "low": 65000,
+    "median": 85000,
+    "high": 123000,
+    "basis": "low/median = Nucamp junior range; high = Tecla junior midpoint USD 36.8k/yr converted at ~40.2 UYU/USD",
+    "sources": [
+     {
+      "name": "Nucamp junior developers Uruguay 2026",
+      "url": "https://www.nucamp.co/blog/top-10-tech-startups-hiring-junior-developers-in-uruguay-in-2026",
+      "note": "junior UYU 65,000-85,000/mo",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "Tecla software developer salary Uruguay",
+      "url": "https://www.tecla.io/salaries/software-developer-salary-uruguay",
+      "note": "junior USD 26,587-47,098/yr (~UYU 89k-158k/mo)",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "cost_of_living": {
+    "monthly": 1549,
+    "currency": "USD",
+    "basis": "single person incl. rent, higher of the two sources",
+    "sources": [
+     {
+      "name": "Numbeo",
+      "url": "https://www.numbeo.com/cost-of-living/in/Montevideo",
+      "note": "972.9 (without rent) + 576.0 (1BR outside centre UYU 23,155 at implied 40.2 UYU/USD)",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "livingcost.org",
+      "url": "https://livingcost.org/cost/uruguay",
+      "note": "1353 (country-level figure, incl. rent)",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "tax": null,
+   "cities": {}
+  },
+  "TN": {
+   "name": "Tunisia",
+   "city": "Tunis",
+   "salary": {
+    "currency": "TND",
+    "period": "month",
+    "low": 1400,
+    "median": 1780,
+    "high": 2000,
+    "basis": "junior mobile/React: low = job-post range low, median = Africa-salary junior mobile, high = job-post range top",
+    "sources": [
+     {
+      "name": "africa-salary Android mobile developer Tunisia",
+      "url": "https://www.africa-salary.com/en/salary/android-mobile-developer/tunisia",
+      "note": "junior gross TND 1,780/mo",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "Facebook group lebondeveloppeur junior React Tunisia",
+      "url": "https://www.facebook.com/groups/lebondeveloppeur/posts/555875902501158/",
+      "note": "TND 1,400-2,000/mo (job post, anecdotal)",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "cost_of_living": {
+    "monthly": 801,
+    "currency": "USD",
+    "basis": "single person incl. rent, higher of the two sources",
+    "sources": [
+     {
+      "name": "Numbeo",
+      "url": "https://www.numbeo.com/cost-of-living/in/Tunis",
+      "note": "544.4 (without rent) + 256.9 (1BR outside centre TND 767.85 at implied 2.99 TND/USD)",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "livingcost.org",
+      "url": "https://livingcost.org/cost/tunisia",
+      "note": "534 (country-level figure, incl. rent)",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "tax": null,
+   "cities": {}
+  },
+  "UZ": {
+   "name": "Uzbekistan",
+   "city": "Tashkent",
+   "salary": {
+    "currency": "UZS",
+    "period": "month",
+    "low": 1354167,
+    "median": 3500000,
+    "high": 4500000,
+    "basis": "low = Glassdoor junior SWE Tashkent avg; median/high = alicode junior 0-2y range 2.5M-4.5M (midpoint)",
+    "sources": [
+     {
+      "name": "Glassdoor Junior Software Engineer Tashkent",
+      "url": "https://www.glassdoor.com/Salaries/tashkent-uzbekistan-junior-software-engineer-salary-SRCH_IL.0,19_IM3104_KO20,44.htm",
+      "note": "avg UZS 1,354,167/mo",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "alicode.uz developer salary Uzbekistan 2026",
+      "url": "https://alicode.uz/en/blog/ozbekistonda-dasturchi-maoshi-2026/",
+      "note": "junior (0-2y) UZS 2.5M-4.5M/mo",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "cost_of_living": {
+    "monthly": 969,
+    "currency": "USD",
+    "basis": "single person incl. rent, higher of the two sources",
+    "sources": [
+     {
+      "name": "Numbeo",
+      "url": "https://www.numbeo.com/cost-of-living/in/Tashkent",
+      "note": "563.8 (without rent) + 405.6 (1BR outside centre UZS 4,837,307 at implied 11,928 UZS/USD)",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "livingcost.org",
+      "url": "https://livingcost.org/cost/uzbekistan",
+      "note": "681 (country-level figure, incl. rent)",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "tax": null,
+   "cities": {}
+  },
+  "TT": {
+   "name": "Trinidad and Tobago",
+   "city": "Port of Spain",
+   "salary": {
+    "currency": "TTD",
+    "period": "month",
+    "low": 5000,
+    "median": 8000,
+    "high": 10000,
+    "basis": "anecdotal: low = Reddit typical starter, median = LinkedIn entry-level posting, high = Reddit average low end",
+    "sources": [
+     {
+      "name": "Reddit r/TrinidadandTobago software developer",
+      "url": "https://www.reddit.com/r/TrinidadandTobago/comments/164rlkf/software_developer_in_trinidad/",
+      "note": "starter usually ~TTD 5k/mo, average 10-15k/mo",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "LinkedIn Mindelo Solutions entry-level developer",
+      "url": "https://tt.linkedin.com/jobs/view/software-systems-deveoper-at-mindelo-solutions-4470600935",
+      "note": "entry level TT$8,000/mo",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "cost_of_living": {
+    "monthly": 1498,
+    "currency": "USD",
+    "basis": "single person incl. rent, higher of the two sources",
+    "sources": [
+     {
+      "name": "Numbeo",
+      "url": "https://www.numbeo.com/cost-of-living/in/Port-Of-Spain",
+      "note": "978.4 (without rent) + 519.7 (1BR outside centre TTD 3,524 at implied 6.78 TTD/USD)",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "livingcost.org",
+      "url": "https://livingcost.org/cost/trinidad-and-tobago",
+      "note": "1138 (country-level figure, incl. rent)",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "tax": null,
+   "cities": {}
+  },
+  "TZ": {
+   "name": "Tanzania",
+   "city": "Dar es Salaam",
+   "salary": {
+    "currency": "TZS",
+    "period": "month",
+    "low": 335417,
+    "median": 1167000,
+    "high": 1667000,
+    "basis": "proxy: software developer, all-level/entry mix; low = Glassdoor Dar es Salaam avg, median/high from ZipRecruiter TZS 8-20M/yr",
+    "sources": [
+     {
+      "name": "Glassdoor Software Developer Dar es Salaam",
+      "url": "https://www.glassdoor.com/Salaries/dar-es-salaam-tanzania-software-developer-salary-SRCH_IL.0,22_IM3100_KO23,41.htm",
+      "note": "avg TZS 335,417/mo",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "ZipRecruiter Tanzania software developers",
+      "url": "https://www.ziprecruiter.com/e/Tanzania-Software-How-much-do-software-developers-make",
+      "note": "TZS 8M-20M/yr typical (= 667k-1.67M/mo)",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "cost_of_living": {
+    "monthly": 662,
+    "currency": "USD",
+    "basis": "single person incl. rent, higher of the two sources",
+    "sources": [
+     {
+      "name": "Numbeo",
+      "url": "https://www.numbeo.com/cost-of-living/in/Dar-Es-Salaam",
+      "note": "466.3 (without rent) + 195.2 (1BR outside centre TZS 516,023 at implied 2,644 TZS/USD)",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "livingcost.org",
+      "url": "https://livingcost.org/cost/tanzania",
+      "note": "654 (country-level figure, incl. rent)",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "tax": null,
+   "cities": {}
+  },
+  "UG": {
+   "name": "Uganda",
+   "city": "Kampala",
+   "salary": {
+    "currency": "UGX",
+    "period": "month",
+    "low": 800000,
+    "median": 1600000,
+    "high": 2500000,
+    "basis": "junior developer: low/high = mctaba junior range, median = employuganda entry-level midpoint",
+    "sources": [
+     {
+      "name": "mctaba software developer salaries Uganda",
+      "url": "https://mctaba.com/learn/uganda/software-developer-salaries-uganda",
+      "note": "junior UGX 800,000-2,500,000/mo",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "EmployUganda entry-level salary guide",
+      "url": "https://employuganda.com/pages/advice/entry-level-salary-guide.php",
+      "note": "entry level UGX 1.2M-2.0M/mo (tech/finance higher)",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "cost_of_living": {
+    "monthly": 643,
+    "currency": "USD",
+    "basis": "single person incl. rent, higher of the two sources",
+    "sources": [
+     {
+      "name": "Numbeo",
+      "url": "https://www.numbeo.com/cost-of-living/in/Kampala",
+      "note": "463.1 (without rent) + 161.4 (1BR outside centre UGX 682,000 at implied 4,226 UGX/USD)",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "livingcost.org",
+      "url": "https://livingcost.org/cost/uganda",
+      "note": "643 (country-level figure, incl. rent)",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "tax": null,
+   "cities": {}
+  },
+  "ZM": {
+   "name": "Zambia",
+   "city": "Lusaka",
+   "salary": {
+    "currency": "ZMW",
+    "period": "month",
+    "low": 5000,
+    "median": 7500,
+    "high": 10000,
+    "basis": "junior 0-2y range 5,000-10,000; Glassdoor junior SWE shows far lower (ZMW 872/mo lowest) but looks unreliable",
+    "sources": [
+     {
+      "name": "GoZambiaJobs software engineer salary",
+      "url": "https://gozambiajobs.com/blog/computer-software-engineer-salary-in-zambia",
+      "note": "entry/junior ZMW 5,000-10,000/mo",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "Facebook group Zambian software engineer salary",
+      "url": "https://www.facebook.com/groups/1421088291504611/posts/4762567337356673/",
+      "note": "junior ZMW 5,000-10,000/mo (anecdotal, same range)",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "Glassdoor Junior Software Engineer Lusaka",
+      "url": "https://www.glassdoor.sg/Salaries/lusaka-zambia-junior-software-engineer-salary-SRCH_IL.0,13_IM3107_KO14,38.htm",
+      "note": "lowest ZMW 872/mo (not used, outlier)",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "cost_of_living": {
+    "monthly": 927,
+    "currency": "USD",
+    "basis": "single person incl. rent, higher of the two sources",
+    "sources": [
+     {
+      "name": "Numbeo",
+      "url": "https://www.numbeo.com/cost-of-living/in/Lusaka",
+      "note": "634.9 (without rent) + 177.6 (1BR outside centre ZMW 3,601 at implied 20.27 ZMW/USD)",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "livingcost.org",
+      "url": "https://livingcost.org/cost/zambia",
+      "note": "927 (country-level figure, incl. rent)",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "tax": null,
+   "cities": {}
+  },
+  "ZW": {
+   "name": "Zimbabwe",
+   "city": "Harare",
+   "salary": {
+    "currency": "USD",
+    "period": "month",
+    "low": 221,
+    "median": 500,
+    "high": 1000,
+    "basis": "anecdotal/low quality: low = Glassdoor lowest SWE, median/high = Reddit (intermediate ~500, typical ~1000)",
+    "sources": [
+     {
+      "name": "Glassdoor Software Engineer Harare",
+      "url": "https://www.glassdoor.com/Salaries/harare-zimbabwe-software-engineer-salary-SRCH_IL.0,15_IM3109_KO16,33.htm",
+      "note": "lowest USD 2,654/yr = 221/mo",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "Reddit r/Zimbabwe developer salary",
+      "url": "https://www.reddit.com/r/Zimbabwe/comments/1936oh9/what_is_the_average_salary_for_a_software/",
+      "note": "most pay ~USD 500 intermediate; ~1000 ballpark",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "cost_of_living": {
+    "monthly": 1025,
+    "currency": "USD",
+    "basis": "single person incl. rent, higher of the two sources",
+    "sources": [
+     {
+      "name": "Numbeo",
+      "url": "https://www.numbeo.com/cost-of-living/in/Harare",
+      "note": "666.6 (without rent) + 358.2 (1BR outside centre, USD)",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "livingcost.org",
+      "url": "https://livingcost.org/cost/zimbabwe",
+      "note": "860 (country-level figure, incl. rent)",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "tax": null,
+   "cities": {}
+  },
+  "VE": {
+   "name": "Venezuela",
+   "city": "Caracas",
+   "salary": {
+    "currency": "USD",
+    "period": "month",
+    "low": 250,
+    "median": 450,
+    "high": 1000,
+    "basis": "low/median = Reddit junior USD 250-450; high = talently junior average USD 1000",
+    "sources": [
+     {
+      "name": "Reddit r/dev_venezuela tech pay",
+      "url": "https://www.reddit.com/r/dev_venezuela/comments/1rh275q/cuanto_pagan_las_empresas_tech_en_venezuela/?tl=en",
+      "note": "junior USD 250-450/mo",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "talently.tech developer salaries Venezuela",
+      "url": "https://talently.tech/en/tools/venezuela/salary",
+      "note": "junior avg USD 1000/mo",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "cost_of_living": {
+    "monthly": 1270,
+    "currency": "USD",
+    "basis": "single person incl. rent, higher of the two sources",
+    "sources": [
+     {
+      "name": "Numbeo",
+      "url": "https://www.numbeo.com/cost-of-living/in/Caracas",
+      "note": "811.9 (without rent) + 458.3 (1BR outside centre, USD)",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "livingcost.org",
+      "url": "https://livingcost.org/cost/venezuela",
+      "note": "838 (country-level figure, incl. rent)",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "tax": null,
+   "cities": {}
+  },
+  "SY": {
+   "name": "Syria",
+   "city": "Damascus",
+   "salary": {
+    "currency": "USD",
+    "period": "month",
+    "low": 400,
+    "median": 500,
+    "high": 600,
+    "basis": "entry-level developer: low/high = Jeser entry frontend/backend 400-600, median = Reddit full-stack USD 500",
+    "sources": [
+     {
+      "name": "Jeser Syria salary guide 2026",
+      "url": "https://jeserhr.com/blog/syria-salary-guide-hiring-costs-2026",
+      "note": "entry frontend USD 400-550, backend 400-600",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "Reddit r/Syria pay thread",
+      "url": "https://www.reddit.com/r/Syria/comments/1m8hseo/whats_your_job_and_how_much_you_get_paid_yearly/",
+      "note": "full-stack engineer USD 500/mo (anecdotal)",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "cost_of_living": {
+    "monthly": 748,
+    "currency": "USD",
+    "basis": "single person incl. rent, higher of the two sources",
+    "sources": [
+     {
+      "name": "Numbeo",
+      "url": "https://www.numbeo.com/cost-of-living/in/Damascus",
+      "note": "561.7 (without rent) + 186.0 (1BR outside centre, USD)",
+      "retrieved": "2026-11-04"
+     },
+     {
+      "name": "livingcost.org",
+      "url": "https://livingcost.org/cost/syria",
+      "note": "564 (country-level figure, incl. rent)",
+      "retrieved": "2026-11-04"
+     }
+    ]
+   },
+   "tax": null,
+   "cities": {}
   }
  }
 }

@@ -1,6 +1,6 @@
 # /autopilot - Batch Apply After a Scrape, Disclosed Pay First
 
-You are running the whole pipeline for Muhammad Ilham Ghazali without him entering each link: scrape, rank, select, prepare documents, send the email applications he approves, and hand him a checklist for everything else. **The only question in the whole run is the one in Step 6.**
+You are running the whole pipeline for Muhammad Ilham Ghazali without him entering each link: scrape, rank, select, prepare documents, send the email applications he approves, hand him a checklist for everything else, then sync Gmail statuses and refresh the HTML dashboard. **The only question in the whole run is the one in Step 6.**
 
 `$ARGUMENTS`: `[--limit N] [--dry-run] [--jobs-only|--gigs-only] [--max-items N] [--intern [off|remote|onsite]] [--sort pay|fit]`. Default `--limit 10`, no `--max-items`, `--intern remote`, `--sort pay`. Both caps count jobs and gigs together, connector sources included. The limits that always hold are in Step 3-4.
 
@@ -99,16 +99,35 @@ python3 tools/autopilot.py finish --run job_scraper/autopilot_run.json
 
 Sent emails end as `emailed` (tracker `applied`, date, channel `email`, message id). `ats_form`, `portal_login`, platform proposals and unsent emails end as `ready_to_submit` with a manual checklist. Jobs go to `job_search_tracker.csv`, gigs to `freelance_tracker.csv`. A dry run writes no tracker status.
 
+### Step 7a: Gmail Sync (no question)
+
+Run the `/gmail-sync` workflow (no arguments) after `finish`, so the rows just written are in scope. **Pre-approved:** the user asked for every detected change to be added, so treat its Step 7 as "approve all" and do not wait. Everything else in `/gmail-sync` still holds: classify from full bodies, never propose `hired` or `offer_declined`, conflicts and unmatched mail are listed and not written, subjects are sanitized, state is updated. Gmail connector missing or the sync errors: record one line in the report and go on.
+
+**Unmatched confirmations are added too (pre-approved).** An unmatched email that is an application confirmation (subject like "Lamaranmu berhasil dikirim", "Thank you for your application", "your application was sent to ...", sender Jobstreet, Lever, Greenhouse, LinkedIn or another ATS) and names a company and role that no tracker row has yet: append one row to `job_search_tracker.csv`. Read the full body for company and role; if either is unclear, leave it in the report as unmatched.
+- Fields: `date` = the email's date; `company`, `role` from the email; `channel` = `linkedin` for LinkedIn, else `portal`; `status` = `applied`; `source` = the posting URL only if the email shows a clean one (LinkedIn: `https://www.linkedin.com/jobs/view/<id>`, tracking parameters removed), else empty; `fit_rating` empty; `notes` = `applied by user outside /apply workflow - no fit evaluation run; added via gmail-sync from <Jobstreet|Lever|LinkedIn|...> confirmation email`.
+- Delete every comma, double quote and line break from company, role and notes (same CSV rule as the status writes). Write all 14 columns. Append only, never touch other rows.
+- Skip a company+role pair already in the tracker (normalized match). Newsletters, job alerts and "hiring" digests are noise, not confirmations.
+- No `outcome.md` folder for these rows. Print them in the report as "Added from unmatched".
+
+### Step 7b: HTML Report (no question)
+
+Run the `/html-report` workflow (default output path) after Step 7a, so the dashboard shows the synced statuses.
+
+### Step 7c: Report
+
 Report from the tool's output:
 1. Counts per type: scraped / confirmed / emailed / ready_to_submit / needs review / failed.
 2. The sorted table with each item's final status.
 3. The **manual checklist** for every `ready_to_submit` item: link, CV path, cover letter or proposal path, copy-paste answers from the profile, and how to record it afterwards (`/outcome <job> applied` for jobs).
 4. Not applied: Needs verification (with Needs budget review marked), Manual safety review, Rejected, each with its reason. Vetted networks to apply to once.
-5. The token estimate, labelled as an estimate.
+5. Gmail sync: the Written table (company, signal, status change, source email), offers needing the user's decision, the "Added from unmatched" rows (company, role, date, channel), needs-manual-review and still-unmatched items, stale applications. Or the one-line reason it was skipped.
+6. The dashboard path from `/html-report`.
+7. The token estimate, labelled as an estimate.
+8. **Full scrape table (print last).** Every item in `job_scraper/rank_combined.json` (not only the selected ones), one row each, joined with `job_scraper/autopilot_run.json` and the trackers for its final status. Columns: `#`, company, role, type (job/gig), source, pay (`idr_monthly_equiv` or `estimated`), fit, posted date, **status**, reason or note. Status is one of: `emailed` (applied by email), `ready_to_submit` (documents ready, manual submit), `needs_review`, `failed`, `skipped` (beyond `--limit`/`--max-items`), `already_applied` (in a tracker or the ledger), `needs_verification`, `manual_safety_review`, `rejected` (hard rule, with the rule), `too_old`, `no_date`. Sort by the same order as Step 3-4 (selected first), then by status. Take every value from the files; an item with no matching status shows `unknown`, never a guess. Print it in full, with a count line per status under it.
 
 ## Important Rules
 
-1. **One question only.** Nothing is sent without the Step 6 approval, and nothing but email is sent at all.
+1. **One question only.** Nothing is sent without the Step 6 approval, and nothing but email is sent at all. Step 7a writes only to the tracker (status updates and new rows from unmatched confirmations) and `outcome.md` (pre-approved), and never touches the mailbox.
 2. **Never apply twice.** The tools check both trackers, the ledger and the queue.
 3. **Only real experience.** Every document comes from the profile; the `/apply` audit and the claims checks stay in force.
 4. **A failure is a line in the report**, never the end of the run.
