@@ -16,6 +16,7 @@ Primary (default CLIs, remote/international focus - no local Indonesian portal s
 - **linkedin.com/jobs** - LinkedIn job listings, global; also covered by `linkedin-search` CLI
 - **freehire.com** - also covered by `freehire-search` CLI
 - **remoteok.com**, **weworkremotely.com**, **himalayas.app** - remote-first job boards (WebSearch fallback, no CLI)
+- **whatjobs.com** (en-id.whatjobs.com for Indonesia) - job aggregator, surfaced real Flutter roles in Tangerang (WebSearch fallback, e.g. `site:whatjobs.com flutter developer`)
 - **angel.co / wellfound.com** - startup roles, often remote-friendly with visa sponsorship notes
 
 Secondary (company career pages via Google):
